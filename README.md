@@ -1,2 +1,2 @@
-# JusPartyApp
-JusPartyApp
+# JustPartyApp
+JustPartyApp
