@@ -1,0 +1,2 @@
+# JusPartyApp
+JusPartyApp
