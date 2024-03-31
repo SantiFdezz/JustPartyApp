@@ -24,8 +24,9 @@
 
 ## Título e imagen de portada
 <h1 align="center">JParty APP</h1>
-
-![JPartyLogo](https://raw.githubusercontent.com/SantiFdezz/JustPartyApp/main/doc/logo/logojparty-white-512.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/SantiFdezz/JustPartyApp/main/doc/logo/logojparty-white-512.png">
+</p>
 
  ## Insignias
  <p align="center">
@@ -39,11 +40,7 @@
 
  
 ## Descripción del proyecto
-JustParty es una aplicación que surje como una necesidad propia como de mucha gente que le cuesta darse cuenta de los eventos próximos de fiesta en su ciudad, es
-Contiene sitaxis markdown y sirve para:
-Dar una breve descripcion del producto del repo
-Contar como sacar provecho del trabajo aqui presente
-Explicar a los interesados como contribuir etc.
+JustParty es una aplicación que surje como una necesidad propia como de mucha gente que le cuesta darse cuenta de los eventos próximos de fiesta en su ciudad. En el puedes tanto añadir eventos a los que asistes, (icono de globo) o puedes dar like (icono corazón) a los eventos que te gusten.
 
 ## Estado del proyecto
 
