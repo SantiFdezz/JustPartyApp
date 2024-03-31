@@ -1,9 +1,3 @@
-# JustPartyApp
-JustPartyApp
-
-
-#Este es un archivo README.md
-
 ## Índice
 
 * [Título e imagen de portada](#Título-e-imagen-de-portada)
