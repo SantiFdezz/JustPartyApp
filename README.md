@@ -31,6 +31,9 @@
  <p align="center">
    <img src="https://img.shields.io/badge/STATUS-EN%20DESAROLLO-green">
    <img src="https://img.shields.io/badge/-Python-61DAFB?logo=python&logoColor=white&style=plastic">
+   <img src="https://img.shields.io/badge/-Django-61DAFB?logo=django&logoColor=white&style=plastic">
+   <img src="https://img.shields.io/badge/-Android%20Studio-61DAFB?logo=android&logoColor=white&style=plastic">
+   <img src="https://img.shields.io/badge/-Java-61DAFB?logo=java&logoColor=white&style=plastic">
    <img src="https://img.shields.io/github/stars/SantiFdezz?style=social">
    </p>
 
