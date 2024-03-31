@@ -16,7 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from jpartyapp import endpoints
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('user/session', endpoints.sessions), 
+    path('user', endpoints.user),
+    path('events', endpoints.events),
 ]
