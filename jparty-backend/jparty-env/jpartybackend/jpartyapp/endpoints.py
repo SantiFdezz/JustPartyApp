@@ -47,6 +47,12 @@ def check_image_format(image):
         return False
     return True
 
+def check_link_format(link):
+    if link is not None and ('http://' not in link and 'https://' not in link) and (
+            '.com' not in link and '.es' not in link and '.org' not in link):
+        return False
+    return True
+
 ##TESTEADO
 @csrf_exempt
 def sessions(request):
@@ -149,7 +155,86 @@ def user(request):
 
 @csrf_exempt
 def events(request):
-    if request.method == 'POST': #TESTEADO
+    if request.method == 'GET':
+        try:
+            #AUTENTICAMOS AL USUARIO
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        
+        #CONSEGUIMOS SUS PREFERENCIAS (CON EL FILTRADO)
+
+        sort_by = request.GET.get('sort', None)  # Aquí recogemos el parámetro de consulta 'sort' del Home Screen
+        mine = request.GET.get('mine', None)  # Aquí recogemos el parámetro de consulta 'mine' del Own Events
+        if (sort_by is not None and sort_by not in ['price', 'date', 'secret_key'] and mine is not None) or (mine is not None and mine != 'true' and sort_by is not None):
+            return JsonResponse({'error': 'Invalid parameter'}, status=400)
+
+        if mine is not None and mine.lower() == 'true':
+            #COMPROBAMOS SI EL USUARIO QUIERE VER SUS EVENTOS
+            try:
+                events = Events.objects.filter(manager=user_session.user,date__gte=timezone.now())
+            except Events.DoesNotExist:
+                return JsonResponse({'error': 'Events not found'}, status=404)
+        else:
+            #COMPROBAMOS SI EL USUARIO QUIERE VER LOS EVENTOS GENERALES SEGUN SUS PREFERENCIAS DE BUSQUEDA Y GUSTOS
+            try:
+                user_genres = UserPreferences.objects.filter(user=user_session.user).values_list('music_genre__name', flat=True)
+            except UserPreferences.DoesNotExist:
+                user_genres = None
+            # si se proporciona el parámetro 'secret_key'
+            try:
+                if user_genres is not None:
+                    events = Events.objects.filter(music_genre__name__in=user_genres, province=user_session.user.province, date__gte=timezone.now())
+                else:
+                    events = Events.objects.filter(province=user_session.user.province, date__gte=timezone.now())
+            except Events.DoesNotExist:
+                return JsonResponse({'error': 'Events not found'}, status=404)
+            # Ordenamos los eventos por fecha o asistentes
+            if sort_by is not None and 'date' in sort_by:
+                events = events.order_by('date')
+            elif sort_by is not None and 'price' in sort_by:
+                events = events.order_by('-price')
+        print(sort_by)
+        if sort_by is not None and 'secret_key' in sort_by:
+            secretkeybool = True
+        else:
+            secretkeybool = False
+        print(secretkeybool)
+        #CREAMOS UN JSON CON LOS EVENTOS Y ATRIB.(ASISTENTES, LIKES, ETC)
+        json_response = []
+        for event in events:
+            if secretkeybool and event.secretkey is None:
+                print('hola')
+                continue
+            else:
+            #if  (sort_by is not None and'secretkey' in sort_by and event.secretkey is not None) or (sort_by is not None 'secretkey' not in sort_by):
+                assistants = UserAssist.objects.filter(event=event).count()
+                try:
+                    userLiked = UserLikes.objects.get(user=user_session.user, event=event)
+                    userLiked = True
+                except UserLikes.DoesNotExist:
+                    userLiked = False
+                try:
+                    userAssist = UserAssist.objects.get(user=user_session.user, event=event)
+                    userAssist = True
+                except UserAssist.DoesNotExist:
+                    userAssist = False            
+                music_genre = MusicGenre.objects.get(id=event.music_genre.id)
+                json_response.append({
+                    "title": event.title,
+                    "province": event.province,
+                    "music_genre": music_genre.name,
+                    "secretkey": event.secretkey,
+                    "link": event.link,
+                    "date": event.date.strftime('%d-%m-%Y'),
+                    "image": event.image,
+                    "description": event.description,
+                    "userLiked": userLiked,
+                    "userAssist": userAssist,
+                    "assistants": assistants
+                })
+        return JsonResponse(json_response, safe=False, status=200)
+    elif request.method == 'POST': #TESTEADO
         try:
             #AUTENTICAMOS AL MANAGER
             user_session = authenticate_manager(request)
@@ -165,17 +250,59 @@ def events(request):
             price = data['price']
             secretkey = data['secretkey']
             link = data['link']
+            if check_link_format(link) is False:
+                return JsonResponse({"response": "not_ok"}, status=400)
             date = data['date']
             time = data['time']
             if len(time.split(':')) == 2:
                 time += ':00'
             date = datetime.strptime(f'{date} {time}', '%Y-%m-%d %H:%M:%S')###CORREGIR
+            date = timezone.make_aware(date)
+            
             image = data['image']
+            if check_image_format(image) is False:
+                return JsonResponse({"response": "not_ok"}, status=400)
             description = data['description']
         except KeyError:
             return JsonResponse({"response": "not_ok"}, status=400)
         event = Events(manager=user_session.user, title=title,street=street, province=province, music_genre=music_genre, price=price,secretkey=secretkey, link=link, date=date.isoformat(),image=image, description=description, )
         event.save()
         return JsonResponse({'message': 'Event created'}, status=201)
+    else:
+        return JsonResponse({'message': 'Method not allowed'}, status=405)
+
+@csrf_exempt    
+def userPreferences(request):
+    #TESTEADO
+    if request.method == 'GET':
+        try:
+            #AUTENTICAMOS AL USUARIO
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        #COGEMOS LOS GENEROS Y PASAMOS A LISTA LOS SELECCIONADOS POR ID
+        musicGenre = MusicGenre.objects.all()
+        preferences = UserPreferences.objects.filter(user=user_session.user).values_list('music_genre__id', flat=True)
+        json_response = []
+        for music in musicGenre:
+            json_response.append({
+                "id": music.id,
+                "name": music.name,
+                "image": music.image,
+                "selected": music.id in preferences,
+            })
+        return JsonResponse(json_response, safe=False, status=200)
+    elif request.method == 'PUT':
+        try:
+            #AUTENTICAMOS AL USUARIO
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        selected_ids = json.loads(request.body)
+        UserPreferences.objects.filter(user=user_session.user).delete()
+        for genre_id in selected_ids:
+            genre = MusicGenre.objects.get(id=genre_id)
+            UserPreferences.objects.create(user=user_session.user, music_genre=genre)
+        return JsonResponse({'message': 'User preferences updated'}, status=200)
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=405)

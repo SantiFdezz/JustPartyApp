@@ -23,4 +23,5 @@ urlpatterns = [
     path('user/session', endpoints.sessions), 
     path('user', endpoints.user),
     path('events', endpoints.events),
+    path('userpreferences', endpoints.userPreferences),
 ]
