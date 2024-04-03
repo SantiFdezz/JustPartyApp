@@ -265,6 +265,7 @@ def events(request):
         return JsonResponse({'message': 'Event created'}, status=201)
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=405)
+
 def userAssistEvents(request):
     if request.method == 'GET':
         try:
@@ -297,6 +298,23 @@ def userAssistEvents(request):
                 "userLiked": userLiked,
             })
         return JsonResponse(json_response, safe=False, status=200)     
+    else:
+        return JsonResponse({'message': 'Method not allowed'}, status=405)
+
+@csrf_exempt
+def userAssistEvent_id(request, id):
+    if request.method == 'POST':
+        try:
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        try:
+            event = Events.objects.get(id=id)
+        except Events.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+        assist = UserAssist(user=user_session.user, event=event)
+        assist.save()
+        return JsonResponse({'message': 'Event assisted'}, status=201)
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=405)
 
