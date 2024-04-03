@@ -285,8 +285,6 @@ def userAssistEvents(request):
             except UserLikes.DoesNotExist:
                 userLiked = False
             date = event.date.strftime('%d-%m-%Y %H:%M')
-            date = datetime.strptime(date, '%d-%m-%Y %H:%M')
-            date = timezone.make_aware(date)
             json_response.append({
                 "title": event.title,
                 "street": event.street,
