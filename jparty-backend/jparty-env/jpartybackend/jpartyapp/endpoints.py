@@ -301,3 +301,49 @@ def userPreferences(request):
         return JsonResponse({'message': 'User preferences updated'}, status=200)
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=405)
+
+def event_id(request, id):
+    if request.method == 'GET':
+        try:
+        #AUTENTICAMOS AL USUARIO
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        #CREAMOS UN JSON CONLA INFO DEL EVENTO Y ATRIB.(ASISTENCIA, LIKE, ETC)
+        try:
+            event = Events.objects.get(id=id)
+        except Events.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+        print(event.date)
+        assistants = UserAssist.objects.filter(event=event).count()
+        try:
+            userLiked = UserLikes.objects.get(user=user_session.user, event=event)
+            userLiked = True
+        except UserLikes.DoesNotExist:
+            userLiked = False
+        try:
+            userAssist = UserAssist.objects.get(user=user_session.user, event=event)
+            userAssist = True
+        except UserAssist.DoesNotExist:
+            userAssist = False
+        music_genre = MusicGenre.objects.get(id=event.music_genre.id)
+        json_response = []
+        #date = datetime.fromisoformat(event.date)
+        json_response.append({
+            "manager": event.manager.username,
+            "title": event.title,
+            "street": event.street,
+            "province": event.province,
+            "music_genre": music_genre.name,
+            "price": str(event.price), 
+            "secretkey": event.secretkey,
+            "link": event.link,
+            "date": event.date.strftime('%d-%m-%Y'),
+            "time": event.date.strftime('%H:%M'),
+            "image": event.image,
+            "description": event.description,
+            "userLiked": userLiked,
+            "userAssist": userAssist,
+            "assistants": assistants
+            })
+        return JsonResponse(json_response, safe=False, status=200)
