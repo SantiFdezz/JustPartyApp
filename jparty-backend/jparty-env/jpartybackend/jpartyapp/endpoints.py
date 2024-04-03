@@ -265,6 +265,40 @@ def events(request):
         return JsonResponse({'message': 'Event created'}, status=201)
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=405)
+def userAssistEvents(request):
+    if request.method == 'GET':
+        try:
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        try:
+            user_assist = UserAssist.objects.filter(user=user_session.user)
+        except UserAssist.DoesNotExist:
+            return JsonResponse({'error': 'Assists not found'}, status=404)
+        json_response = []
+        for assist in user_assist:
+            event = Events.objects.get(id=assist.event.id, date__gte=timezone.now())
+            assistants = UserAssist.objects.filter(event=event).count()
+            try:
+                userLiked = UserLikes.objects.get(user=user_session.user, event=event)
+                userLiked = True
+            except UserLikes.DoesNotExist:
+                userLiked = False
+            date = event.date.strftime('%d-%m-%Y %H:%M')
+            date = datetime.strptime(date, '%d-%m-%Y %H:%M')
+            date = timezone.make_aware(date)
+            json_response.append({
+                "title": event.title,
+                "street": event.street,
+                "price": str(event.price),
+                "assistants": assistants,
+                "date": date,
+                "secretkey": event.secretkey,
+                "userLiked": userLiked,
+            })
+        return JsonResponse(json_response, safe=False, status=200)     
+    else:
+        return JsonResponse({'message': 'Method not allowed'}, status=405)
 
 @csrf_exempt    
 def userPreferences(request):
