@@ -202,7 +202,6 @@ def events(request):
             if secretkeybool and event.secretkey is None:
                 continue
             else:
-            #if  (sort_by is not None and'secretkey' in sort_by and event.secretkey is not None) or (sort_by is not None 'secretkey' not in sort_by):
                 assistants = UserAssist.objects.filter(event=event).count()
                 try:
                     userLiked = UserLikes.objects.get(user=user_session.user, event=event)
@@ -229,7 +228,7 @@ def events(request):
                     "assistants": assistants
                 })
         return JsonResponse(json_response, safe=False, status=200)
-    elif request.method == 'POST': #TESTEADO
+    elif request.method == 'POST': 
         try:
             #AUTENTICAMOS AL MANAGER
             user_session = authenticate_manager(request)
@@ -251,7 +250,7 @@ def events(request):
             time = data['time']
             if len(time.split(':')) == 2:
                 time += ':00'
-            date = datetime.strptime(f'{date} {time}', '%Y-%m-%d %H:%M:%S')###CORREGIR
+            date = datetime.strptime(f'{date} {time}', '%Y-%m-%d %H:%M:%S')
             date = timezone.make_aware(date)
             
             image = data['image']
@@ -265,6 +264,7 @@ def events(request):
         return JsonResponse({'message': 'Event created'}, status=201)
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=405)
+
 def userAssistEvents(request):
     if request.method == 'GET':
         try:
@@ -285,8 +285,6 @@ def userAssistEvents(request):
             except UserLikes.DoesNotExist:
                 userLiked = False
             date = event.date.strftime('%d-%m-%Y %H:%M')
-            date = datetime.strptime(date, '%d-%m-%Y %H:%M')
-            date = timezone.make_aware(date)
             json_response.append({
                 "title": event.title,
                 "street": event.street,
