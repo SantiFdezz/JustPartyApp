@@ -302,6 +302,7 @@ def userPreferences(request):
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=405)
 
+@csrf_exempt
 def event_id(request, id):
     if request.method == 'GET':
         try:
@@ -314,7 +315,6 @@ def event_id(request, id):
             event = Events.objects.get(id=id)
         except Events.DoesNotExist:
             return JsonResponse({'error': 'Event not found'}, status=404)
-        print(event.date)
         assistants = UserAssist.objects.filter(event=event).count()
         try:
             userLiked = UserLikes.objects.get(user=user_session.user, event=event)
@@ -328,7 +328,6 @@ def event_id(request, id):
             userAssist = False
         music_genre = MusicGenre.objects.get(id=event.music_genre.id)
         json_response = []
-        #date = datetime.fromisoformat(event.date)
         json_response.append({
             "manager": event.manager.username,
             "title": event.title,
@@ -347,3 +346,49 @@ def event_id(request, id):
             "assistants": assistants
             })
         return JsonResponse(json_response, safe=False, status=200)
+    elif request.method == 'PUT':
+        try:
+        #AUTENTICAMOS AL USUARIO
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        try:
+            event = Events.objects.get(id=id)
+        except Events.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+         # Comprobamos si el usuario es el administrador del evento
+        if event.manager.id != user_session.user.id:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        
+        try:
+            data = json.loads(request.body)
+            image = data['image']
+            title = data['title']
+            music_genre = data['music_genre']
+            music_genre = MusicGenre.objects.get(id=music_genre)
+            price = data['price']
+            street = data['street']
+            province = data['province']
+            link = data['link']
+            date = data['date']
+            time = data['time']
+            if len(time.split(':')) == 2:
+                time += ':00'
+            date = datetime.strptime(f'{date} {time}', '%Y-%m-%d %H:%M:%S')
+            date = timezone.make_aware(date)
+            description = data['description']
+            secretkey = data['secretkey']
+        except KeyError:
+            return JsonResponse({"response": "not_ok"}, status=400)
+        event.image = image
+        event.title = title
+        event.music_genre = music_genre
+        event.price = price
+        event.street = street
+        event.province = province
+        event.link = link
+        event.date = date
+        event.description = description
+        event.secretkey = secretkey
+        event.save()
+        return JsonResponse({'message': 'Event updated'}, status=200)
