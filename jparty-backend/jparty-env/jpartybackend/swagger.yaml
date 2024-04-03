@@ -798,7 +798,7 @@ components:
         application/json:
           schema:
             example:
-              response: ok
+              response: ok - SessionToken="token"
   schemas:
   # Respuestas y body de las peticiones
     LoginBody:
@@ -856,6 +856,8 @@ components:
           type: string
         image:
           type: string
+        selected:
+          type: boolean
     MusicGenres:
       type: array
       items:
