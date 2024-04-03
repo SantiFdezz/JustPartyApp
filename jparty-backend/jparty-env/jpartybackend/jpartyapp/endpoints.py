@@ -302,6 +302,8 @@ def userPreferences(request):
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=405)
 
+
+#TESTEADO
 @csrf_exempt
 def event_id(request, id):
     if request.method == 'GET':
@@ -392,3 +394,20 @@ def event_id(request, id):
         event.secretkey = secretkey
         event.save()
         return JsonResponse({'message': 'Event updated'}, status=200)
+    elif request.method == 'DELETE':
+        try:
+        #AUTENTICAMOS AL USUARIO
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        try:
+            event = Events.objects.get(id=id)
+        except Events.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+         # Comprobamos si el usuario es el administrador del evento
+        if event.manager.id != user_session.user.id:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        event.delete()
+        return JsonResponse({'message': 'Event deleted'}, status=200)
+    else:
+        return JsonResponse({'message': 'Method not allowed'}, status=405)
