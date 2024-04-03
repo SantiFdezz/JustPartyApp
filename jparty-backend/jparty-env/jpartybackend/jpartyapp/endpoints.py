@@ -265,7 +265,6 @@ def events(request):
         return JsonResponse({'message': 'Event created'}, status=201)
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=405)
-
 def userAssistEvents(request):
     if request.method == 'GET':
         try:
