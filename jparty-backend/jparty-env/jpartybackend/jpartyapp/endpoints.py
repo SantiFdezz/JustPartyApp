@@ -162,26 +162,24 @@ def events(request):
         except PermissionDenied:
             return JsonResponse({'error': 'Unauthorized'}, status=401)
         
-        #CONSEGUIMOS SUS PREFERENCIAS (CON EL FILTRADO)
-
         sort_by = request.GET.get('sort', None)  # Aquí recogemos el parámetro de consulta 'sort' del Home Screen
         mine = request.GET.get('mine', None)  # Aquí recogemos el parámetro de consulta 'mine' del Own Events
         if (sort_by is not None and sort_by not in ['price', 'date', 'secret_key'] and mine is not None) or (mine is not None and mine != 'true' and sort_by is not None):
             return JsonResponse({'error': 'Invalid parameter'}, status=400)
-
+        #COMPROBAMOS SI EL USUARIO QUIERE VER SUS EVENTOS O LA LISTA DE EVENTOS
         if mine is not None and mine.lower() == 'true':
-            #COMPROBAMOS SI EL USUARIO QUIERE VER SUS EVENTOS
+            
             try:
                 events = Events.objects.filter(manager=user_session.user,date__gte=timezone.now())
             except Events.DoesNotExist:
                 return JsonResponse({'error': 'Events not found'}, status=404)
         else:
-            #COMPROBAMOS SI EL USUARIO QUIERE VER LOS EVENTOS GENERALES SEGUN SUS PREFERENCIAS DE BUSQUEDA Y GUSTOS
+            #Conseguimos los gustos del usuario
             try:
                 user_genres = UserPreferences.objects.filter(user=user_session.user).values_list('music_genre__name', flat=True)
             except UserPreferences.DoesNotExist:
                 user_genres = None
-            # si se proporciona el parámetro 'secret_key'
+            # Checkeamos si hay eventos segun gustos y provincia del usuario
             try:
                 if user_genres is not None:
                     events = Events.objects.filter(music_genre__name__in=user_genres, province=user_session.user.province, date__gte=timezone.now())
@@ -189,22 +187,19 @@ def events(request):
                     events = Events.objects.filter(province=user_session.user.province, date__gte=timezone.now())
             except Events.DoesNotExist:
                 return JsonResponse({'error': 'Events not found'}, status=404)
-            # Ordenamos los eventos por fecha o asistentes
+            # Ordenamos los eventos por fecha o precio
             if sort_by is not None and 'date' in sort_by:
                 events = events.order_by('date')
             elif sort_by is not None and 'price' in sort_by:
                 events = events.order_by('-price')
-        print(sort_by)
         if sort_by is not None and 'secret_key' in sort_by:
             secretkeybool = True
         else:
             secretkeybool = False
-        print(secretkeybool)
         #CREAMOS UN JSON CON LOS EVENTOS Y ATRIB.(ASISTENTES, LIKES, ETC)
         json_response = []
         for event in events:
             if secretkeybool and event.secretkey is None:
-                print('hola')
                 continue
             else:
             #if  (sort_by is not None and'secretkey' in sort_by and event.secretkey is not None) or (sort_by is not None 'secretkey' not in sort_by):
