@@ -46,6 +46,8 @@ JustParty es una aplicación que surje como una necesidad propia como de mucha g
 
 <h4 align="center">:construction: Proyecto en construcción :construction:</h4>
 
+## Requerimientos minimos
+Android 7.0 API 24 "Nougat"
 
 ## Características de la aplicación y demostración
 
