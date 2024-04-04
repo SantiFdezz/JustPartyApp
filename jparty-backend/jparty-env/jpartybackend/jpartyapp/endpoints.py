@@ -383,6 +383,21 @@ def userLikedEvent_id(request, id):
         liked = UserLikes(user=user_session.user, event=event)
         liked.save()
         return JsonResponse({'message': 'Event liked'}, status=201)
+    elif request.method == 'DELETE':
+        try:
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        try:
+            event = Events.objects.get(id=id)
+        except Events.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+        try:
+            liked = UserLikes.objects.get(user=user_session.user, event=event)
+        except UserLikes.DoesNotExist:
+            return JsonResponse({'error': 'Event already unliked'}, status=404)
+        liked.delete()
+        return JsonResponse({'message': 'Event unliked'}, status=200)
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=405)
 
