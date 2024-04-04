@@ -319,6 +319,115 @@ def events(request):
         return JsonResponse({'message': 'Event created'}, status=201)
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=405)
+#TESTEADO
+@csrf_exempt
+def event_id(request, id):
+    if request.method == 'GET':
+        try:
+        #AUTENTICAMOS AL USUARIO
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        #CREAMOS UN JSON CONLA INFO DEL EVENTO Y ATRIB.(ASISTENCIA, LIKE, ETC)
+        try:
+            event = Events.objects.get(id=id)
+        except Events.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+        assistants = UserAssist.objects.filter(event=event).count()
+        try:
+            userLiked = UserLikes.objects.get(user=user_session.user, event=event)
+            userLiked = True
+        except UserLikes.DoesNotExist:
+            userLiked = False
+        try:
+            userAssist = UserAssist.objects.get(user=user_session.user, event=event)
+            userAssist = True
+        except UserAssist.DoesNotExist:
+            userAssist = False
+        music_genre = MusicGenre.objects.get(id=event.music_genre.id)
+        json_response = []
+        json_response.append({
+            "manager": event.manager.username,
+            "title": event.title,
+            "street": event.street,
+            "province": event.province,
+            "music_genre": music_genre.name,
+            "price": str(event.price), 
+            "secretkey": event.secretkey,
+            "link": event.link,
+            "date": event.date.strftime('%d-%m-%Y'),
+            "time": event.date.strftime('%H:%M'),
+            "image": event.image,
+            "description": event.description,
+            "userLiked": userLiked,
+            "userAssist": userAssist,
+            "assistants": assistants
+            })
+        return JsonResponse(json_response, safe=False, status=200)
+    elif request.method == 'PUT':
+        try:
+        #AUTENTICAMOS AL USUARIO
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        try:
+            event = Events.objects.get(id=id)
+        except Events.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+         # Comprobamos si el usuario es el administrador del evento
+        if event.manager.id != user_session.user.id:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        
+        try:
+            data = json.loads(request.body)
+            image = data['image']
+            title = data['title']
+            music_genre = data['music_genre']
+            music_genre = MusicGenre.objects.get(id=music_genre)
+            price = data['price']
+            street = data['street']
+            province = data['province']
+            link = data['link']
+            date = data['date']
+            time = data['time']
+            if len(time.split(':')) == 2:
+                time += ':00'
+            date = datetime.strptime(f'{date} {time}', '%Y-%m-%d %H:%M:%S')
+            date = timezone.make_aware(date)
+            description = data['description']
+            secretkey = data['secretkey']
+        except KeyError:
+            return JsonResponse({"response": "not_ok"}, status=400)
+        event.image = image
+        event.title = title
+        event.music_genre = music_genre
+        event.price = price
+        event.street = street
+        event.province = province
+        event.link = link
+        event.date = date
+        event.description = description
+        event.secretkey = secretkey
+        event.save()
+        return JsonResponse({'message': 'Event updated'}, status=200)
+    elif request.method == 'DELETE':
+        try:
+        #AUTENTICAMOS AL USUARIO
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        try:
+            event = Events.objects.get(id=id)
+        except Events.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+         # Comprobamos si el usuario es el administrador del evento
+        if event.manager.id != user_session.user.id:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        event.delete()
+        return JsonResponse({'message': 'Event deleted'}, status=200)
+    else:
+        return JsonResponse({'message': 'Method not allowed'}, status=405)
+
 def userAssistEvents(request):
     if request.method == 'GET':
         try:
@@ -492,111 +601,3 @@ def userPreferences(request):
         return JsonResponse({'message': 'Method not allowed'}, status=405)
 
 
-#TESTEADO
-@csrf_exempt
-def event_id(request, id):
-    if request.method == 'GET':
-        try:
-        #AUTENTICAMOS AL USUARIO
-            user_session = authenticate_user(request)
-        except PermissionDenied:
-            return JsonResponse({'error': 'Unauthorized'}, status=401)
-        #CREAMOS UN JSON CONLA INFO DEL EVENTO Y ATRIB.(ASISTENCIA, LIKE, ETC)
-        try:
-            event = Events.objects.get(id=id)
-        except Events.DoesNotExist:
-            return JsonResponse({'error': 'Event not found'}, status=404)
-        assistants = UserAssist.objects.filter(event=event).count()
-        try:
-            userLiked = UserLikes.objects.get(user=user_session.user, event=event)
-            userLiked = True
-        except UserLikes.DoesNotExist:
-            userLiked = False
-        try:
-            userAssist = UserAssist.objects.get(user=user_session.user, event=event)
-            userAssist = True
-        except UserAssist.DoesNotExist:
-            userAssist = False
-        music_genre = MusicGenre.objects.get(id=event.music_genre.id)
-        json_response = []
-        json_response.append({
-            "manager": event.manager.username,
-            "title": event.title,
-            "street": event.street,
-            "province": event.province,
-            "music_genre": music_genre.name,
-            "price": str(event.price), 
-            "secretkey": event.secretkey,
-            "link": event.link,
-            "date": event.date.strftime('%d-%m-%Y'),
-            "time": event.date.strftime('%H:%M'),
-            "image": event.image,
-            "description": event.description,
-            "userLiked": userLiked,
-            "userAssist": userAssist,
-            "assistants": assistants
-            })
-        return JsonResponse(json_response, safe=False, status=200)
-    elif request.method == 'PUT':
-        try:
-        #AUTENTICAMOS AL USUARIO
-            user_session = authenticate_user(request)
-        except PermissionDenied:
-            return JsonResponse({'error': 'Unauthorized'}, status=401)
-        try:
-            event = Events.objects.get(id=id)
-        except Events.DoesNotExist:
-            return JsonResponse({'error': 'Event not found'}, status=404)
-         # Comprobamos si el usuario es el administrador del evento
-        if event.manager.id != user_session.user.id:
-            return JsonResponse({'error': 'Unauthorized'}, status=401)
-        
-        try:
-            data = json.loads(request.body)
-            image = data['image']
-            title = data['title']
-            music_genre = data['music_genre']
-            music_genre = MusicGenre.objects.get(id=music_genre)
-            price = data['price']
-            street = data['street']
-            province = data['province']
-            link = data['link']
-            date = data['date']
-            time = data['time']
-            if len(time.split(':')) == 2:
-                time += ':00'
-            date = datetime.strptime(f'{date} {time}', '%Y-%m-%d %H:%M:%S')
-            date = timezone.make_aware(date)
-            description = data['description']
-            secretkey = data['secretkey']
-        except KeyError:
-            return JsonResponse({"response": "not_ok"}, status=400)
-        event.image = image
-        event.title = title
-        event.music_genre = music_genre
-        event.price = price
-        event.street = street
-        event.province = province
-        event.link = link
-        event.date = date
-        event.description = description
-        event.secretkey = secretkey
-        event.save()
-        return JsonResponse({'message': 'Event updated'}, status=200)
-    elif request.method == 'DELETE':
-        try:
-        #AUTENTICAMOS AL USUARIO
-            user_session = authenticate_user(request)
-        except PermissionDenied:
-            return JsonResponse({'error': 'Unauthorized'}, status=401)
-        try:
-            event = Events.objects.get(id=id)
-        except Events.DoesNotExist:
-            return JsonResponse({'error': 'Event not found'}, status=404)
-         # Comprobamos si el usuario es el administrador del evento
-        if event.manager.id != user_session.user.id:
-            return JsonResponse({'error': 'Unauthorized'}, status=401)
-        event.delete()
-        return JsonResponse({'message': 'Event deleted'}, status=200)
-    else:
-        return JsonResponse({'message': 'Method not allowed'}, status=405)
