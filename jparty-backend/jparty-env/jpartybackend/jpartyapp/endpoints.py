@@ -94,7 +94,26 @@ def sessions(request):
     else:
         return JsonResponse({"response": "Method Not Allowed"}, status=405)
 
+@csrf_exempt
+def userManager(request):
+    if request.method == 'PUT':
+        try:
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        try:
+            user = User.objects.get(id=user_session.user.id)
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'User not found'}, status=404)
 
+        if user.manager == True:
+            user.manager = False
+        else:
+            user.manager = True
+        user.save()
+        return JsonResponse({'response': 'ok'}, status=200)
+    else:
+        return JsonResponse({'message': 'Method not allowed'}, status=405)
 # TESTEADO
 @csrf_exempt
 def user(request):
