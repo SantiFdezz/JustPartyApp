@@ -312,6 +312,18 @@ def userAssistEvent_id(request, id):
         assist = UserAssist(user=user_session.user, event=event)
         assist.save()
         return JsonResponse({'message': 'Event assisted'}, status=201)
+    elif request.method == 'DELETE':
+        try:
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        try:
+            event = Events.objects.get(id=id)
+        except Events.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+        assist = UserAssist.objects.get(user=user_session.user, event=event)
+        assist.delete()
+        return JsonResponse({'message': 'Event unassisted'}, status=200)
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=405)
 
