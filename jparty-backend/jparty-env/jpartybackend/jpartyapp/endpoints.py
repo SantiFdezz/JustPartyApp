@@ -283,14 +283,13 @@ def userAssistEvents(request):
                 userLiked = UserLikes.objects.get(user=user_session.user, event=event)
                 userLiked = True
             except UserLikes.DoesNotExist:
-                userLiked = False
-            date = event.date.strftime('%d-%m-%Y %H:%M')
+                userLiked = False 
             json_response.append({
                 "title": event.title,
                 "street": event.street,
                 "price": str(event.price),
                 "assistants": assistants,
-                "date": date,
+                "date": event.date.strftime('%d-%m-%Y %H:%M'),
                 "secretkey": event.secretkey,
                 "userLiked": userLiked,
             })
@@ -324,6 +323,49 @@ def userAssistEvent_id(request, id):
         assist = UserAssist.objects.get(user=user_session.user, event=event)
         assist.delete()
         return JsonResponse({'message': 'Event unassisted'}, status=200)
+    else:
+        return JsonResponse({'message': 'Method not allowed'}, status=405)
+
+def userLikedEvents(request):
+    if request.method == 'GET':
+        try:
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        try:
+            user_liked = UserLikes.objects.filter(user=user_session.user)
+        except UserLikes.DoesNotExist:
+            return JsonResponse({'error': 'Likes not found'}, status=404)
+        json_response = []
+        for eventliked in user_liked:
+            event = Events.objects.get(id=eventliked.event.id, date__gte=timezone.now())
+            assistants = UserAssist.objects.filter(event=event).count()
+            try:
+                userLiked = UserLikes.objects.get(user=user_session.user, event=event)
+                userLiked = True
+            except UserLikes.DoesNotExist:
+                userLiked = False
+            try:
+                userAssist = UserAssist.objects.get(user=user_session.user, event=event)
+                userAssist = True
+            except UserAssist.DoesNotExist:
+                userAssist = False
+            music_genre = MusicGenre.objects.get(id=event.music_genre.id)
+            json_response.append({
+                "title": event.title,
+                "province": event.province,
+                "music_genre": music_genre.name,
+                "price": event.price,
+                "secretkey": event.secretkey,
+                "link": event.link,
+                "date": event.date.strftime('%d-%m-%Y'),
+                "image": event.image,
+                "description": event.description,
+                "userLiked": userLiked,
+                "userAssist": userAssist,
+                "assistants": assistants
+            })
+        return JsonResponse(json_response, safe=False, status=200)        
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=405)
 
