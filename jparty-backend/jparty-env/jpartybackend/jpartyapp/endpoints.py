@@ -111,7 +111,8 @@ def user(request):
             return JsonResponse({"response": "not_ok"}, status=400)
         if not check_email_format(client_email):
             return JsonResponse({"response": "not_ok"}, status=400)
-
+        if not check_password_format(client_password):
+            return JsonResponse({"response": "not_ok"}, status=400)
         try:
             User.objects.get(email=client_email)
             return JsonResponse({"response": "already_exist"}, status=409)
@@ -132,8 +133,7 @@ def user(request):
     elif request.method == 'GET':
         try:
             user_session = authenticate_user(request)
-            user_id = user_session.user.id
-            user_data = User.objects.get(id=user_id)
+            user_data = User.objects.get(id=user_session.user.id)
             json_response = user_data.to_json()
             return JsonResponse(json_response, safe=False, status=200)
         except PermissionDenied:
@@ -149,6 +149,41 @@ def user(request):
             return JsonResponse({'response': 'ok'}, status=200)
         except User.DoesNotExist:
             return JsonResponse({'response': 'not_ok'}, status=404)
+    elif request.method == 'PUT':
+        try:
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        user = User.objects.get(id=user_session.user.id)
+        try:
+            data = json.loads(request.body)
+            client_username = data['username']
+            client_email = data['email']
+            if not check_email_format(client_email):
+                return JsonResponse({"response": "not_ok"}, status=400)
+            client_province = data['province']
+            client_birthdate = data['birthdate']
+            client_password = data['password']
+        except KeyError:
+            return JsonResponse({"response": "not_ok"}, status=400)
+        try:
+            User.objects.get(email=client_email)
+            if user.email != client_email:
+                return JsonResponse({"response": "already_exist"}, status=409)
+        except:
+            pass
+        if client_password is not None:
+            if not check_password_format(client_password):
+                return JsonResponse({"response": "not_ok"}, status=400)
+            user.password = bcrypt.hashpw(client_password.encode('utf8'), bcrypt.gensalt()).decode('utf8')
+        birthdate = datetime.strptime(client_birthdate, '%d-%m-%Y')
+        formatted_birthdate = birthdate.strftime('%Y-%m-%d')
+        user.username = client_username
+        user.email = client_email
+        user.province = client_province
+        user.birthdate = formatted_birthdate
+        user.save()
+        return JsonResponse({'message': 'User updated'}, status=200)
     else:
         return JsonResponse({"response": "Method Not Allowed"}, status=405)
 
