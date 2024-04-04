@@ -123,11 +123,10 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         500:
           $ref: '#/components/responses/ServerError'
-  /user/username:
     put:
       tags:
-        - User
-      summary: Update user's username
+       - User
+      summary: Update user's data
       security:
       - bearerAuth: []
       parameters:
@@ -138,122 +137,10 @@ paths:
           required: true
           description: The sessionToken returned by the login request
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateUsernameBody'
-      responses:
-        200:
-          $ref: '#/components/responses/Ok'
-        400:
-          $ref: '#/components/responses/ClientError'
-        409:
-          $ref: '#/components/responses/Conflict'
-        500:
-          $ref: '#/components/responses/ServerError'
-  /user/birthdate:
-    put:
-      tags:
-        - User
-      summary: Update user's birthdate
-      security:
-      - bearerAuth: []
-      parameters:
-        - name: SessionToken
-          schema:
-            type: string
-          in: header
-          required: true
-          description: The sessionToken returned by the login request
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateBirthdateBody'
-      responses:
-        200:
-          $ref: '#/components/responses/Ok'
-        400:
-          $ref: '#/components/responses/ClientError'
-        409:
-          $ref: '#/components/responses/Conflict'
-        500:
-          $ref: '#/components/responses/ServerError'
-  /user/email:
-    put:
-      tags:
-        - User
-      summary: Update user's email
-      security:
-      - bearerAuth: []
-      parameters:
-        - name: SessionToken
-          schema:
-            type: string
-          in: header
-          required: true
-          description: The sessionToken returned by the login request
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateEmailBody'
-      responses:
-        200:
-          $ref: '#/components/responses/Ok'
-        400:
-          $ref: '#/components/responses/ClientError'
-        409:
-          $ref: '#/components/responses/Conflict'
-        500:
-          $ref: '#/components/responses/ServerError'
-  /user/province:
-    put:
-      tags:
-        - User
-      summary: Update user's province
-      security:
-      - bearerAuth: []
-      parameters:
-        - name: SessionToken
-          schema:
-            type: string
-          in: header
-          required: true
-          description: The sessionToken returned by the login request
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateProvinceBody'
-      responses:
-        200:
-          $ref: '#/components/responses/Ok'
-        400:
-          $ref: '#/components/responses/ClientError'
-        409:
-          $ref: '#/components/responses/Conflict'
-        500:
-          $ref: '#/components/responses/ServerError'
-  /user/newpassword:
-    put:
-      tags:
-        - User
-      summary: Update user's password
-      security:
-      - bearerAuth: []
-      parameters:
-        - name: SessionToken
-          schema:
-            type: string
-          in: header
-          required: true
-          description: The sessionToken returned by the login request
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdatePasswordBody'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterBody'
       responses:
         200:
           $ref: '#/components/responses/Ok'
@@ -798,7 +685,7 @@ components:
         application/json:
           schema:
             example:
-              response: ok
+              response: ok - SessionToken="token"
   schemas:
   # Respuestas y body de las peticiones
     LoginBody:
@@ -856,6 +743,8 @@ components:
           type: string
         image:
           type: string
+        selected:
+          type: boolean
     MusicGenres:
       type: array
       items:
