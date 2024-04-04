@@ -152,32 +152,6 @@ paths:
           $ref: '#/components/responses/ServerError'
 
   /user/manager:
-    get:
-      tags:
-        - User
-      summary: Get user's manager status
-      security:
-      - bearerAuth: []
-      parameters:
-        - name: SessionToken
-          schema:
-            type: string
-          in: header
-          required: true
-          description: The sessionToken returned by the login request
-      responses:
-        200:
-          description: User manager status received.
-          content:
-            application/json:    
-              schema:
-                $ref: '#/components/schemas/ManagerBody'
-        401:
-          $ref: '#/components/responses/Unauthorized' 
-        500:
-          $ref: '#/components/responses/ServerError'
-        404:
-          $ref: '#/components/responses/NotFound'
     put:
       tags:
         - User
@@ -191,11 +165,6 @@ paths:
           in: header
           required: true
           description: The sessionToken returned by the login request
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ManagerBody'
       responses:
         200:
           $ref: '#/components/responses/Ok'
@@ -695,39 +664,6 @@ components:
           type: string
         password:
           type: string
-    UpdateUsernameBody:
-      type: object
-      properties:
-        username:
-          type: string
-          description: username of the user
-    UpdateEmailBody:
-      type: object
-      properties:
-        email:
-          type: string
-          description: email of the user
-    UpdateBirthdateBody:
-      type: object
-      properties:
-        birthdate:
-          type: string
-          format: date
-          description: birthdate of the user
-    
-    UpdateProvinceBody:
-      type: object
-      properties:
-        province:
-          type: string
-          description: province of the user
-
-    UpdatePasswordBody:
-      type: object
-      properties:
-        newpassword:
-          type: string
-          description: new password for the user
     ManagerBody:
       type: object
       properties:
