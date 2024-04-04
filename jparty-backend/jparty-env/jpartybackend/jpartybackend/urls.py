@@ -11,5 +11,6 @@ urlpatterns = [
     path('user/assistevents', endpoints.userAssistEvents),
     path('user/assistevent/<int:id>', endpoints.userAssistEvent_id),
     path('user/likedevents', endpoints.userLikedEvents),
+    path('user/likedevent/<int:id>', endpoints.userLikedEvent_id),
     path('userpreferences', endpoints.userPreferences),
 ]
