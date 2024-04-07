@@ -216,72 +216,82 @@ def events(request):
         except PermissionDenied:
             return JsonResponse({'error': 'Unauthorized'}, status=401)
         
-        sort_by = request.GET.get('sort', None)  # Aquí recogemos el parámetro de consulta 'sort' del Home Screen
+        sort_province = request.GET.get('province', None)  # Aquí recogemos el parámetro de consulta 'province' del Home Screen (para filtrar por provincia)
+        order_by = request.GET.get('order_by', None)  # Aquí recogemos el parámetro de consulta 'order_by' del Own Events
         mine = request.GET.get('mine', None)  # Aquí recogemos el parámetro de consulta 'mine' del Own Events
-        if (sort_by is not None and sort_by not in ['price', 'date', 'secret_key'] and mine is not None) or (mine is not None and mine != 'true' and sort_by is not None):
+        # Verificamos si los parámetros son válidos
+        if (order_by is not None and order_by not in ['price', 'date'] ) or (mine is not None and mine != 'true'):
             return JsonResponse({'error': 'Invalid parameter'}, status=400)
-        #COMPROBAMOS SI EL USUARIO QUIERE VER SUS EVENTOS O LA LISTA DE EVENTOS
-        if mine is not None and mine.lower() == 'true':
-            
+
+        if (order_by is not None and mine is not None) or (mine is not None and (order_by is not None or sort_province is not None)):
+            return JsonResponse({'error': 'Invalid parameter'}, status=400)
+        #Comprobamos si el usuario hace la peticion desde HomeScreen o desde OwnEvents
+        
+        if mine is not None and mine.lower() == 'true':   
+            # OWN EVENTS
             try:
                 events = Events.objects.filter(manager=user_session.user,date__gte=timezone.now())
             except Events.DoesNotExist:
                 return JsonResponse({'error': 'Events not found'}, status=404)
         else:
-            #Conseguimos los gustos del usuario
+            # Recibimos las preferencias del usuario // HOME SCREEN
             try:
                 user_genres = UserPreferences.objects.filter(user=user_session.user).values_list('music_genre__name', flat=True)
             except UserPreferences.DoesNotExist:
                 user_genres = None
-            # Checkeamos si hay eventos segun gustos y provincia del usuario
+
+            # Recibimos el QuerySet de eventos
             try:
-                if user_genres is not None:
-                    events = Events.objects.filter(music_genre__name__in=user_genres, province=user_session.user.province, date__gte=timezone.now())
+                if sort_province is not None:
+                    if user_genres is not None:
+                        # Filtramos por géneros de música y provincia elegida (Y fecha actual)
+                        events = Events.objects.filter(music_genre__name__in=user_genres, province=sort_province, date__gte=timezone.now()) 
+                    else:
+                        # Filtramos por provincia elegida (Y fecha actual)
+                        events = Events.objects.filter(province=sort_province, date__gte=timezone.now())
                 else:
-                    events = Events.objects.filter(province=user_session.user.province, date__gte=timezone.now())
+                    if user_genres is not None:
+                        # Filtramos por géneros de música y provincia del usuario (Y fecha actual)
+                        events = Events.objects.filter(music_genre__name__in=user_genres, province=user_session.user.province, date__gte=timezone.now())
+                    else:
+                        # Filtramos por provincia del usuario (Y fecha actual)
+                        events = Events.objects.filter(province=user_session.user.province, date__gte=timezone.now())
             except Events.DoesNotExist:
                 return JsonResponse({'error': 'Events not found'}, status=404)
-            # Ordenamos los eventos por fecha o precio
-            if sort_by is not None and 'date' in sort_by:
-                events = events.order_by('date')
-            elif sort_by is not None and 'price' in sort_by:
-                events = events.order_by('-price')
-        if sort_by is not None and 'secret_key' in sort_by:
-            secretkeybool = True
-        else:
-            secretkeybool = False
+            # Ordenamos los eventos recibidos
+            if order_by is not None and 'date' in order_by:
+                events = events.order_by('date') # Ordenamos por fecha ascendente
+            elif order_by is not None and 'price' in order_by:
+                events = events.order_by('price') # Ordenamos por precio ascendente
         #CREAMOS UN JSON CON LOS EVENTOS Y ATRIB.(ASISTENTES, LIKES, ETC)
         json_response = []
         for event in events:
-            if secretkeybool and event.secretkey is None:
-                continue
-            else:
             #if  (sort_by is not None and'secretkey' in sort_by and event.secretkey is not None) or (sort_by is not None 'secretkey' not in sort_by):
-                assistants = UserAssist.objects.filter(event=event).count()
-                try:
-                    userLiked = UserLikes.objects.get(user=user_session.user, event=event)
-                    userLiked = True
-                except UserLikes.DoesNotExist:
-                    userLiked = False
-                try:
-                    userAssist = UserAssist.objects.get(user=user_session.user, event=event)
-                    userAssist = True
-                except UserAssist.DoesNotExist:
-                    userAssist = False            
-                music_genre = MusicGenre.objects.get(id=event.music_genre.id)
-                json_response.append({
-                    "title": event.title,
-                    "province": event.province,
-                    "music_genre": music_genre.name,
-                    "secretkey": event.secretkey,
-                    "link": event.link,
-                    "date": event.date.strftime('%d-%m-%Y'),
-                    "image": event.image,
-                    "description": event.description,
-                    "userLiked": userLiked,
-                    "userAssist": userAssist,
-                    "assistants": assistants
-                })
+            assistants = UserAssist.objects.filter(event=event).count()
+            try:
+                userLiked = UserLikes.objects.get(user=user_session.user, event=event)
+                userLiked = True
+            except UserLikes.DoesNotExist:
+                userLiked = False
+            try:
+                userAssist = UserAssist.objects.get(user=user_session.user, event=event)
+                userAssist = True
+            except UserAssist.DoesNotExist:
+                userAssist = False            
+            music_genre = MusicGenre.objects.get(id=event.music_genre.id)
+            json_response.append({
+                "title": event.title,
+                "province": event.province,
+                "music_genre": music_genre.name,
+                "secretkey": event.secretkey,
+                "link": event.link,
+                "date": event.date.strftime('%d-%m-%Y'),
+                "image": event.image,
+                "description": event.description,
+                "userLiked": userLiked,
+                "userAssist": userAssist,
+                "assistants": assistants
+            })
         return JsonResponse(json_response, safe=False, status=200)
     elif request.method == 'POST': #TESTEADO
         try:
