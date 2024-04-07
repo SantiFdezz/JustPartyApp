@@ -375,17 +375,24 @@ paths:
           in: header
           required: true
           description: The sessionToken returned by the login request
-        - name: sort
+        - name: province
           in: query
           required: false
-          description: Parameter to sort by on the search 'secret_key', or order by 'date' or 'price'
+          description: Parameter to sort by province
           schema:
             type: string
-            example: 'secret_key&date'
+            example: 'A Coruña'
+        - name: order_by
+          in: query
+          required: false
+          description: Parameter to order by, options=  'date' or 'price'
+          schema:
+            type: string
+            example: 'date'
         - name: mine
           in: query
           required: false
-          description: Parameter to sort by OwnEvents on the OwnEvents Page
+          description: Parameter to sort by OwnEvents on the OwnEvents Page // Cannot be used with province or order_by
           schema:
             type: boolean
             example: 'false'
