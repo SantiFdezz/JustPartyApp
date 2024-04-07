@@ -1,3 +1,4 @@
+
 ## Índice
 
 * [Título e imagen de portada](#Título-e-imagen-de-portada)
@@ -22,8 +23,10 @@
 
 * [Conclusión](#conclusión)
 
+# Jparty
+
 ## Título e imagen de portada
-<h1 align="center">JParty APP</h1>
+<h1 align="center">🎈JustParty</h1>
 <p align="center">
   <img src="https://raw.githubusercontent.com/SantiFdezz/JustPartyApp/main/doc/logo/logojparty-white-512.png">
 </p>
@@ -40,13 +43,16 @@
 
  
 ## Descripción del proyecto
-JustParty es una aplicación que surje como una necesidad propia como de mucha gente que le cuesta darse cuenta de los eventos próximos de fiesta en su ciudad. En el puedes tanto añadir eventos a los que asistes, (icono de globo) o puedes dar like (icono corazón) a los eventos que te gusten.
+JustParty es una aplicación Android que ofrece una solución integral y ahorra tiempo para cualquier persona interesada en descubrir y/o participar en eventos de ocio y entretenimiento en su área cercana, ya sean residentes habituales o visitantes temporales. La aplicación está diseñada para una audiencia diversa, que incluye amantes de la música, entusiastas de la vida nocturna y aquellos que buscan experiencias sociales y culturales en su entorno.
 
-## Estado del proyecto
+La motivación para su desarrollo surge de la necesidad de una aplicación que satisfaga las diversas necesidades de los usuarios en este ámbito y les haga ahorrar tiempo en su día. Desde aquellos que buscan información detallada sobre conciertos, actuaciones, hasta aquellos interesados en eventos locales más informales, fiestas de pueblo etc...
+
+
+## ⏱ Estado del proyecto
 
 <h4 align="center">:construction: Proyecto en construcción :construction:</h4>
 
-## Requerimientos minimos
+## 🎮 Requerimientos minimos
 Android 7.0 API 24 "Nougat"
 
 ## Características de la aplicación y demostración
@@ -56,15 +62,24 @@ Android 7.0 API 24 "Nougat"
 * `Funcionalidad 2a`: Filtrado entre fiestas locales con preferencias del usuario.
 * `Funcionalidad 3`: Creación de fiestas "Secretas" con código proporcionado desde la App.
 
-## Acceso al proyecto
 
-## Tecnologías utilizadas
-* Python
-* Django
-* Android Studio
-* Visual Studio Code
+## 🤖 Tecnologías utilizadas
+Lenguajes de programación
+  Java: Utilizado para el desarrollo de la aplicación Android.
+  Python: Empleado en el backend del API Rest utilizando Django.
+Frameworks y Bibliotecas
+  Android SDK: Utilizado para el desarrollo de la interfaz de usuario en la aplicación móvil.
+  Django REST Framework: Empleado para la creación del API RESTful en el backend
+Base de Datos
+  SQLite: Utilizado en conjunto con el API REST para facilitar la transferencia de datos entre la aplicación y el backend
+Herramientas de Desarrollo
+  Android Studio: Utilizado para el desarrollo de la aplicación móvil.
+  Visual Studio Code: Empleado para el desarrollo del backend.
+Control de Versiones
+  Git: Utilizado para el control de versiones del código fuente, garantizando un entorno de desarrollo colaborativo y un seguimiento eficiente de los cambios.
 
-## Personas Contribuyentes
+## Cambios en un futuro
+ - Busqueda de eventos por posicion actual con GPS.
 
 ## Personas-Desarrolladores del Proyecto
 [<img src="https://avatars.githubusercontent.com/u/145338461?v=4" width=115><br><sub>Santiago Fernández Seoane</sub>](https://github.com/SantiFdezz)
