@@ -4,7 +4,7 @@
     <item android:state_pressed="false">
         <shape android:shape="oval">
             <solid android:color="#ffffff"/>
-            <stroke android:width="8dp" android:color="@color/purple" />
+            <stroke android:width="2dp" android:color="@color/purple" />
         </shape>
     </item>
     <!-- Estado cuando el botón está presionado -->

@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">JParty</string>
     <string name="justparty">JustParty</string>
+    <string name="access">Acceder</string>
+    <string name="underlined_text">"<u>Todavía no estás registrado? Hazlo Ahora</u>"</string>
+    <string name="passwordhint">Contraseña</string>
+    <string name="emailhint">johndoe@example.com</string>
+    <string name="loginusertext">Correo electrónico o Usuario</string>
 </resources>
