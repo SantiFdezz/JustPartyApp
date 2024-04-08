@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Estado por defecto (cuando el botón  no está presionado) -->
+    <item android:state_pressed="false">
+        <shape android:shape="oval">
+            <solid android:color="#ffffff"/>
+            <stroke android:width="8dp" android:color="@color/purple" />
+        </shape>
+    </item>
+    <!-- Estado cuando el botón está presionado -->
+    <item android:state_pressed="true">
+        <shape android:shape="oval">
+            <solid android:color="#EFACABAB"/>
+            <stroke android:width="4dp" android:color="@color/purple" />
+        </shape>
+    </item>
+</selector>
