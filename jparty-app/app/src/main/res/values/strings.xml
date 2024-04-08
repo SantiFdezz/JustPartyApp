@@ -6,4 +6,12 @@
     <string name="passwordhint">Contraseña</string>
     <string name="emailhint">johndoe@example.com</string>
     <string name="loginusertext">Correo electrónico o Usuario</string>
+    <string name="registerlabel">Registro</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="birthdate">Fecha de nacimiento</string>
+    <string name="email">Correo electrónico</string>
+    <string name="usernamehint">JohnDoe33</string>
+    <string name="birthdatehint">01-12-2024</string>
+    <string name="province">Provincia</string>
+    <string name="provinceprompt">Seleccione una provincia</string>
 </resources>
