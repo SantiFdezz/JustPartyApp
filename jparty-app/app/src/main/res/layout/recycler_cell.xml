@@ -101,6 +101,7 @@
             android:text="15 abril"
             android:textColor="@color/grey"
             android:textSize="11sp"
+            android:textStyle="bold"
             android:layout_marginEnd="1dp"
             app:layout_constraintEnd_toStartOf="@+id/dateicon"
             app:layout_constraintTop_toTopOf="@+id/event_name"
@@ -109,8 +110,8 @@
             />
         <ImageView
             android:id="@+id/dateicon"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:src="@drawable/date_icon"
             android:layout_marginEnd="10dp"
             app:layout_constraintEnd_toEndOf="@+id/recycler_view"
