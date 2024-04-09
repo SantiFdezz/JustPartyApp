@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/purple">
-    <ImageView
+    <ImageButton
         android:id="@+id/back_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/left_arrow_white"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:background="@null"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <ImageView
@@ -44,7 +45,7 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/login_form"
+        android:id="@+id/register_form"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="@+id/white_screen"
@@ -154,17 +155,30 @@
             app:layout_constraintStart_toStartOf="@id/birthdateinput"
             app:layout_constraintBottom_toTopOf="@id/emailinput"
             />
+        <EditText
+            android:id="@+id/provinceeditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:textSize="11sp"
+            android:clickable="true"
+            app:layout_constraintWidth_percent="0.3"
+            android:hint="@string/provinceprompt"
+            android:inputType="none"
+            app:layout_constraintTop_toBottomOf="@id/provincelabel"
+            app:layout_constraintStart_toStartOf="@id/birthdateinput"
+            app:layout_constraintEnd_toEndOf="@id/birthdateinput" />
         <Spinner
             android:id="@+id/provincespinner"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-
             android:spinnerMode="dialog"
             android:prompt="@string/provinceprompt"
-            app:layout_constraintTop_toBottomOf="@id/provincelabel"
-            app:layout_constraintStart_toEndOf="@id/emailinput"
-            app:layout_constraintEnd_toEndOf="@id/white_rectangle"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             />
         <TextView
             android:id="@+id/passwordlabel"
