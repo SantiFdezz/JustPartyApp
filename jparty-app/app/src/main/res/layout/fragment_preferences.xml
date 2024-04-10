@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
     <ImageView
-        android:id="@+id/assist_icon"
+        android:id="@+id/check_icon"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:src="@drawable/check_icon"
