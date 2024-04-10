@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <!-- El siguiente xml configura el menú del menú desplegable de la app, con el que podremos movernos
+     entre fragments y activities. Está dividido entre etiquetas "item" y "menu" para designar
+     elementos del menu y conjuntos de estos respectivamente.-->
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/homescreen"
+                android:icon="@drawable/home_icon"
+                android:title="Pantalla principal" />
+            <item
+                android:id="@+id/likedevents"
+                android:icon="@drawable/like_selected"
+                android:title="Eventos que te gustan" />
+            <item
+                android:id="@+id/assistevents"
+                android:icon="@drawable/balloon_selected"
+                android:title="Eventos que asistes / Tickets" />
+
+            <item
+                android:id="@+id/own_events"
+                android:icon="@drawable/addevent_icon"
+                android:title="Eventos Propios" />
+
+        </menu>
+    </item>
+
+    <item android:title="">
+        <menu>
+            <group android:checkableBehavior="single">
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/nav_accountsettings"
+        android:icon="@drawable/user_icon"
+        android:title="Ajustes de cuenta" />
+
+    <item
+        android:id="@+id/preferences"
+        android:icon="@drawable/like_selected"
+        android:title="Preferencias" />
+
+    <item
+        android:id="@+id/nav_closesession"
+        android:icon="@drawable/out_icon"
+        android:title="Cerrar sesión" />
+</menu>
