@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Rectángulo púrpura -->
+    <item>
+        <shape android:shape="rectangle">
+            <size
+                android:width="300dp"
+                android:height="140dp" />
+            <solid android:color="@color/purple" />
+        </shape>
+    </item>
+
+    <!-- Semicírculo blanco en la parte inferior -->
+    <item
+        android:top="100dp"
+        android:right="100dp"
+        android:left="100dp"
+        android:bottom="-70dp">
+        <shape android:shape="oval">
+            <solid android:color="#FFFFFF" />
+        </shape>
+    </item>
+
+</layer-list>

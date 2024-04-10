@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <!-- Transparent Rectangle -->
+    <item>
+        <shape android:shape="rectangle">
+            <size
+                android:width="300dp"
+                android:height="100dp" />
+            <solid android:color="@color/purple" />
+        </shape>
+    </item>
+
+    <!-- Left Half-Circle -->
+    <item
+        android:left="-10dp"
+        android:right="290dp"
+        android:top="40dp"
+        android:bottom="40dp">
+        <shape android:shape="oval">
+            <solid android:color="#FFFFFF" />
+        </shape>
+    </item>
+
+    <!-- Right Half-Circle -->
+    <item
+        android:left="290dp"
+        android:right="-10dp"
+        android:top="40dp"
+        android:bottom="40dp">
+        <shape android:shape="oval">
+            <solid android:color="#FFFFFF" />
+        </shape>
+    </item>
+
+    <!-- Middle Dotted Line -->
+    <item
+        android:left="10dp"
+        android:right="10dp">
+        <shape android:shape="line">
+            <stroke
+                android:width="1dp"
+                android:dashWidth="10px"
+                android:dashGap="10px"
+                android:color="#A19696"/>
+
+        </shape>
+    </item>
+
+</layer-list>
