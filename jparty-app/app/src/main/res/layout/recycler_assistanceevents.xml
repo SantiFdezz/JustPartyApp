@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
+    android:layout_height="450dp"
+    android:layout_marginTop="50dp"
+    android:layout_gravity="center|top"
+    >
+
+    <View
+        android:id="@+id/info_box"
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        android:background="@drawable/custom_shape_info"
+        app:layout_constraintBottom_toTopOf="@+id/ticket_style"/>
+
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:text="Sala Pelícano"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/unassist_button"
+        app:layout_constraintStart_toStartOf="@+id/info_box"
+        app:layout_constraintEnd_toEndOf="@+id/info_box"
+        android:layout_marginTop="2dp"/>
+    <TextView
+        android:id="@+id/basic_information"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="El ticket desaparecerá  automaticamente a las 12 horas de la decha de inicio de el evento"
+        android:textSize="9sp"
+        android:textColor="#C1B1EC"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintStart_toStartOf="@+id/info_box"
+        app:layout_constraintEnd_toEndOf="@+id/info_box"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"/>
+    <TextView
+        android:id="@+id/assistants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Asistentes"
+        android:textSize="9sp"
+        android:textColor="#C1B1EC"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/basic_information"
+        app:layout_constraintStart_toStartOf="@+id/basic_information"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="30dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Precio: "
+        android:textColor="#C1B1EC"
+
+
+    <ImageView
+        android:id="@+id/unassist_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logojparty_small_white"
+        app:layout_constraintTop_toBottomOf="@id/price" />
+    <View
+        android:id="@+id/ticket_style"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:background="@drawable/custom_shape"
+        app:layout_constraintTop_toBottomOf="@+id/info_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <View
+        android:id="@+id/sk_box"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:background="@drawable/custom_shape_sk"
+        app:layout_constraintTop_toBottomOf="ticket_style"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
