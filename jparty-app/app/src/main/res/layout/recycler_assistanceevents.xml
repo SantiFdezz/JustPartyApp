@@ -261,7 +261,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Secret Key: "
+                android:text="Clave secreta: "
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:layout_marginStart="15dp"
