@@ -28,7 +28,7 @@
 ## Título e imagen de portada
 <h1 align="center">🎈JustParty</h1>
 <p align="center">
-  <img src="https://raw.githubusercontent.com/SantiFdezz/JustPartyApp/main/doc/logo/logojparty-white-512.png">
+  <img src="https://raw.githubusercontent.com/SantiFdezz/JustPartyApp/main/doc/logo/logojparty_white_512.png">
 </p>
 
  ## Insignias
