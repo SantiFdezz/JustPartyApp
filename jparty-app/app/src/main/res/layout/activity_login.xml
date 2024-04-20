@@ -35,16 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
-    <ProgressBar
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/loadingScreen"
-        android:visibility="invisible"
-        android:progressTint="@color/purple"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/login_form"
         android:layout_width="0dp"
@@ -158,5 +149,15 @@
                     app:layout_constraintTop_toTopOf="@id/circle_button"
                     app:layout_constraintBottom_toBottomOf= "@id/circle_button" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/loadingScreen"
+            android:visibility="invisible"
+            android:progressTint="@color/purple"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
