@@ -48,8 +48,8 @@
         app:layout_constraintTop_toBottomOf="@+id/circle_logo" />
     <ImageView
         android:id="@+id/right_arrow"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:src="@drawable/right_arrow"
         app:layout_constraintEnd_toEndOf="@+id/circle_button"
         app:layout_constraintStart_toStartOf="@+id/circle_button"
