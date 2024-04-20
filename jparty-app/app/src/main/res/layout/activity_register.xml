@@ -63,111 +63,175 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
-
-        <View
-            android:id="@+id/white_rectangle"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="2dp"
-            app:layout_constraintHeight_percent="0.45"
-            app:layout_constraintWidth_percent="0.7"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:background="@drawable/rounded_border"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:padding="5dp"
+            app:layout_constraintWidth_percent="0.8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/access_text"/>
+            app:layout_constraintTop_toBottomOf="@id/access_text">
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/username"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="@id/userinput"
+                app:layout_constraintTop_toTopOf="@+id/white_rectangle"
+                app:layout_constraintBottom_toTopOf="@id/userinput"/>
+            <EditText
+                android:id="@+id/userinput"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="5dp"
+                android:textSize="12sp"
+                android:hint="@string/usernamehint"
+                android:layout_marginStart="10dp"
+                app:layout_constraintWidth_percent="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/username"/>
+            <TextView
+                android:id="@+id/birthdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/birthdate"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="@id/birthdateinput"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/birthdateinput"/>
 
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/username"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintStart_toStartOf="@id/userinput"
-            app:layout_constraintTop_toTopOf="@+id/white_rectangle"
-            app:layout_constraintBottom_toTopOf="@id/userinput"/>
-        <EditText
-            android:id="@+id/userinput"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="5dp"
-            android:textSize="12sp"
-            android:hint="@string/usernamehint"
-            android:layout_marginStart="10dp"
-            app:layout_constraintWidth_percent="0.3"
-            app:layout_constraintStart_toStartOf="@id/white_rectangle"
-            app:layout_constraintTop_toBottomOf="@id/username"/>
-        <TextView
-            android:id="@+id/birthdate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/birthdate"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintStart_toStartOf="@id/birthdateinput"
-            app:layout_constraintTop_toTopOf="@+id/white_rectangle"
-            app:layout_constraintBottom_toTopOf="@id/birthdateinput"/>
+            <EditText
+                android:id="@+id/birthdateinput"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="5dp"
+                android:textSize="12sp"
+                android:hint="@string/birthdatehint"
+                app:layout_constraintWidth_percent="0.4"
+                app:layout_constraintStart_toEndOf="@id/userinput"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/username"/>
 
-        <EditText
-            android:id="@+id/birthdateinput"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="5dp"
-            android:textSize="12sp"
-            android:hint="@string/birthdatehint"
-            app:layout_constraintWidth_percent="0.3"
-            app:layout_constraintStart_toEndOf="@id/userinput"
-            app:layout_constraintEnd_toEndOf="@id/white_rectangle"
-            app:layout_constraintTop_toBottomOf="@id/username"/>
+            <TextView
+                android:id="@+id/emaillabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/email"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/userinput"
+                app:layout_constraintStart_toStartOf="@id/userinput"
+                app:layout_constraintBottom_toTopOf="@id/emailinput"
+                />
+            <EditText
+                android:id="@+id/emailinput"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="5dp"
+                android:hint="@string/emailhint"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@id/userinput"
+                app:layout_constraintEnd_toEndOf="@+id/userinput"
+                app:layout_constraintTop_toBottomOf="@id/emaillabel" />
 
-        <TextView
-            android:id="@+id/emaillabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:text="@string/email"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@+id/userinput"
-            app:layout_constraintStart_toStartOf="@id/userinput"
-            app:layout_constraintBottom_toTopOf="@id/emailinput"
-            />
-        <EditText
-            android:id="@+id/emailinput"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="5dp"
-            android:hint="@string/emailhint"
-            android:textSize="12sp"
-            app:layout_constraintWidth_percent="0.3"
-            app:layout_constraintStart_toStartOf="@id/emaillabel"
-            app:layout_constraintTop_toBottomOf="@id/emaillabel" />
+            <TextView
+                android:id="@+id/provincelabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/province"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/birthdateinput"
+                app:layout_constraintStart_toStartOf="@id/birthdateinput"
+                app:layout_constraintBottom_toTopOf="@id/emailinput"
+                />
+            <EditText
+                android:id="@+id/provinceeditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:textSize="11sp"
+                android:clickable="true"
+                android:hint="@string/provinceprompt"
+                android:inputType="none"
+                app:layout_constraintTop_toBottomOf="@id/provincelabel"
+                app:layout_constraintStart_toStartOf="@id/birthdateinput"
+                app:layout_constraintEnd_toEndOf="@id/birthdateinput" />
 
-        <TextView
-            android:id="@+id/provincelabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:text="@string/province"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@+id/birthdateinput"
-            app:layout_constraintStart_toStartOf="@id/birthdateinput"
-            app:layout_constraintBottom_toTopOf="@id/emailinput"
-            />
-        <EditText
-            android:id="@+id/provinceeditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:textSize="11sp"
-            android:clickable="true"
-            app:layout_constraintWidth_percent="0.3"
-            android:hint="@string/provinceprompt"
-            android:inputType="none"
-            app:layout_constraintTop_toBottomOf="@id/provincelabel"
-            app:layout_constraintStart_toStartOf="@id/birthdateinput"
-            app:layout_constraintEnd_toEndOf="@id/birthdateinput" />
+            <TextView
+                android:id="@+id/passwordlabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/passwordhint"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/emailinput"
+                app:layout_constraintStart_toStartOf="@id/passwordinput"
+                app:layout_constraintBottom_toTopOf="@id/passwordinput"
+                />
+            <EditText
+                android:id="@+id/passwordinput"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="5dp"
+                android:hint="@string/passwordhint"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@id/emailinput"
+                app:layout_constraintEnd_toEndOf="@+id/emailinput"
+                app:layout_constraintTop_toBottomOf="@id/passwordlabel"
+                android:inputType="textPassword"/>
+            <EditText
+                android:id="@+id/passwordrepeatedinput"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="5dp"
+                android:hint="Repetir contraseña"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@id/birthdateinput"
+                app:layout_constraintEnd_toEndOf="@+id/birthdateinput"
+                app:layout_constraintTop_toBottomOf="@id/passwordlabel"
+                android:inputType="textPassword"/>
+
+            <ImageButton
+                android:id="@+id/circle_button"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintWidth_percent="0.15"
+                app:layout_constraintHeight_percent="0.18"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@drawable/circle_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/passwordrepeatedinput" />
+            <ImageView
+                android:id="@+id/enter_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/enter_icon"
+                app:layout_constraintEnd_toEndOf="@id/circle_button"
+                app:layout_constraintStart_toStartOf="@id/circle_button"
+                app:layout_constraintTop_toTopOf="@id/circle_button"
+                app:layout_constraintBottom_toBottomOf= "@id/circle_button" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/loadingScreen"
+            android:visibility="invisible"
+            android:progressTint="@color/purple"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
         <Spinner
             android:id="@+id/provincespinner"
             android:layout_width="match_parent"
@@ -180,60 +244,5 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             />
-        <TextView
-            android:id="@+id/passwordlabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:text="@string/passwordhint"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@+id/emailinput"
-            app:layout_constraintStart_toStartOf="@id/passwordinput"
-            app:layout_constraintBottom_toTopOf="@id/passwordinput"
-            />
-        <EditText
-            android:id="@+id/passwordinput"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="5dp"
-            android:hint="@string/passwordhint"
-            android:textSize="12sp"
-            app:layout_constraintWidth_percent="0.3"
-            app:layout_constraintStart_toStartOf="@id/emaillabel"
-            app:layout_constraintTop_toBottomOf="@id/passwordlabel"
-            android:inputType="textPassword"/>
-        <EditText
-            android:id="@+id/passwordrepeatedinput"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="5dp"
-            android:hint="Repetir contraseña"
-            android:textSize="12sp"
-            app:layout_constraintWidth_percent="0.3"
-            app:layout_constraintStart_toStartOf="@id/birthdateinput"
-            app:layout_constraintTop_toBottomOf="@id/passwordlabel"
-            android:inputType="textPassword"/>
-
-        <ImageButton
-            android:id="@+id/circle_button"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/circle_button"
-            app:layout_constraintEnd_toEndOf="@id/white_rectangle"
-            app:layout_constraintStart_toStartOf="@id/white_rectangle"
-            app:layout_constraintTop_toBottomOf="@id/passwordrepeatedinput" />
-        <ImageView
-            android:id="@+id/enter_icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/enter_icon"
-            app:layout_constraintEnd_toEndOf="@id/circle_button"
-            app:layout_constraintStart_toStartOf="@id/circle_button"
-            app:layout_constraintTop_toTopOf="@id/circle_button"
-            app:layout_constraintBottom_toBottomOf= "@id/circle_button" />
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
