@@ -36,7 +36,7 @@
     </item>
 
     <item
-        android:id="@+id/nav_accountsettings"
+        android:id="@+id/accountsettings"
         android:icon="@drawable/user_icon"
         android:title="Ajustes de cuenta" />
 
@@ -46,7 +46,7 @@
         android:title="Preferencias" />
 
     <item
-        android:id="@+id/nav_closesession"
+        android:id="@+id/closesession"
         android:icon="@drawable/out_icon"
         android:title="Cerrar sesión" />
 </menu>

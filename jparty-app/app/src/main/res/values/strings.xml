@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">JParty</string>
     <string name="justparty">JustParty</string>
+    <string name="navigation_drawer_open">Abrir el Menú</string>
+    <string name="navigation_drawer_close">Cerrar el Menú</string>
+    <string name="nav_header_title">Android Studio</string>
     <string name="access">Acceder</string>
     <string name="underlined_text">"<u>Todavía no estás registrado? Hazlo Ahora</u>"</string>
     <string name="passwordhint">Contraseña</string>
