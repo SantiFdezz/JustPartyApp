@@ -36,8 +36,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText passwordEditText;
     private EditText password2EditText;
     private EditText emailEditText;
-    private EditText provinceEditText;
-
     private EditText birthdateEditText;
     private boolean touched = false;
     private Spinner provinceSpinner;
@@ -58,7 +56,6 @@ public class RegisterActivity extends AppCompatActivity {
         password2EditText = findViewById(R.id.passwordrepeatedinput);
         emailEditText = findViewById(R.id.emailinput);
         birthdateEditText = findViewById(R.id.birthdateinput);
-        provinceEditText = findViewById(R.id.provinceeditText);
         pb1 = findViewById(R.id.loadingScreen);
 
         // Configuración del DatePickerDialog para seleccionar la fecha de nacimiento al clickar el campo.
@@ -101,14 +98,8 @@ public class RegisterActivity extends AppCompatActivity {
                 R.array.province_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         provinceSpinner.setAdapter(adapter);
-        provinceEditText.setFocusable(false); // Hacer que el EditText no sea editable
 
-        provinceEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                provinceSpinner.performClick(); // Mostrar el Spinner cuando se haga clic en el EditText
-            }
-        });
+
         // Inicialización del botón de registro y del TextView para redirigir a la página de inicio de sesión
         registerButton = findViewById(R.id.circle_button);
         loginPage = findViewById(R.id.back_arrow);
@@ -146,6 +137,10 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, "Debes rellenar todos los campos!", Toast.LENGTH_SHORT).show();
             return false;
         }
+        if (username.isEmpty()){
+            nameEditText.setError("El campo de nombre de usuario está vacío");
+            return false;
+        }
         if (!password.equals(password2)){
             passwordEditText.setError("Las contraseñas deben coincidir");
             password2EditText.setError("Las contraseñas deben coincidir");
@@ -157,6 +152,10 @@ public class RegisterActivity extends AppCompatActivity {
         }
         if (birthdate.isEmpty()) {
             birthdateEditText.setError("La fecha de nacimiento no es válida ");
+            return false;
+        }
+        if (provinceSpinner.getSelectedItemPosition() == 0) {
+            ((TextView)provinceSpinner.getSelectedView()).setError("Debes seleccionar una provincia");
             return false;
         }
         return true;
@@ -180,7 +179,7 @@ public class RegisterActivity extends AppCompatActivity {
         //Esto inicializa la peticion
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST,
-                Server.name + "/user",
+                Server.name + "user/session",
                 requestBody,
                 new Response.Listener<JSONObject>() {
                     @Override

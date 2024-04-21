@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="province_array">
+        <item>Seleccione Provincia</item>
         <item>A Coruña</item>
         <item>Álava</item>
         <item>Alicante</item>
