@@ -3,7 +3,7 @@
     <string name="justparty">JustParty</string>
     <string name="navigation_drawer_open">Abrir el Menú</string>
     <string name="navigation_drawer_close">Cerrar el Menú</string>
-    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_title">JPARTYYYYY</string>
     <string name="access">Acceder</string>
     <string name="underlined_text">"<u>Todavía no estás registrado? Hazlo Ahora</u>"</string>
     <string name="passwordhint">Contraseña</string>
@@ -13,7 +13,7 @@
     <string name="birthdate">Fecha de nacimiento</string>
     <string name="email">Correo electrónico</string>
     <string name="usernamehint">JohnDoe33</string>
-    <string name="birthdatehint">01-12-2024</string>
+    <string name="birthdatehint">2024-12-30</string>
     <string name="province">Provincia</string>
     <string name="provinceprompt">Seleccione provincia</string>
 

@@ -113,6 +113,7 @@
                 android:layout_height="35dp"
                 android:layout_marginTop="5dp"
                 android:textSize="12sp"
+                android:focusable="false"
                 android:hint="@string/birthdatehint"
                 app:layout_constraintWidth_percent="0.4"
                 app:layout_constraintStart_toEndOf="@id/userinput"

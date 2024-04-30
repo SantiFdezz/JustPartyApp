@@ -137,11 +137,9 @@ def user(request):
             return JsonResponse({"response": "already_exist"}, status=409)
         except:
             pass
-        birthdate = datetime.strptime(client_birthdate, '%d-%m-%Y')
-        formatted_birthdate = birthdate.strftime('%Y-%m-%d')
         salted_and_hashed_pass = bcrypt.hashpw(client_password.encode('utf8'), bcrypt.gensalt()).decode('utf8')
         new_user = User(username=client_username, email=client_email, password=salted_and_hashed_pass, province=client_province,
-                        birthdate=formatted_birthdate, manager=False)
+                        birthdate=client_birthdate, manager=False)
         new_user.save()
         # Crear una sesión inicial
         random_token = secrets.token_hex(10)
