@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(context, MainActivity.class);
                         startActivity(intent);
                         // Almacenamiento del main de usuario y el token en las preferencias compartidas.
-                        SharedPreferences preferences = context.getSharedPreferences("JPART_APP_PREFS", MODE_PRIVATE);
+                        SharedPreferences preferences = context.getSharedPreferences("JPARTY_APP_PREFS", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("VALID_EMAIL", email);
                         editor.putString("VALID_TOKEN", receivedToken);
@@ -121,7 +121,6 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
                         // Manejo de errores de la solicitud
                         if (error.networkResponse == null) {
                             pb1.setVisibility(View.GONE); // Alternamos entre la visibilidad de la barra de progresión a nuestra conveniencia.
