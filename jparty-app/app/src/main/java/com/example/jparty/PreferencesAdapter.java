@@ -1,0 +1,75 @@
+package com.example.jparty;
+
+import android.app.Activity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesViewHolder>{
+    // Lista de elementos recomendados y fragmento que contiene el RecyclerView
+    private List<PreferencesData> dataset;
+    private Activity activity;
+    private RecyclerView recyclerView;
+
+
+    // Constructor del adaptador
+    public PreferencesAdapter(List<PreferencesData> dataSet, Activity activity, RecyclerView recyclerView){
+        this.dataset=dataSet;
+        this.activity=activity;
+        this.recyclerView = recyclerView;
+    }
+
+    // Método para obtener los IDs de los checkbox seleccionados
+// Método para obtener los IDs de los checkbox seleccionados
+    public JSONObject getCheckedIds() {
+        JSONArray checkedIds = new JSONArray();
+        for (int i = 0; i < getItemCount(); i++) {
+            PreferencesViewHolder viewHolder = (PreferencesViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
+            if (viewHolder != null && viewHolder.isChecked()) {
+                checkedIds.put(dataset.get(i).getMusicId());
+            }
+        }
+        JSONObject result = new JSONObject();
+        try {
+            result.put("selected", checkedIds);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+    // Método para crear un nuevo ViewHolder
+    @NonNull
+    @Override
+    public PreferencesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
+        // Inflar la vista de la celda del RecyclerView
+        View preferencesView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.recycler_cell_music, parent, false);
+        // Crear y retornar un nuevo ViewHolder
+        return new PreferencesViewHolder(preferencesView);
+    }
+
+    // Método para vincular los datos con el ViewHolder
+    @Override
+    public void onBindViewHolder(@NonNull PreferencesViewHolder holder, int position){
+        // Obtener los datos para esta celda
+        PreferencesData dataForThisCell = dataset.get(position);
+        // Mostrar los datos en el ViewHolder
+        holder.showData(dataForThisCell);
+    }
+
+    // Método para obtener el número de elementos en el dataset
+    @Override
+    public int getItemCount(){ return dataset.size(); }
+}

@@ -57,7 +57,6 @@ def check_link_format(link):
 @csrf_exempt
 def sessions(request):
     if request.method == 'POST': 
-        print(request.body)
         try:
             data = json.loads(request.body)
             client_email = data['email']
@@ -592,6 +591,7 @@ def userPreferences(request):
                 "image": music.image,
                 "selected": music.id in preferences,
             })
+            
         return JsonResponse(json_response, safe=False, status=200)
     elif request.method == 'PUT':
         try:
@@ -599,7 +599,8 @@ def userPreferences(request):
             user_session = authenticate_user(request)
         except PermissionDenied:
             return JsonResponse({'error': 'Unauthorized'}, status=401)
-        selected_ids = json.loads(request.body)
+        data = json.loads(request.body)
+        selected_ids = data.get('selected', [])
         UserPreferences.objects.filter(user=user_session.user).delete()
         for genre_id in selected_ids:
             genre = MusicGenre.objects.get(id=genre_id)

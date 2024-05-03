@@ -1,9 +1,12 @@
  package com.example.jparty;
 
  import android.content.Context;
+ import android.content.Intent;
+ import android.content.SharedPreferences;
  import android.os.Bundle;
  import android.view.MenuItem;
 
+ import com.example.jparty.fragments.HomeFragment;
  import com.google.android.material.navigation.NavigationView;
 
  import androidx.activity.OnBackPressedCallback;
@@ -27,6 +30,63 @@
          setContentView(R.layout.activity_main);
          drawerLayout = findViewById(R.id.drawer_layout);
          toolbar = findViewById(R.id.toolbar);
+         // Obtén las preferencias compartidas
+         SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+
+         // Verifica si es la primera vez que se abre la cuenta
+         boolean isFirstTime = sharedPreferences.getBoolean("isFirstTime", true);
+
+         if (isFirstTime) {
+             // Si es la primera vez, inicia PreferencesActivity
+             Intent intent = new Intent(this, PreferencesActivity.class);
+             startActivity(intent);
+
+             // Actualiza el valor de isFirstTime en las preferencias compartidas
+             SharedPreferences.Editor myEdit = sharedPreferences.edit();
+             myEdit.putBoolean("isFirstTime", false);
+             myEdit.apply();
+         } else {
+             setSupportActionBar(toolbar);
+             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                     this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+             drawerLayout.addDrawerListener(toggle);
+             toggle.syncState();
+             NavigationView navigationView = findViewById(R.id.nav_view);
+             //   creamos el elemento que escuchara en cual boton clickamos de nuestro menú
+             navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                 @Override
+                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                     // menu que lleva a sus actividades
+                     Fragment fragment = null;
+                     if (item.getItemId() == R.id.homescreen) {
+                         fragment = new HomeFragment();
+                     } else if (item.getItemId() == R.id.likedevents) {
+                         // fragment = new RecommendedFragment();
+                     } else if (item.getItemId() == R.id.assistevents) {
+                         // fragment = new SavedPlacesFragment();
+                     } else if ((item.getItemId() == R.id.own_events) && (manager == true)) {
+                         // fragment = new SummerModeFragment();
+                     }else if(item.getItemId() == R.id.accountsettings){
+                         //fragment = new SavedPlacesFragment();
+                     } else if (item.getItemId() == R.id.preferences) {
+                         Intent intent = new Intent(context, PreferencesActivity.class);
+                         startActivity(intent);
+                     } else if (item.getItemId() == R.id.closesession) {
+                         //fragment = new Routes();
+                     }
+
+                     //si no llega ningun fragment
+                     if (fragment != null) {
+                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                         drawerLayout.closeDrawer(GravityCompat.START);
+                         return true;
+                     }
+                     // Cierra el Navigation Drawer después de la selección
+                     return false;
+                 }
+             });
+         }
+
          // Verificar si la actividad se inició con una acción específica
              //getSupportFragmentManager().beginTransaction()
               //       .replace(R.id.fragment_container, new LoginActivity())
@@ -47,43 +107,6 @@
                  }
              }
          });
-         setSupportActionBar(toolbar);
-         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-         drawerLayout.addDrawerListener(toggle);
-         toggle.syncState();
-         NavigationView navigationView = findViewById(R.id.nav_view);
-         //   creamos el elemento que escuchara en cual boton clickamos de nuestro menú
-         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-             @Override
-             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                 // menu que lleva a sus actividades
-                 Fragment fragment = null;
-                 if (item.getItemId() == R.id.homescreen) {
-                     //fragment = new HotspotsFragment();
-                 } else if (item.getItemId() == R.id.likedevents) {
-                     // fragment = new RecommendedFragment();
-                 } else if (item.getItemId() == R.id.assistevents) {
-                     // fragment = new SavedPlacesFragment();
-                 } else if (item.getItemId() == R.id.own_events) {
-                     // fragment = new SummerModeFragment();
-                 }else if((item.getItemId() == R.id.accountsettings)&& (manager == true)){
-                     //fragment = new SavedPlacesFragment();
-                 } else if (item.getItemId() == R.id.preferences) {
-                     // fragment = new GeneralMapFragment();
-                 } else if (item.getItemId() == R.id.closesession) {
-                     //fragment = new Routes();
-                 }
 
-                 //si no llega ningun fragment
-                 if (fragment != null) {
-                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                     drawerLayout.closeDrawer(GravityCompat.START);
-                     return true;
-                 }
-                 // Cierra el Navigation Drawer después de la selección
-                 return false;
-             }
-         });
      }
  }
