@@ -29,6 +29,12 @@
             android:name=".RegisterActivity"
             />
         <activity
+            android:name=".MainActivity"
+            />
+        <activity
+            android:name=".PreferencesActivity"
+            />
+        <activity
             android:name=".fragments.HomeFragment"
             />
 

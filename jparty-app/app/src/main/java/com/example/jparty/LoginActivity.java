@@ -107,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                         // Inicio de la actividad principal
                         Intent intent = new Intent(context, MainActivity.class);
                         startActivity(intent);
+
                         // Almacenamiento del main de usuario y el token en las preferencias compartidas.
                         SharedPreferences preferences = context.getSharedPreferences("JPARTY_APP_PREFS", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
