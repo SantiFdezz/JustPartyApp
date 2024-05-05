@@ -23,7 +23,19 @@
      private DrawerLayout drawerLayout;
      private Toolbar toolbar;
      private boolean manager = false;
+     public static boolean isRunning;
 
+     @Override
+     protected void onResume() {
+         super.onResume();
+         isRunning = true;
+     }
+
+     @Override
+     protected void onPause() {
+         super.onPause();
+         isRunning = false;
+     }
      @Override
      protected void onCreate(Bundle savedInstanceState) {//inicializamos los atributos
          super.onCreate(savedInstanceState);
@@ -85,6 +97,8 @@
                      return false;
                  }
              });
+             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+
          }
 
          // Verificar si la actividad se inició con una acción específica

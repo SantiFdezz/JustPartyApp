@@ -277,6 +277,7 @@ def events(request):
                 userAssist = False            
             music_genre = MusicGenre.objects.get(id=event.music_genre.id)
             json_response.append({
+                "id": event.id,
                 "title": event.title,
                 "province": event.province,
                 "music_genre": music_genre.name,
