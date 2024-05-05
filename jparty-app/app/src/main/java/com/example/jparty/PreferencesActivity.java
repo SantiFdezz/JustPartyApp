@@ -1,5 +1,6 @@
 package com.example.jparty;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -92,6 +93,13 @@ public class PreferencesActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         pb1.setVisibility(View.GONE);
+                                        if (MainActivity.isRunning){
+                                            finish();
+                                        }else {
+                                            Intent intent = new Intent(PreferencesActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
                                         finish();
                                     }
                                 }, new Response.ErrorListener() {

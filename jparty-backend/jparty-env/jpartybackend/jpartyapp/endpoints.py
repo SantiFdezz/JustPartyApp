@@ -277,6 +277,7 @@ def events(request):
                 userAssist = False            
             music_genre = MusicGenre.objects.get(id=event.music_genre.id)
             json_response.append({
+                "id": event.id,
                 "title": event.title,
                 "province": event.province,
                 "music_genre": music_genre.name,
@@ -304,7 +305,7 @@ def events(request):
             music_genre = data['music_genre']
             music_genre = MusicGenre.objects.get(id=music_genre)
             price = data['price']
-            secretkey = data['secretkey']
+            secretkey = data('secretkey', None) 
             link = data['link']
             if check_link_format(link) is False:
                 return JsonResponse({"response": "not_ok"}, status=400)
@@ -478,9 +479,13 @@ def userAssistEvent_id(request, id):
             event = Events.objects.get(id=id)
         except Events.DoesNotExist:
             return JsonResponse({'error': 'Event not found'}, status=404)
-        assist = UserAssist(user=user_session.user, event=event)
-        assist.save()
-        return JsonResponse({'message': 'Event assisted'}, status=201)
+        try:
+            event = UserAssist.objects.get(user=user_session.user, event=event)
+        except Events.DoesNotExist:
+            assist = UserAssist(user=user_session.user, event=event)
+            assist.save()
+            return JsonResponse({'message': 'Event assisted'}, status=201)
+        return JsonResponse({'message': 'Event assisted before'}, status=404)
     elif request.method == 'DELETE':
         try:
             user_session = authenticate_user(request)
@@ -550,9 +555,13 @@ def userLikedEvent_id(request, id):
             event = Events.objects.get(id=id)
         except Events.DoesNotExist:
             return JsonResponse({'error': 'Event not found'}, status=404)
-        liked = UserLikes(user=user_session.user, event=event)
-        liked.save()
-        return JsonResponse({'message': 'Event liked'}, status=201)
+        try:
+            event = UserLikes.objects.get(event = event, user = user_session.user)
+        except Events.DoesNotExist:
+            liked = UserLikes(user=user_session.user, event=event)
+            liked.save()
+            return JsonResponse({'message': 'Event liked'}, status=201)
+        return JsonResponse({'error': 'Event liked before'}, status=404)    
     elif request.method == 'DELETE':
         try:
             user_session = authenticate_user(request)

@@ -23,7 +23,19 @@
      private DrawerLayout drawerLayout;
      private Toolbar toolbar;
      private boolean manager = false;
+     public static boolean isRunning;
 
+     @Override
+     protected void onResume() {
+         super.onResume();
+         isRunning = true;
+     }
+
+     @Override
+     protected void onPause() {
+         super.onPause();
+         isRunning = false;
+     }
      @Override
      protected void onCreate(Bundle savedInstanceState) {//inicializamos los atributos
          super.onCreate(savedInstanceState);
@@ -31,7 +43,7 @@
          drawerLayout = findViewById(R.id.drawer_layout);
          toolbar = findViewById(R.id.toolbar);
          // Obtén las preferencias compartidas
-         SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+         SharedPreferences sharedPreferences = getSharedPreferences("JPARTY_APP_PREFS", MODE_PRIVATE);
 
          // Verifica si es la primera vez que se abre la cuenta
          boolean isFirstTime = sharedPreferences.getBoolean("isFirstTime", true);
@@ -85,6 +97,9 @@
                      return false;
                  }
              });
+             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+
+
          }
 
          // Verificar si la actividad se inició con una acción específica
