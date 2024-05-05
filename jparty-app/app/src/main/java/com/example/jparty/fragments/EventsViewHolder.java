@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -45,6 +47,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
     public LinearLayout key_button;
     private ImageView key_icon;
     public LinearLayout link_button;
+    public ConstraintLayout recycler_view;
     private ImageView link_icon;
     private ImageView image_view;
     private ImageView assist_icon;
@@ -71,6 +74,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
         like_icon = ivi.findViewById(R.id.like_icon);
         assist_button = ivi.findViewById(R.id.assist_button);
         like_button = ivi.findViewById(R.id.like_button);
+        recycler_view = ivi.findViewById(R.id.recycler_view);
         this.requestQueue = Volley.newRequestQueue(itemView.getContext());
 
         assist_button.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +89,8 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
+                                currentItem.setUserAssist(!isAssisted);
+                                currentItem.setAssistances(!isAssisted ? (currentItem.getAssistances() + 1) : (currentItem.getAssistances() - 1));
                                 assist_icon.setImageResource(isAssisted ? R.drawable.balloon_selected : R.drawable.balloon_unselected);
                                 adapter.notifyItemChanged(getAdapterPosition()); // Notificar al adaptador para que actualice la vista
                             }
@@ -100,12 +106,11 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
                 requestQueue.add(request);
             }
         });
-
         like_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final EventsData currentItem = dataset.get(getAdapterPosition());
-                boolean isLiked = currentItem.getUserAssist();
+                boolean isLiked = currentItem.getUserLike();
                 String url = Server.name+"/user/likedevent/"+currentItem.getEvent_Id();
                 int method = isLiked ? Request.Method.DELETE : Request.Method.POST;
                 JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
@@ -113,7 +118,8 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                assist_icon.setImageResource(isLiked ? R.drawable.balloon_selected : R.drawable.balloon_unselected);
+                                currentItem.setUserLike(!isLiked);
+                                like_icon.setImageResource(isLiked ? R.drawable.like_selected : R.drawable.like_unselected);
                                 adapter.notifyItemChanged(getAdapterPosition()); // Notificar al adaptador para que actualice la vista
                             }
                         },
@@ -128,7 +134,8 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
                 requestQueue.add(request);
             }
         });
-        link_button.setOnClickListener(new View.OnClickListener() {
+
+        View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final EventsData currentItem = dataset.get(getAdapterPosition());
@@ -138,12 +145,15 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
                     itemView.getContext().startActivity(browserIntent);
                 }
             }
-        });
-        itemView.setOnClickListener(new View.OnClickListener() {
+        };
+
+        link_button.setOnClickListener(clickListener);
+        link_icon.setOnClickListener(clickListener);
+        recycler_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Cambiar el estado del CheckBox cuando se hace clic en la celda
-                FragmentManager fragmentManager = ((FragmentActivity)itemView.getContext()).getSupportFragmentManager();
+                FragmentManager fragmentManager = ((FragmentActivity)recycler_view.getContext()).getSupportFragmentManager();
 
                 HomeFragment HomeFragment = new HomeFragment();
                 // Crear un Bundle para pasar datos adicionales al fragmento
@@ -163,13 +173,22 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
         music_name.setText(items.getTag_Name());
         date.setText(editdateLabel(items));
         assist_count.setText(items.getAssistances().toString());
-        if (items.getUserAssist() == true) {
-            assist_icon.setImageResource(R.drawable.balloon_selected);
+        if (items.getUserAssist()) {
+            this.assist_icon.setImageResource(R.drawable.balloon_selected);
+        }else {
+            this.assist_icon.setImageResource(R.drawable.balloon_unselected);
         }
-        if (items.getUserLike() == true) {
-            like_icon.setImageResource(R.drawable.like_selected);
+        if (items.getUserLike()) {
+            this.like_icon.setImageResource(R.drawable.like_selected);
+        }else {
+            this.like_icon.setImageResource(R.drawable.like_unselected);
         }
-        Util.downloadBitmapToImageView(items.getImage_url(), this.image_view);
+        try {
+            Util.downloadBitmapToImageView(items.getImage_url(), this.image_view);
+        } catch (Exception e) {
+            this.image_view.setImageResource(R.drawable.ic_launcher_background); // Reemplaza 'default_image' con tu imagen predeterminada
+        }
+
     }
 
     public String truncateDescription(String description) {

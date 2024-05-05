@@ -43,12 +43,12 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder>{
         String link = dataForThisCell.getLink();
         String secretkey = dataForThisCell.getSecretKey();
         // Mostrar los datos en el ViewHolder o no
-        if (secretkey != null) {
+        if (secretkey != "null") {
             holder.key_button.setVisibility(View.VISIBLE);
         } else {
             holder.key_button.setVisibility(View.GONE);
         }
-        if (link != null) {
+        if (link != "null") {
             holder.link_button.setVisibility(View.VISIBLE);
         } else {
             holder.link_button.setVisibility(View.GONE);

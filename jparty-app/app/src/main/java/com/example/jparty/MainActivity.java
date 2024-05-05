@@ -43,7 +43,7 @@
          drawerLayout = findViewById(R.id.drawer_layout);
          toolbar = findViewById(R.id.toolbar);
          // Obtén las preferencias compartidas
-         SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+         SharedPreferences sharedPreferences = getSharedPreferences("JPARTY_APP_PREFS", MODE_PRIVATE);
 
          // Verifica si es la primera vez que se abre la cuenta
          boolean isFirstTime = sharedPreferences.getBoolean("isFirstTime", true);
@@ -98,6 +98,7 @@
                  }
              });
              getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+
 
          }
 

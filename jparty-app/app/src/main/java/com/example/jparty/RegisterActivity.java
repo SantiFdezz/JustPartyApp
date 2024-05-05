@@ -184,6 +184,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         loginUser(emailEditText.getText().toString(), passwordEditText.getText().toString());
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -232,8 +233,7 @@ public class RegisterActivity extends AppCompatActivity {
                         // Mostrar el token recibido
                         Toast.makeText(context, "Token: " + receivedToken, Toast.LENGTH_SHORT).show();
                         // Inicio de la actividad principal
-                        Intent intent = new Intent(context, MainActivity.class);
-                        startActivity(intent);
+
                         // Almacenamiento del main de usuario y el token en las preferencias compartidas.
                         SharedPreferences preferences = context.getSharedPreferences("JPARTY_APP_PREFS", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
@@ -242,6 +242,8 @@ public class RegisterActivity extends AppCompatActivity {
                         editor.commit();
                         pb1.setVisibility(View.GONE); // Alternamos entre la visibilidad de la barra de progresión a nuestra conveniencia.
                         // Finalización de la actividad de inicio de sesión
+                        Intent intent = new Intent(context, MainActivity.class);
+                        startActivity(intent);
                         finish();
                     }
                 },

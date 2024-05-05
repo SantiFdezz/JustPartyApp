@@ -26,9 +26,13 @@ public class EventsData {
     public String getLink() { return link; }
     public Boolean getUserAssist() { return userassist; }
     public Boolean getUserLike() { return userlike; }
+    public void setUserAssist(Boolean userassist) { this.userassist=userassist; }
+    public void setUserLike(Boolean userlike) { this.userlike = userlike; }
     public String getTag_Name() { return tag_name; }
     public String getEvent_Date() { return event_date; }
     public Integer getAssistances() { return assistances; }
+    public void setAssistances(Integer assistances) {  this.assistances=assistances; }
+
     public String getImage_url() { return image_url; }
 
     // Constructor que toma los datos como parámetros
@@ -48,6 +52,7 @@ public class EventsData {
     // Constructor que toma un objeto JSON y extrae los datos
     public EventsData(JSONObject json){
         try{
+            System.out.println(json.toString());
             this.place_name = json.getString("title");
             this.description = json.getString("description");
             this.secretkey = json.getString("secretkey");

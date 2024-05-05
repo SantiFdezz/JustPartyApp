@@ -29,7 +29,6 @@ public class PreferencesData {
     // Constructor que toma un objeto JSON y extrae los datos
     public PreferencesData(JSONObject json){
         try{
-            System.out.println(json.toString(4));
             this.place_name = json.getString("name");
             this.musicId = json.getInt("id");
             this.image_url = json.getString("image");

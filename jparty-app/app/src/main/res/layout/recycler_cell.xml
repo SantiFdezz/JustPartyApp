@@ -94,13 +94,13 @@
             android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:layout_marginStart="5dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="10dp"
             android:text="Brevedescripciónbrevedescripciónbrevedescripciónbrevedescripciónbrevedescripción"
             android:textColor="@color/grey"
             android:textSize="13sp"
             app:layout_constraintStart_toEndOf="@+id/imageborder"
             app:layout_constraintTop_toBottomOf="@+id/event_name"
-            app:layout_constraintEnd_toStartOf="@id/date"
+            app:layout_constraintEnd_toStartOf="@id/assist_button"
             />
         <TextView
             android:id="@+id/date"
@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:text="15 abril"
             android:textColor="@color/grey"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             android:layout_marginEnd="1dp"
             app:layout_constraintEnd_toStartOf="@+id/dateicon"
@@ -128,16 +128,16 @@
 
         <ImageButton
             android:id="@+id/assist_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/circle_button"
             app:layout_constraintEnd_toEndOf="@+id/dateicon"
             app:layout_constraintTop_toBottomOf="@+id/dateicon" />
         <ImageView
             android:id="@+id/assist_icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/balloon_unselected"
             app:layout_constraintEnd_toEndOf="@+id/assist_button"
             app:layout_constraintStart_toStartOf="@+id/assist_button"
@@ -145,16 +145,16 @@
             app:layout_constraintBottom_toBottomOf= "@+id/assist_button" />
         <ImageButton
             android:id="@+id/like_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/circle_button"
             app:layout_constraintEnd_toEndOf="@+id/assist_button"
             app:layout_constraintTop_toBottomOf="@+id/assist_button" />
         <ImageView
             android:id="@+id/like_icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/like_unselected"
             app:layout_constraintEnd_toEndOf="@+id/like_button"
             app:layout_constraintStart_toStartOf="@+id/like_button"
@@ -176,6 +176,8 @@
                 android:layout_height="25dp"
                 android:orientation="horizontal"
                 android:background="@drawable/circle_button"
+                android:focusable="false"
+                android:clickable="false"
                 >
                 <ImageView
                     android:id="@+id/key_icon"
@@ -195,7 +197,7 @@
                 android:layout_marginStart="5dp"
                 android:background="@drawable/circle_button"
                 >
-                <ImageButton
+                <ImageView
                     android:id="@+id/link_icon"
                     android:layout_width="17dp"
                     android:layout_height="17dp"
@@ -210,6 +212,8 @@
                 android:layout_height="25dp"
                 android:orientation="horizontal"
                 android:layout_marginStart="5dp"
+                android:focusable="false"
+                android:clickable="false"
                 android:background="@drawable/rounded_border_tag">
 
                 <ImageView
