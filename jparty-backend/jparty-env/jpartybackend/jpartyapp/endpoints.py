@@ -481,7 +481,7 @@ def userAssistEvent_id(request, id):
             return JsonResponse({'error': 'Event not found'}, status=404)
         try:
             event = UserAssist.objects.get(user=user_session.user, event=event)
-        except Events.DoesNotExist:
+        except UserAssist.DoesNotExist:
             assist = UserAssist(user=user_session.user, event=event)
             assist.save()
             return JsonResponse({'message': 'Event assisted'}, status=201)
@@ -557,7 +557,7 @@ def userLikedEvent_id(request, id):
             return JsonResponse({'error': 'Event not found'}, status=404)
         try:
             event = UserLikes.objects.get(event = event, user = user_session.user)
-        except Events.DoesNotExist:
+        except UserLikes.DoesNotExist:
             liked = UserLikes(user=user_session.user, event=event)
             liked.save()
             return JsonResponse({'message': 'Event liked'}, status=201)
