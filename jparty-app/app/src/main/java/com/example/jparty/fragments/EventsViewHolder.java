@@ -204,7 +204,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
 
         try {
             // Parsear la fecha desde la cadena
-            SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
             Date date = originalFormat.parse(items.getEvent_Date());
 
             // Formatear la fecha al formato deseado

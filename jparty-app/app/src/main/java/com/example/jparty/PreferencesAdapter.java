@@ -30,13 +30,11 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesViewHold
     }
 
     // Método para obtener los IDs de los checkbox seleccionados
-// Método para obtener los IDs de los checkbox seleccionados
     public JSONObject getCheckedIds() {
         JSONArray checkedIds = new JSONArray();
-        for (int i = 0; i < getItemCount(); i++) {
-            PreferencesViewHolder viewHolder = (PreferencesViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
-            if (viewHolder != null && viewHolder.isChecked()) {
-                checkedIds.put(dataset.get(i).getMusicId());
+        for (PreferencesData data : dataset) {
+            if (data.getMusicSelected()) {
+                checkedIds.put(data.getMusicId());
             }
         }
         JSONObject result = new JSONObject();
@@ -49,6 +47,10 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesViewHold
     }
 
 
+    public void onItemClicked(int position, boolean isChecked) {
+        PreferencesData currentItem = dataset.get(position);
+        currentItem.setMusicSelected(isChecked);
+    }
     // Método para crear un nuevo ViewHolder
     @NonNull
     @Override
@@ -57,7 +59,7 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesViewHold
         View preferencesView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_cell_music, parent, false);
         // Crear y retornar un nuevo ViewHolder
-        return new PreferencesViewHolder(preferencesView);
+        return new PreferencesViewHolder(preferencesView, this);
     }
 
     // Método para vincular los datos con el ViewHolder

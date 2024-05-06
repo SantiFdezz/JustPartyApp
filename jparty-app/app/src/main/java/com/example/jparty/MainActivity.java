@@ -7,6 +7,7 @@
  import android.view.MenuItem;
 
  import com.example.jparty.fragments.HomeFragment;
+ import com.example.jparty.fragments.LikeFragment;
  import com.google.android.material.navigation.NavigationView;
 
  import androidx.activity.OnBackPressedCallback;
@@ -73,7 +74,7 @@
                      if (item.getItemId() == R.id.homescreen) {
                          fragment = new HomeFragment();
                      } else if (item.getItemId() == R.id.likedevents) {
-                         // fragment = new RecommendedFragment();
+                         fragment = new LikeFragment();
                      } else if (item.getItemId() == R.id.assistevents) {
                          // fragment = new SavedPlacesFragment();
                      } else if ((item.getItemId() == R.id.own_events) && (manager == true)) {
