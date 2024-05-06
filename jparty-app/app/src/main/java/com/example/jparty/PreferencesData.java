@@ -15,11 +15,12 @@ public class PreferencesData {
     public String getPlace_Name() { return place_name; }
     public Integer getMusicId() { return musicId; }
     public Boolean getMusicSelected() { return musicSelected; }
+    public void setMusicSelected(Boolean musicSelected) {  this.musicSelected=musicSelected; }
+
     public String getImage_url() { return image_url; }
 
     // Constructor que toma los datos como parámetros
     public PreferencesData(String place_name, Integer musicId, Boolean musicSelected, String image_url){
-
         this.place_name=place_name;
         this.musicId=musicId;
         this.musicSelected=musicSelected;

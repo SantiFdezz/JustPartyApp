@@ -52,7 +52,6 @@ public class EventsData {
     // Constructor que toma un objeto JSON y extrae los datos
     public EventsData(JSONObject json){
         try{
-            System.out.println(json.toString());
             this.place_name = json.getString("title");
             this.description = json.getString("description");
             this.secretkey = json.getString("secretkey");
