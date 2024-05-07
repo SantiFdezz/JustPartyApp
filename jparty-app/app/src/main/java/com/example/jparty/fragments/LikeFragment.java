@@ -50,7 +50,7 @@ public class LikeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recycler_main, container, false);
         eventsList = new ArrayList<>();
         pb1 = view.findViewById(R.id.loadingScreen);
-        adapter = new EventsAdapter(eventsList, this);
+        adapter = new EventsAdapter(eventsList, this, context);
         recyclerView = view.findViewById(R.id.recycler_view_item);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

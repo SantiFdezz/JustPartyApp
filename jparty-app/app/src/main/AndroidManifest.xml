@@ -35,6 +35,9 @@
             android:name=".PreferencesActivity"
             />
         <activity
+            android:name=".DetailActivity"
+            />
+        <activity
             android:name=".fragments.HomeFragment"
             />
 
