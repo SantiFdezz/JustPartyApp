@@ -1,5 +1,6 @@
 package com.example.jparty.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -55,6 +56,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
     private ImageButton assist_button;
     private ImageButton like_button;
     private RequestQueue requestQueue;
+    private List<EventsData> dataset;
 
     // Constructor del ViewHolder
     public EventsViewHolder(@NonNull View ivi, List<EventsData> dataset, EventsAdapter adapter){
@@ -76,6 +78,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
         like_button = ivi.findViewById(R.id.like_button);
         recycler_view = ivi.findViewById(R.id.recycler_view);
         this.requestQueue = Volley.newRequestQueue(itemView.getContext());
+        this.dataset = dataset;
 
         assist_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,20 +152,6 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
 
         link_button.setOnClickListener(clickListener);
         link_icon.setOnClickListener(clickListener);
-        recycler_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Cambiar el estado del CheckBox cuando se hace clic en la celda
-                FragmentManager fragmentManager = ((FragmentActivity)recycler_view.getContext()).getSupportFragmentManager();
-
-                HomeFragment HomeFragment = new HomeFragment();
-                // Crear un Bundle para pasar datos adicionales al fragmento
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, HomeFragment)
-                        .addToBackStack(null).commit();
-            }
-        });
-
     }
 
     // Método para mostrar los datos en los elementos de la vista
