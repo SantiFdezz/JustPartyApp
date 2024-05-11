@@ -5,9 +5,12 @@
  import android.content.SharedPreferences;
  import android.os.Bundle;
  import android.view.MenuItem;
+ import android.view.View;
+ import android.widget.TextView;
 
  import com.example.jparty.fragments.HomeFragment;
  import com.example.jparty.fragments.LikeFragment;
+ import com.example.jparty.fragments.OwnFragment;
  import com.google.android.material.navigation.NavigationView;
 
  import androidx.activity.OnBackPressedCallback;
@@ -43,8 +46,18 @@
          setContentView(R.layout.activity_main);
          drawerLayout = findViewById(R.id.drawer_layout);
          toolbar = findViewById(R.id.toolbar);
-         // Obtén las preferencias compartidas
+         NavigationView navigationView = findViewById(R.id.nav_view);
          SharedPreferences sharedPreferences = getSharedPreferences("JPARTY_APP_PREFS", MODE_PRIVATE);
+         String validEmail = sharedPreferences.getString("VALID_EMAIL", null);
+         String validUsername = sharedPreferences.getString("VALID_USERNAME", null);
+         //Cargamos el header del menu y lo editamos con los datos del usuario
+         View headerView = navigationView.getHeaderView(0);
+         TextView userNameTextView = headerView.findViewById(R.id.username_nav);
+         TextView emailTextView = headerView.findViewById(R.id.email_nav);
+         userNameTextView.setText(validUsername);
+         emailTextView.setText(validEmail);
+         // Obtén las preferencias compartidas
+
 
          // Verifica si es la primera vez que se abre la cuenta
          boolean isFirstTime = sharedPreferences.getBoolean("isFirstTime", true);
@@ -64,7 +77,6 @@
                      this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
              drawerLayout.addDrawerListener(toggle);
              toggle.syncState();
-             NavigationView navigationView = findViewById(R.id.nav_view);
              //   creamos el elemento que escuchara en cual boton clickamos de nuestro menú
              navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
                  @Override
@@ -77,8 +89,8 @@
                          fragment = new LikeFragment();
                      } else if (item.getItemId() == R.id.assistevents) {
                          // fragment = new SavedPlacesFragment();
-                     } else if ((item.getItemId() == R.id.own_events) && (manager == true)) {
-                         // fragment = new SummerModeFragment();
+                     } else if ((item.getItemId() == R.id.own_events) && (manager == false)) {
+                         fragment = new OwnFragment();
                      }else if(item.getItemId() == R.id.accountsettings){
                          //fragment = new SavedPlacesFragment();
                      } else if (item.getItemId() == R.id.preferences) {

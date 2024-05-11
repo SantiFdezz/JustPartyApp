@@ -104,11 +104,13 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         // Mostrar el token recibido
                         Toast.makeText(context, "Token: " + receivedToken, Toast.LENGTH_SHORT).show();
+                        //hacenmos request del username para añadirlo a el shared preferences
                         // Inicio de la actividad principal
                         Intent intent = new Intent(context, MainActivity.class);
                         startActivity(intent);
 
                         // Almacenamiento del main de usuario y el token en las preferencias compartidas.
+                        getUsername();
                         SharedPreferences preferences = context.getSharedPreferences("JPARTY_APP_PREFS", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("VALID_EMAIL", email);
@@ -128,6 +130,46 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(context, "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
                         } else {
                             pb1.setVisibility(View.GONE); // Alternamos entre la visibilidad de la barra de progresión a nuestra conveniencia.
+                            int serverCode = error.networkResponse.statusCode;
+                            Toast.makeText(context, "Estado de respuesta "+serverCode, Toast.LENGTH_LONG).show();
+                        }
+                        error.printStackTrace();
+                    }
+                }
+        );
+        // Añadir la solicitud a la cola de solicitudes
+        this.requestQueue.add(request);
+    }
+    private void getUsername() {
+        // Creación de la solicitud
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
+                Server.name + "/user/username",
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Manejo de la respuesta exitosa
+                        String username;
+                        try {
+                            username = response.getString("username");
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                        // Almacenamiento del nombre de usuario en las preferencias compartidas.
+                        SharedPreferences preferences = context.getSharedPreferences("JPARTY_APP_PREFS", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("VALID_USERNAME", username);
+                        editor.commit();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Manejo de errores de la solicitud
+                        if (error.networkResponse == null) {
+                            Toast.makeText(context, "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
+                        } else {
                             int serverCode = error.networkResponse.statusCode;
                             Toast.makeText(context, "Estado de respuesta "+serverCode, Toast.LENGTH_LONG).show();
                         }

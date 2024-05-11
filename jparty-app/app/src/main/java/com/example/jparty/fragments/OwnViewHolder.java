@@ -1,20 +1,15 @@
 package com.example.jparty.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.FragmentActivity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
@@ -22,14 +17,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.example.jparty.JsonArrayRequestWithAuthentication;
 import com.example.jparty.JsonObjectRequestWithAuthentication;
 import com.example.jparty.R;
 import com.example.jparty.Server;
-import com.example.jparty.fragments.Util;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -38,7 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class EventsViewHolder extends RecyclerView.ViewHolder {
+public class OwnViewHolder extends RecyclerView.ViewHolder {
     // Variables para los elementos de la vista
     private TextView event_name;
     private TextView description;
@@ -56,10 +47,10 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
     private ImageButton assist_button;
     private ImageButton like_button;
     private RequestQueue requestQueue;
-    private List<EventsData> dataset;
+    private List<OwnData> dataset;
 
     // Constructor del ViewHolder
-    public EventsViewHolder(@NonNull View ivi, List<EventsData> dataset, EventsAdapter adapter){
+    public OwnViewHolder(@NonNull View ivi, List<OwnData> dataset, OwnAdapter adapter){
         super(ivi);
         // Encontrar los elementos de la vista
         event_name = ivi.findViewById(R.id.event_name);
@@ -83,7 +74,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
         assist_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EventsData currentItem = dataset.get(getAdapterPosition());
+                final OwnData currentItem = dataset.get(getAdapterPosition());
                 boolean isAssisted = currentItem.getUserAssist();
                 String url = Server.name+"/user/assistevent/"+currentItem.getEvent_Id();
                 int method = isAssisted ? Request.Method.DELETE : Request.Method.POST;
@@ -113,7 +104,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
         like_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EventsData currentItem = dataset.get(getAdapterPosition());
+                final OwnData currentItem = dataset.get(getAdapterPosition());
                 boolean isLiked = currentItem.getUserLike();
                 String url = Server.name+"/user/likedevent/"+currentItem.getEvent_Id();
                 int method = isLiked ? Request.Method.DELETE : Request.Method.POST;
@@ -142,7 +133,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EventsData currentItem = dataset.get(getAdapterPosition());
+                final OwnData currentItem = dataset.get(getAdapterPosition());
                 String url = currentItem.getLink();
                 if (url != null && !url.isEmpty()) {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -156,7 +147,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
     }
 
     // Método para mostrar los datos en los elementos de la vista
-    public void showData(EventsData items) {
+    public void showData(OwnData items) {
         // Establecer el texto de los TextViews y la imagen del ImageView
         event_name.setText(items.getPlace_Name());
         description.setText(truncateDescription(items.getDescription()));
@@ -189,7 +180,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    public String editdateLabel(EventsData items) {
+    public String editdateLabel(OwnData items) {
         String formattedDate = ""; // Initialize the variable
 
         try {

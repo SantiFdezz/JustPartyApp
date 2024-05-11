@@ -104,6 +104,20 @@ def userManager(request):
             user = User.objects.get(id=user_session.user.id)
         except User.DoesNotExist:
             return JsonResponse({'error': 'User not found'}, status=404)
+        return JsonResponse({'username': user.username}, status=200)
+    else:
+        return JsonResponse({'message': 'Method not allowed'}, status=405)
+    
+def userUsername(request):
+    if request.method == 'GET':
+        try:
+            user_session = authenticate_user(request)
+        except PermissionDenied:
+            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        try:
+            user = User.objects.get(id=user_session.user.id)
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'User not found'}, status=404)
 
         if user.manager == True:
             user.manager = False
