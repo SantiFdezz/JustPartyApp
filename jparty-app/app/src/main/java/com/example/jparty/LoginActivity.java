@@ -142,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     private void getUsername() {
         // Creación de la solicitud
-        JsonObjectRequest request = new JsonObjectRequest(
+        JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                 Request.Method.GET,
                 Server.name + "/user/username",
                 null,
@@ -175,7 +175,8 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         error.printStackTrace();
                     }
-                }
+                },
+                this
         );
         // Añadir la solicitud a la cola de solicitudes
         this.requestQueue.add(request);

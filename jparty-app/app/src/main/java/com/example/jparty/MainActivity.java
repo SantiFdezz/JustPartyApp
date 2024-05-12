@@ -26,7 +26,7 @@
      private Context context = this;
      private DrawerLayout drawerLayout;
      private Toolbar toolbar;
-     private boolean manager = false;
+     private boolean manager = true;
      public static boolean isRunning;
 
      @Override
@@ -89,7 +89,7 @@
                          fragment = new LikeFragment();
                      } else if (item.getItemId() == R.id.assistevents) {
                          // fragment = new SavedPlacesFragment();
-                     } else if ((item.getItemId() == R.id.own_events) && (manager == false)) {
+                     } else if ((item.getItemId() == R.id.own_events) && (manager == true)) {
                          fragment = new OwnFragment();
                      }else if(item.getItemId() == R.id.accountsettings){
                          //fragment = new SavedPlacesFragment();

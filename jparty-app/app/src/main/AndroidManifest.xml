@@ -1,46 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
-        android:usesCleartextTraffic="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/balloon_selected"
         android:label="@string/app_name"
         android:roundIcon="@drawable/balloon_selected"
         android:supportsRtl="true"
         android:theme="@style/Theme.JParty"
+        android:usesCleartextTraffic="true"
         tools:targetApi="34">
         <activity
+            android:name=".EditEventActivity"
+            android:windowSoftInputMode="adjustPan">
+            <!-- ... -->
+        </activity>
+        <activity
             android:name=".LandingActivity"
-            android:exported="true"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".LoginActivity"
-            />
-        <activity
-            android:name=".RegisterActivity"
-            />
-        <activity
-            android:name=".MainActivity"
-            />
-        <activity
-            android:name=".PreferencesActivity"
-            />
-        <activity
-            android:name=".DetailActivity"
-            />
-        <activity
-            android:name=".fragments.HomeFragment"
-            />
-
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".PreferencesActivity" />
+        <activity android:name=".DetailActivity" />
+        <activity android:name=".fragments.HomeFragment" />
     </application>
 
 </manifest>

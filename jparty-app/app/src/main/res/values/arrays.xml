@@ -52,4 +52,20 @@
         <item>Zamora</item>
         <item>Zaragoza</item>
     </string-array>
+    <string-array name="music_array">
+        <item>Seleccione un genero de musica</item>
+        <item>Jazz</item>
+        <item>Blues</item>
+        <item>Country</item>
+        <item>Reggaeton</item>
+        <item>Rock</item>
+        <item>Soul</item>
+        <item>R&amp;B</item>
+        <item>Funk</item>
+        <item>Disco</item>
+        <item>Punk</item>
+        <item>Metal</item>
+        <item>Clasica</item>
+        <item>Dubstep</item>
+    </string-array>
 </resources>

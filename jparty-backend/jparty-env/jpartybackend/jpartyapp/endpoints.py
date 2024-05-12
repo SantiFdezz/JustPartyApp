@@ -104,7 +104,12 @@ def userManager(request):
             user = User.objects.get(id=user_session.user.id)
         except User.DoesNotExist:
             return JsonResponse({'error': 'User not found'}, status=404)
-        return JsonResponse({'username': user.username}, status=200)
+        if user.manager == True:
+            user.manager = False
+        else:
+            user.manager = True
+        user.save()
+        return JsonResponse({'response': 'ok'}, status=200)
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=405)
     
@@ -118,13 +123,7 @@ def userUsername(request):
             user = User.objects.get(id=user_session.user.id)
         except User.DoesNotExist:
             return JsonResponse({'error': 'User not found'}, status=404)
-
-        if user.manager == True:
-            user.manager = False
-        else:
-            user.manager = True
-        user.save()
-        return JsonResponse({'response': 'ok'}, status=200)
+        return JsonResponse({'username': user.username}, status=200)
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=405)
 # TESTEADO
@@ -313,13 +312,17 @@ def events(request):
             return JsonResponse({'error': 'Unauthorized'}, status=401)
         try:
             data = json.loads(request.body)
+            print(data)
             title = data['title']
             street = data['street']
             province = data['province']
             music_genre = data['music_genre']
-            music_genre = MusicGenre.objects.get(id=music_genre)
+            music_genre = MusicGenre.objects.get(name=music_genre)
             price = data['price']
-            secretkey = data('secretkey', None) 
+            if 'secretkey' in data:
+                secretkey = data['secretkey']
+            else:
+                secretkey = None
             link = data['link']
             if check_link_format(link) is False:
                 return JsonResponse({"response": "not_ok"}, status=400)
@@ -405,7 +408,7 @@ def event_id(request, id):
             image = data['image']
             title = data['title']
             music_genre = data['music_genre']
-            music_genre = MusicGenre.objects.get(id=music_genre)
+            music_genre = MusicGenre.objects.get(name=music_genre)
             price = data['price']
             street = data['street']
             province = data['province']

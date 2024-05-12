@@ -237,6 +237,7 @@ public class RegisterActivity extends AppCompatActivity {
                         // Almacenamiento del main de usuario y el token en las preferencias compartidas.
                         SharedPreferences preferences = context.getSharedPreferences("JPARTY_APP_PREFS", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
+                        System.out.println(preferences);
                         editor.putString("VALID_USERNAME", username);
                         editor.putString("VALID_EMAIL", email);
                         editor.putString("VALID_TOKEN", receivedToken);

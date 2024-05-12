@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -17,6 +18,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.example.jparty.EditEventActivity;
 import com.example.jparty.JsonObjectRequestWithAuthentication;
 import com.example.jparty.R;
 import com.example.jparty.Server;
@@ -37,6 +39,11 @@ public class OwnViewHolder extends RecyclerView.ViewHolder {
     private TextView date;
     private TextView assist_count;
     public LinearLayout key_button;
+    public TextView key_text;
+    public ImageButton deleteButton;
+    public ImageButton editButton;
+    private ImageView unassistIcon;
+    private ImageView infoIcon;
     private ImageView key_icon;
     public LinearLayout link_button;
     public ConstraintLayout recycler_view;
@@ -58,8 +65,7 @@ public class OwnViewHolder extends RecyclerView.ViewHolder {
         date = ivi.findViewById(R.id.date);
         assist_count = ivi.findViewById(R.id.assist_count);
         music_name = ivi.findViewById(R.id.music_name);
-        key_button = ivi.findViewById(R.id.key_button);
-        key_icon = ivi.findViewById(R.id.key_icon);
+        key_button = ivi.findViewById(R.id.secretkey_tag);
         link_button = ivi.findViewById(R.id.link_button);
         link_icon = ivi.findViewById(R.id.link_icon);
         image_view = ivi.findViewById(R.id.image_view);
@@ -68,6 +74,12 @@ public class OwnViewHolder extends RecyclerView.ViewHolder {
         assist_button = ivi.findViewById(R.id.assist_button);
         like_button = ivi.findViewById(R.id.like_button);
         recycler_view = ivi.findViewById(R.id.recycler_view);
+        deleteButton = ivi.findViewById(R.id.delete_button);
+        editButton = ivi.findViewById(R.id.edit_button);
+        unassistIcon = ivi.findViewById(R.id.unassist_icon);
+        infoIcon = ivi.findViewById(R.id.info_icon);
+        key_text = ivi.findViewById(R.id.sk_name);
+
         this.requestQueue = Volley.newRequestQueue(itemView.getContext());
         this.dataset = dataset;
 
@@ -101,6 +113,7 @@ public class OwnViewHolder extends RecyclerView.ViewHolder {
                 requestQueue.add(request);
             }
         });
+
         like_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,6 +143,17 @@ public class OwnViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Aquí va el código que se ejecutará cuando se haga clic en el botón de editar
+                final OwnData currentItem = dataset.get(getAdapterPosition());
+                Intent intent = new Intent(itemView.getContext(), EditEventActivity.class);
+                intent.putExtra("event_id", currentItem.getEvent_Id());
+                itemView.getContext().startActivity(intent);
+            }
+        });
+
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,9 +165,6 @@ public class OwnViewHolder extends RecyclerView.ViewHolder {
                 }
             }
         };
-
-        link_button.setOnClickListener(clickListener);
-        link_icon.setOnClickListener(clickListener);
     }
 
     // Método para mostrar los datos en los elementos de la vista
@@ -196,4 +217,5 @@ public class OwnViewHolder extends RecyclerView.ViewHolder {
         }
         return formattedDate;
     }
+
 }
