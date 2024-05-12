@@ -11,6 +11,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class EditEventActivity extends AppCompatActivity {
     private Spinner eventMusicGenre;
     private EditText eventPrice;
     private EditText eventDate;
+    private TextView access_text;
     private EditText eventTime;
     private EditText eventLink;
     private EditText eventImage;
@@ -55,7 +57,7 @@ public class EditEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestQueue = Volley.newRequestQueue(this);
         setContentView(R.layout.activity_addevent);
-
+        access_text = findViewById(R.id.access_text);
         eventName = findViewById(R.id.event);
         eventLocation = findViewById(R.id.location);
         eventProvince = findViewById(R.id.province);
@@ -76,9 +78,10 @@ public class EditEventActivity extends AppCompatActivity {
         if (eventId != -1) {
             getEventDetails(eventId);
             isGetDone = true;
-
+            access_text.setText("Editar un evento");
         } else {
             isGetDone = false;
+            access_text.setText("Crear un evento");
         }
         sk.setOnClickListener(v -> {
             if (sk.isChecked()) {
