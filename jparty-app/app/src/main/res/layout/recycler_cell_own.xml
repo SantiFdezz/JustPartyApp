@@ -41,34 +41,41 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/border_background" />
         </FrameLayout>
-        <View
-            android:id="@+id/assist_count_background"
-            android:layout_width="40dp"
-            android:layout_height="20dp"
-            android:background="@drawable/rounded_border_tag"
-            app:layout_constraintEnd_toEndOf="@+id/imageborder"
-            app:layout_constraintBottom_toBottomOf="@+id/imageborder" />
-        <ImageView
-            android:id="@+id/user_icon"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@drawable/user_icon"
-            android:layout_marginEnd="4dp"
-            app:layout_constraintEnd_toEndOf="@+id/assist_count_background"
-            app:layout_constraintTop_toTopOf="@+id/assist_count_background"
-            app:layout_constraintBottom_toBottomOf="@+id/assist_count_background"/>
-        <TextView
-            android:id="@+id/assist_count"
+        <LinearLayout
+            android:id="@+id/assist_count_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:text="699"
-            android:textStyle="bold"
-            android:textColor="#FF0000"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="@+id/assist_count_background"
-            app:layout_constraintStart_toStartOf="@+id/assist_count_background"
-            app:layout_constraintTop_toTopOf="@+id/assist_count_background" />
+            android:orientation="horizontal"
+            android:background="@drawable/rounded_border_tag"
+            app:layout_constraintEnd_toEndOf="@+id/imageborder"
+            app:layout_constraintBottom_toBottomOf="@+id/imageborder">
+
+            <TextView
+                android:id="@+id/assist_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="699"
+                android:textStyle="bold"
+                android:textColor="#FF0000"
+                android:textSize="13sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                />
+            <ImageView
+                android:id="@+id/user_icon"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/user_icon"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="6dp"
+                />
+
+
+
+        </LinearLayout>
         <TextView
             android:id="@+id/event_name"
             android:layout_width="wrap_content"
@@ -76,25 +83,23 @@
             android:layout_marginStart="5dp"
             android:text="Sala Pelícano"
             android:textColor="@color/black"
-            android:textSize="15dp"
+            android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/imageborder"
             app:layout_constraintTop_toTopOf="@+id/imageborder" />
         <TextView
             android:id="@+id/description"
             android:layout_width="0dp"
-            android:layout_height="55dp"
+            android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:layout_marginStart="5dp"
-            android:layout_marginEnd="20dp"
-            android:inputType="textMultiLine"
-            android:text="BrevedescripciónbrevedescripciónbrevedescripciónbrevedescripciónbrevedescripciónBrevedescripciónbrevedescripciónbrevedescripciónbrevedescripciónbrevedescripción"
+            android:layout_marginEnd="10dp"
+            android:text="Brevedescripciónbrevedescripciónbrevedescripciónbrevedescripciónbrevedescripción"
             android:textColor="@color/grey"
-            android:maxLines="5"
-            android:textSize="9sp"
+            android:textSize="13sp"
             app:layout_constraintStart_toEndOf="@+id/imageborder"
             app:layout_constraintTop_toBottomOf="@+id/event_name"
-            app:layout_constraintEnd_toStartOf="@id/date"
+            app:layout_constraintEnd_toStartOf="@id/assist_button"
             />
         <TextView
             android:id="@+id/date"
@@ -102,7 +107,7 @@
             android:layout_height="wrap_content"
             android:text="15 abril"
             android:textColor="@color/grey"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             android:layout_marginEnd="1dp"
             app:layout_constraintEnd_toStartOf="@+id/dateicon"
@@ -112,8 +117,8 @@
             />
         <ImageView
             android:id="@+id/dateicon"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
             android:src="@drawable/date_icon"
             android:layout_marginEnd="10dp"
             app:layout_constraintEnd_toEndOf="@+id/recycler_view"
@@ -122,16 +127,16 @@
 
         <ImageButton
             android:id="@+id/assist_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/circle_button"
             app:layout_constraintEnd_toEndOf="@+id/dateicon"
             app:layout_constraintTop_toBottomOf="@+id/dateicon" />
         <ImageView
             android:id="@+id/assist_icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/balloon_unselected"
             app:layout_constraintEnd_toEndOf="@+id/assist_button"
             app:layout_constraintStart_toStartOf="@+id/assist_button"
@@ -139,16 +144,16 @@
             app:layout_constraintBottom_toBottomOf= "@+id/assist_button" />
         <ImageButton
             android:id="@+id/like_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/circle_button"
             app:layout_constraintEnd_toEndOf="@+id/assist_button"
             app:layout_constraintTop_toBottomOf="@+id/assist_button" />
         <ImageView
             android:id="@+id/like_icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/like_unselected"
             app:layout_constraintEnd_toEndOf="@+id/like_button"
             app:layout_constraintStart_toStartOf="@+id/like_button"
@@ -165,6 +170,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/imageborder">
             <!-- Etiqueta de secretkey -->
             <LinearLayout
+                android:id="@+id/secretkey_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:orientation="horizontal"
@@ -185,12 +191,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="1dp"
-                    android:layout_marginEnd="5dp"
+                    android:layout_marginEnd="7dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:text="PATATA"
                     android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:textSize="10sp" />
+                    android:textSize="13sp" />
             </LinearLayout>
 
             <!-- Etiqueta de música -->
@@ -215,21 +222,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="1dp"
-                    android:layout_marginEnd="5dp"
+                    android:layout_marginEnd="7dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:text="Reggaeton"
                     android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:textSize="10sp" />
+                    android:textSize="13sp" />
             </LinearLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
         android:id="@+id/delete_button"
-        android:layout_width="25dp"
+        android:layout_width="27dp"
+        android:layout_height="27dp"
         android:contentDescription="Button to delete event"
-        android:layout_height="25dp"
         android:layout_marginStart="15dp"
         android:background="@drawable/circle_button"
         app:layout_constraintStart_toStartOf="parent"
@@ -237,8 +245,8 @@
         app:layout_constraintEnd_toStartOf="@+id/recycler_view"/>
 
     <ImageView
-        android:layout_width="15dp"
-        android:layout_height="13dp"
+        android:layout_width="17dp"
+        android:layout_height="17dp"
         android:id="@+id/unassist_icon"
         android:contentDescription="Icon to delete event"
         android:src="@drawable/close_icon"
@@ -248,8 +256,8 @@
         app:layout_constraintEnd_toEndOf="@+id/delete_button"/>
     <ImageButton
         android:id="@+id/edit_button"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="27dp"
+        android:layout_height="27dp"
         android:layout_marginTop="10dp"
         android:contentDescription="Button to edit an event"
         android:background="@drawable/circle_button"
@@ -257,8 +265,8 @@
         app:layout_constraintTop_toBottomOf="@+id/delete_button"
         app:layout_constraintEnd_toEndOf="@+id/delete_button"/>
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="17dp"
+        android:layout_height="17dp"
         android:id="@+id/info_icon"
         android:src="@drawable/edit_icon"
         android:contentDescription="Edit Icon"

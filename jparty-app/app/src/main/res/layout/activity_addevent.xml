@@ -134,32 +134,19 @@
             app:layout_constraintStart_toEndOf="@id/location_text"
             app:layout_constraintTop_toBottomOf="@id/event"
             />
-        <EditText
+        <Spinner
             android:id="@+id/province"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginTop="5dp"
-            android:clickable="true"
-            android:focusable="false"
+            android:spinnerMode="dialog"
+            android:prompt="@string/provinceprompt"
             android:textSize="11sp"
             app:layout_constraintWidth_percent="0.3"
-            android:hint="@string/provinceprompt"
-            android:inputType="none"
             app:layout_constraintTop_toBottomOf="@id/province_text"
             app:layout_constraintStart_toStartOf="@id/province_text"
             app:layout_constraintBottom_toTopOf="@+id/price_text"/>
-        <Spinner
-            android:id="@+id/provincespinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dialog"
-            android:prompt="@string/provinceprompt"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+
         <TextView
             android:id="@+id/music_genre_text"
             android:layout_width="wrap_content"
@@ -171,29 +158,16 @@
             app:layout_constraintStart_toStartOf="@id/location"
             app:layout_constraintBottom_toTopOf="@id/music_genre"
             />
-        <EditText
+
+        <Spinner
             android:id="@+id/music_genre"
             android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="5dp"
-            android:hint="Techno"
-            android:clickable="true"
-            android:focusable="false"
-            android:textSize="12sp"
-            app:layout_constraintWidth_percent="0.3"
-            app:layout_constraintStart_toStartOf="@id/music_genre_text"
-            app:layout_constraintTop_toBottomOf="@id/music_genre_text" />
-        <Spinner
-            android:id="@+id/music_genre_spinner"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:spinnerMode="dialog"
-            android:prompt="@string/provinceprompt"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:prompt="@string/musicgenreprompt"
+            app:layout_constraintStart_toStartOf="@id/music_genre_text"
+            app:layout_constraintTop_toBottomOf="@id/music_genre_text"
+            app:layout_constraintEnd_toEndOf="@id/skcheckbox"
             />
         <TextView
             android:id="@+id/price_text"
@@ -239,16 +213,16 @@
             app:layout_constraintBottom_toTopOf="@id/sk" />
         <EditText
             android:id="@+id/sk"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:hint="PATATA"
-            android:enabled="false"
             app:layout_constraintWidth_percent="0.3 "
             android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/skcheckbox"
             app:layout_constraintStart_toStartOf="@id/skcheckbox"
             app:layout_constraintBottom_toTopOf="@id/skcheckbox"
+            app:layout_constraintEnd_toEndOf="@id/skcheckbox"
             />
         <TextView
             android:id="@+id/eventdate_text"
@@ -283,30 +257,28 @@
             app:layout_constraintTop_toBottomOf="@id/eventdate_text"
             app:layout_constraintStart_toEndOf="@id/date" />
         <TextView
-            android:id="@+id/link_text"
+            android:id="@+id/link_image_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:text="Link Imagen"
+            android:text="Link Web"
             android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/sk"
             app:layout_constraintStart_toStartOf="@id/sk"
             app:layout_constraintBottom_toTopOf="@id/link"
             />
         <EditText
-            android:id="@+id/link"
+            android:id="@+id/image"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginTop="5dp"
-            android:hint="Techno"
-            android:clickable="true"
-            android:focusable="false"
+            android:hint="saladeeventos.com"
             android:textSize="12sp"
             app:layout_constraintWidth_percent="0.3"
             app:layout_constraintStart_toStartOf="@id/link_text"
             app:layout_constraintTop_toBottomOf="@id/link_text" />
         <TextView
-            android:id="@+id/link_image_text"
+            android:id="@+id/link_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
@@ -318,14 +290,13 @@
             app:layout_constraintBottom_toTopOf="@+id/image"
             />
         <EditText
-            android:id="@+id/image"
+            android:id="@+id/link"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginTop="5dp"
             android:textSize="11sp"
             app:layout_constraintWidth_percent="0.35"
             android:hint="saladeeventos.com/images/image.jpg"
-            android:inputType="date"
             app:layout_constraintTop_toBottomOf="@id/link_image_text"
             app:layout_constraintStart_toStartOf="@id/link_image_text"
             />

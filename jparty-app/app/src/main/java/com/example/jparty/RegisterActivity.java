@@ -183,7 +183,7 @@ public class RegisterActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        loginUser(emailEditText.getText().toString(), passwordEditText.getText().toString());
+                        loginUser(emailEditText.getText().toString(), passwordEditText.getText().toString(), nameEditText.getText().toString());
 
                     }
                 },
@@ -206,7 +206,7 @@ public class RegisterActivity extends AppCompatActivity {
         this.requestQueue.add(request);
     }
     // Método para iniciar sesión del usuario
-    private void loginUser(String email, String password) {
+    private void loginUser(String email, String password, String username){
         // Creación del cuerpo de la solicitud
         JSONObject requestBody = new JSONObject();
         try {
@@ -237,6 +237,8 @@ public class RegisterActivity extends AppCompatActivity {
                         // Almacenamiento del main de usuario y el token en las preferencias compartidas.
                         SharedPreferences preferences = context.getSharedPreferences("JPARTY_APP_PREFS", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
+                        System.out.println(preferences);
+                        editor.putString("VALID_USERNAME", username);
                         editor.putString("VALID_EMAIL", email);
                         editor.putString("VALID_TOKEN", receivedToken);
                         editor.commit();

@@ -7,6 +7,7 @@ urlpatterns = [
     path('user/session', endpoints.sessions), 
     path('user', endpoints.user), 
     path('user/manager', endpoints.userManager),
+    path('user/username', endpoints.userUsername),
     path('user/preferences', endpoints.userPreferences),
     path('events', endpoints.events),
     path('event/<int:id>', endpoints.event_id),
@@ -15,3 +16,6 @@ urlpatterns = [
     path('user/likedevents', endpoints.userLikedEvents),
     path('user/likedevent/<int:id>', endpoints.userLikedEvent_id),
 ]
+
+
+
