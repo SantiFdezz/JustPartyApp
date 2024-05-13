@@ -715,7 +715,7 @@ components:
         birthdate:
           type: string
           format: date
-          example: "24-03-2001"
+          example: "2001-03-24"
     User:
       type: object
       properties:

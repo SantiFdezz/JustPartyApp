@@ -1,0 +1,5 @@
+asgiref==3.8.1
+bcrypt==4.1.2
+Django==5.0.4
+sqlparse==0.5.0
+tzdata==2024.1
