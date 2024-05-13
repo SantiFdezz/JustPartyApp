@@ -8,6 +8,12 @@
  import android.view.View;
  import android.widget.TextView;
 
+ import com.android.volley.Request;
+ import com.android.volley.RequestQueue;
+ import com.android.volley.Response;
+ import com.android.volley.VolleyError;
+ import com.android.volley.toolbox.Volley;
+ import com.example.jparty.fragments.AccountFragment;
  import com.example.jparty.fragments.AssistancesFragment;
  import com.example.jparty.fragments.HomeFragment;
  import com.example.jparty.fragments.LikeFragment;
@@ -23,11 +29,14 @@
  import androidx.fragment.app.Fragment;
  import androidx.drawerlayout.widget.DrawerLayout;
 
+ import org.json.JSONObject;
+
  public class MainActivity extends AppCompatActivity {
      private Context context = this;
      private DrawerLayout drawerLayout;
      private Toolbar toolbar;
      private boolean manager = true;
+     private RequestQueue requestQueue;
      public static boolean isRunning;
 
      @Override
@@ -45,6 +54,7 @@
      protected void onCreate(Bundle savedInstanceState) {//inicializamos los atributos
          super.onCreate(savedInstanceState);
          setContentView(R.layout.activity_main);
+         requestQueue = Volley.newRequestQueue(this);
          drawerLayout = findViewById(R.id.drawer_layout);
          toolbar = findViewById(R.id.toolbar);
          NavigationView navigationView = findViewById(R.id.nav_view);
@@ -93,12 +103,13 @@
                      } else if ((item.getItemId() == R.id.own_events) && (manager == true)) {
                          fragment = new OwnFragment();
                      }else if(item.getItemId() == R.id.accountsettings){
-                         //fragment = new SavedPlacesFragment();
+                         fragment = new AccountFragment();
                      } else if (item.getItemId() == R.id.preferences) {
                          Intent intent = new Intent(context, PreferencesActivity.class);
                          startActivity(intent);
                      } else if (item.getItemId() == R.id.closesession) {
                          //aviso estas seguro de querer cerrar sesión? si o no
+                         closeSession();
                      }
 
                      //si no llega ningun fragment
@@ -115,12 +126,6 @@
 
 
          }
-
-         // Verificar si la actividad se inició con una acción específica
-             //getSupportFragmentManager().beginTransaction()
-              //       .replace(R.id.fragment_container, new LoginActivity())
-                //     .commit();
-
          //creamos metodo que cierre el menu y no la app
          getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
              //metodo que cierra el menu si se pulsa atrás.
@@ -137,5 +142,35 @@
              }
          });
 
+     }
+     public void closeSession(){
+            //cerrar sesión
+         JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
+                 Request.Method.DELETE,
+                 Server.name + "/user/session",
+                 null,
+                 new Response.Listener<JSONObject>() {
+                     @Override
+                     public void onResponse(JSONObject response) {
+                         // Aquí puedes manejar la respuesta. Por ejemplo, puedes desloguear al usuario y redirigirlo a la pantalla de inicio de sesión.
+                         SharedPreferences preferences = getSharedPreferences("JPARTY_APP_PREFS", MODE_PRIVATE);
+                         SharedPreferences.Editor editor = preferences.edit();
+                         editor.remove("VALID_TOKEN");
+                         editor.apply();
+
+                         Intent intent = new Intent(MainActivity.this, LandingActivity.class);
+                         startActivity(intent);
+                         finish();
+                     }
+                 },
+                 new Response.ErrorListener() {
+                     @Override
+                     public void onErrorResponse(VolleyError error) {
+                         // Aquí puedes manejar el error. Por ejemplo, puedes mostrar un mensaje de error al usuario.
+                     }
+                 },
+                 this // Asegúrate de pasar el contexto correcto aquí.
+         );
+         requestQueue.add(request); //
      }
  }

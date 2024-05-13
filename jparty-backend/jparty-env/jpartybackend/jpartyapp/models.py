@@ -13,7 +13,6 @@ class User(models.Model):
             "username": self.username,
             "email": self.email,
             "province": self.province,
-            "password": self.password,
             "birthdate": self.birthdate,
             "manager": self.manager
         }
