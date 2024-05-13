@@ -7,10 +7,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white_grey"
-    tools:context=".AssistanceActivity">
+    >
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recycler_view_item"
         />
+    <ProgressBar
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/loadingScreen"
+        android:visibility="invisible"
+        android:progressTint="@color/purple"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </LinearLayout>

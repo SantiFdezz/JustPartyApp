@@ -111,7 +111,6 @@ public class OwnAdapter extends RecyclerView.Adapter<OwnViewHolder>{
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailActivity.class);
                 intent.putExtra("event_id", dataForThisCell.getEvent_Id().intValue());
-                System.out.println(dataForThisCell.getEvent_Id().intValue());
                 context.startActivity(intent);
             }
         });

@@ -8,6 +8,7 @@
  import android.view.View;
  import android.widget.TextView;
 
+ import com.example.jparty.fragments.AssistancesFragment;
  import com.example.jparty.fragments.HomeFragment;
  import com.example.jparty.fragments.LikeFragment;
  import com.example.jparty.fragments.OwnFragment;
@@ -88,7 +89,7 @@
                      } else if (item.getItemId() == R.id.likedevents) {
                          fragment = new LikeFragment();
                      } else if (item.getItemId() == R.id.assistevents) {
-                         // fragment = new SavedPlacesFragment();
+                         fragment = new AssistancesFragment();
                      } else if ((item.getItemId() == R.id.own_events) && (manager == true)) {
                          fragment = new OwnFragment();
                      }else if(item.getItemId() == R.id.accountsettings){
@@ -97,7 +98,7 @@
                          Intent intent = new Intent(context, PreferencesActivity.class);
                          startActivity(intent);
                      } else if (item.getItemId() == R.id.closesession) {
-                         //fragment = new Routes();
+                         //aviso estas seguro de querer cerrar sesión? si o no
                      }
 
                      //si no llega ningun fragment

@@ -834,6 +834,8 @@ components:
     AssistEvent:
       type: object
       properties:
+        id:
+          type: integer
         title: 
           type: string
         street: 
@@ -844,6 +846,9 @@ components:
         assistants:
           type: integer
           default: 0
+        link:
+          type: string
+          format: url
         date: 
           type: string
           example: "24-03-2001 00:00"

@@ -1,20 +1,18 @@
 package com.example.jparty.fragments;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
+
 import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.FragmentActivity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
@@ -22,14 +20,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.example.jparty.JsonArrayRequestWithAuthentication;
+
 import com.example.jparty.JsonObjectRequestWithAuthentication;
 import com.example.jparty.R;
 import com.example.jparty.Server;
-import com.example.jparty.fragments.Util;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -46,7 +41,6 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
     private TextView date;
     private TextView assist_count;
     public LinearLayout key_button;
-    private ImageView key_icon;
     public LinearLayout link_button;
     public ConstraintLayout recycler_view;
     private ImageView link_icon;
@@ -68,7 +62,6 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
         assist_count = ivi.findViewById(R.id.assist_count);
         music_name = ivi.findViewById(R.id.music_name);
         key_button = ivi.findViewById(R.id.key_button);
-        key_icon = ivi.findViewById(R.id.key_icon);
         link_button = ivi.findViewById(R.id.link_button);
         link_icon = ivi.findViewById(R.id.link_icon);
         image_view = ivi.findViewById(R.id.image_view);

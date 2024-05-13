@@ -473,11 +473,13 @@ def userAssistEvents(request):
             except UserLikes.DoesNotExist:
                 userLiked = False 
             json_response.append({
+                "id": event.id,
                 "title": event.title,
                 "street": event.street,
                 "price": str(event.price),
                 "assistants": assistants,
                 "date": event.date.strftime('%d-%m-%Y %H:%M'),
+                "link": event.link,
                 "secretkey": event.secretkey,
                 "userLiked": userLiked,
             })
