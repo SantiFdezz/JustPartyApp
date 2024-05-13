@@ -60,7 +60,8 @@
             android:id="@+id/access_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Añadir un evento"
+            android:text="@string/addevent"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
@@ -272,7 +273,7 @@
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginTop="5dp"
-            android:hint="saladeeventos.com"
+            android:hint="saladeeventos.com/images/img.jpg"
             android:textSize="12sp"
             app:layout_constraintWidth_percent="0.3"
             app:layout_constraintStart_toStartOf="@id/link_text"
@@ -296,7 +297,7 @@
             android:layout_marginTop="5dp"
             android:textSize="11sp"
             app:layout_constraintWidth_percent="0.35"
-            android:hint="saladeeventos.com/images/image.jpg"
+            android:hint="saladeeventos.com/"
             app:layout_constraintTop_toBottomOf="@id/link_image_text"
             app:layout_constraintStart_toStartOf="@id/link_image_text"
             />
@@ -329,8 +330,8 @@
             />
         <ImageButton
             android:id="@+id/circle_button"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/circle_button"
             app:layout_constraintEnd_toEndOf="@id/white_rectangle"
             app:layout_constraintStart_toStartOf="@id/white_rectangle"
@@ -338,8 +339,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/white_rectangle"/>
         <ImageView
             android:id="@+id/enter_icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/check_icon"
             app:layout_constraintEnd_toEndOf="@id/circle_button"
             app:layout_constraintStart_toStartOf="@id/circle_button"

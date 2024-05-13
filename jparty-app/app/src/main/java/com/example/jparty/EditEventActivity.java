@@ -78,10 +78,9 @@ public class EditEventActivity extends AppCompatActivity {
         if (eventId != -1) {
             getEventDetails(eventId);
             isGetDone = true;
-            access_text.setText("Editar un evento");
+            access_text.setText("Editar evento");
         } else {
             isGetDone = false;
-            access_text.setText("Crear un evento");
         }
         sk.setOnClickListener(v -> {
             if (sk.isChecked()) {
