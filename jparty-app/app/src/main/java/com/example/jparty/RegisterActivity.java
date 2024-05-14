@@ -239,6 +239,7 @@ public class RegisterActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = preferences.edit();
                         System.out.println(preferences);
                         editor.putString("VALID_USERNAME", username);
+                        editor.putBoolean("VALID_MANAGER", false);
                         editor.putString("VALID_EMAIL", email);
                         editor.putString("VALID_TOKEN", receivedToken);
                         editor.commit();

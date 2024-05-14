@@ -1,141 +1,188 @@
- package com.example.jparty;
+package com.example.jparty;
 
- import android.content.Context;
- import android.content.Intent;
- import android.content.SharedPreferences;
- import android.os.Bundle;
- import android.view.MenuItem;
- import android.view.View;
- import android.widget.TextView;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
- import com.example.jparty.fragments.AssistancesFragment;
- import com.example.jparty.fragments.HomeFragment;
- import com.example.jparty.fragments.LikeFragment;
- import com.example.jparty.fragments.OwnFragment;
- import com.google.android.material.navigation.NavigationView;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.example.jparty.fragments.AccountFragment;
+import com.example.jparty.fragments.AssistancesFragment;
+import com.example.jparty.fragments.HomeFragment;
+import com.example.jparty.fragments.LikeFragment;
+import com.example.jparty.fragments.OwnFragment;
+import com.google.android.material.navigation.NavigationView;
 
- import androidx.activity.OnBackPressedCallback;
- import androidx.annotation.NonNull;
- import androidx.appcompat.app.ActionBarDrawerToggle;
- import androidx.appcompat.app.AppCompatActivity;
- import androidx.appcompat.widget.Toolbar;
- import androidx.core.view.GravityCompat;
- import androidx.fragment.app.Fragment;
- import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
- public class MainActivity extends AppCompatActivity {
-     private Context context = this;
-     private DrawerLayout drawerLayout;
-     private Toolbar toolbar;
-     private boolean manager = true;
-     public static boolean isRunning;
+public class MainActivity extends AppCompatActivity {
+    private Context context = this;
+    private DrawerLayout drawerLayout;
+    private Toolbar toolbar;
+    private RequestQueue requestQueue;
+    public static boolean isRunning;
+    private boolean manager;
+    private String username, email;
 
-     @Override
-     protected void onResume() {
-         super.onResume();
-         isRunning = true;
-     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isRunning = true;
+    }
 
-     @Override
-     protected void onPause() {
-         super.onPause();
-         isRunning = false;
-     }
-     @Override
-     protected void onCreate(Bundle savedInstanceState) {//inicializamos los atributos
-         super.onCreate(savedInstanceState);
-         setContentView(R.layout.activity_main);
-         drawerLayout = findViewById(R.id.drawer_layout);
-         toolbar = findViewById(R.id.toolbar);
-         NavigationView navigationView = findViewById(R.id.nav_view);
-         SharedPreferences sharedPreferences = getSharedPreferences("JPARTY_APP_PREFS", MODE_PRIVATE);
-         String validEmail = sharedPreferences.getString("VALID_EMAIL", null);
-         String validUsername = sharedPreferences.getString("VALID_USERNAME", null);
-         //Cargamos el header del menu y lo editamos con los datos del usuario
-         View headerView = navigationView.getHeaderView(0);
-         TextView userNameTextView = headerView.findViewById(R.id.username_nav);
-         TextView emailTextView = headerView.findViewById(R.id.email_nav);
-         userNameTextView.setText(validUsername);
-         emailTextView.setText(validEmail);
-         // Obtén las preferencias compartidas
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isRunning = false;
+    }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-         // Verifica si es la primera vez que se abre la cuenta
-         boolean isFirstTime = sharedPreferences.getBoolean("isFirstTime", true);
+        initializeAttributes();
+        checkFirstTimeUser();
 
-         if (isFirstTime) {
-             // Si es la primera vez, inicia PreferencesActivity
-             Intent intent = new Intent(this, PreferencesActivity.class);
-             startActivity(intent);
+        setSupportActionBar(toolbar);
+        setupDrawerToggle();
+        setupNavigationView();
 
-             // Actualiza el valor de isFirstTime en las preferencias compartidas
-             SharedPreferences.Editor myEdit = sharedPreferences.edit();
-             myEdit.putBoolean("isFirstTime", false);
-             myEdit.apply();
-         } else {
-             setSupportActionBar(toolbar);
-             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                     this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-             drawerLayout.addDrawerListener(toggle);
-             toggle.syncState();
-             //   creamos el elemento que escuchara en cual boton clickamos de nuestro menú
-             navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-                 @Override
-                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                     // menu que lleva a sus actividades
-                     Fragment fragment = null;
-                     if (item.getItemId() == R.id.homescreen) {
-                         fragment = new HomeFragment();
-                     } else if (item.getItemId() == R.id.likedevents) {
-                         fragment = new LikeFragment();
-                     } else if (item.getItemId() == R.id.assistevents) {
-                         fragment = new AssistancesFragment();
-                     } else if ((item.getItemId() == R.id.own_events) && (manager == true)) {
-                         fragment = new OwnFragment();
-                     }else if(item.getItemId() == R.id.accountsettings){
-                         //fragment = new SavedPlacesFragment();
-                     } else if (item.getItemId() == R.id.preferences) {
-                         Intent intent = new Intent(context, PreferencesActivity.class);
-                         startActivity(intent);
-                     } else if (item.getItemId() == R.id.closesession) {
-                         //aviso estas seguro de querer cerrar sesión? si o no
-                     }
+        handleBackPress();
+    }
 
-                     //si no llega ningun fragment
-                     if (fragment != null) {
-                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                         drawerLayout.closeDrawer(GravityCompat.START);
-                         return true;
-                     }
-                     // Cierra el Navigation Drawer después de la selección
-                     return false;
-                 }
-             });
-             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+    private void initializeAttributes() {
+        requestQueue = Volley.newRequestQueue(this);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        toolbar = findViewById(R.id.toolbar);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("JPARTY_APP_PREFS", MODE_PRIVATE);
+        manager = sharedPreferences.getBoolean("VALID_MANAGER", false);
+        username = sharedPreferences.getString("VALID_USERNAME", "");
+        email = sharedPreferences.getString("VALID_EMAIL", "");
 
-         }
+    }
 
-         // Verificar si la actividad se inició con una acción específica
-             //getSupportFragmentManager().beginTransaction()
-              //       .replace(R.id.fragment_container, new LoginActivity())
-                //     .commit();
+    private void checkFirstTimeUser() {
+        SharedPreferences sharedPreferences = getSharedPreferences("JPARTY_APP_PREFS", MODE_PRIVATE);
+        boolean isFirstTime = sharedPreferences.getBoolean("isFirstTime", true);
 
-         //creamos metodo que cierre el menu y no la app
-         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-             //metodo que cierra el menu si se pulsa atrás.
-             @Override
-             public void handleOnBackPressed() {
-                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                     drawerLayout.closeDrawer(GravityCompat.START);
-                 } else {
-                     if (isEnabled()) {
-                         setEnabled(false);
-                         MainActivity.super.onBackPressed();
-                     }
-                 }
-             }
-         });
+        if (isFirstTime) {
+            Intent intent = new Intent(this, PreferencesActivity.class);
+            startActivity(intent);
 
-     }
- }
+            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+            myEdit.putBoolean("isFirstTime", false);
+            myEdit.apply();
+        }
+        loadHomeFragment();
+    }
+
+    private void setupDrawerToggle() {
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                updateMenuItemsVisibility();
+            }
+        };
+
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
+    private void updateMenuItemsVisibility() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        MenuItem ownEventsItem = navigationView.getMenu().findItem(R.id.own_events);
+        View headerView = navigationView.getHeaderView(0);
+        TextView userNameTextView = headerView.findViewById(R.id.username_nav);
+        TextView emailTextView = headerView.findViewById(R.id.email_nav);
+        // cogemos los datos del usuario
+        SharedPreferences sharedPreferences = getSharedPreferences("JPARTY_APP_PREFS", MODE_PRIVATE);
+        manager = sharedPreferences.getBoolean("VALID_MANAGER", false);
+        username = sharedPreferences.getString("VALID_USERNAME", "");
+        email = sharedPreferences.getString("VALID_EMAIL", "");
+        userNameTextView.setText(username);
+        emailTextView.setText(email);
+        ownEventsItem.setVisible(manager);
+    }
+
+    private void setupNavigationView() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
+    }
+
+    private boolean onNavigationItemSelected(MenuItem item) {
+        Fragment fragment = getFragmentForMenuItem(item);
+
+        if (fragment != null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        }
+
+        return false;
+    }
+
+    private Fragment getFragmentForMenuItem(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.homescreen) {
+            return new HomeFragment();
+        } else if (id == R.id.likedevents) {
+            return new LikeFragment();
+        } else if (id == R.id.assistevents) {
+            return new AssistancesFragment();
+        } else if (id == R.id.own_events) {
+            return manager ? new OwnFragment() : null;
+        } else if (id == R.id.accountsettings) {
+            return new AccountFragment();
+        } else if (id == R.id.preferences) {
+            startActivity(new Intent(context, PreferencesActivity.class));
+            return null;
+        } else if (id == R.id.closesession) {
+            closeSession();
+            return null;
+        } else {
+            return null;
+        }
+    }
+
+    private void loadHomeFragment() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+    }
+
+    private void handleBackPress() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    if (isEnabled()) {
+                        setEnabled(false);
+                        MainActivity.super.onBackPressed();
+                    }
+                }
+            }
+        });
+    }
+
+    public void closeSession() {
+        // Código para cerrar sesión
+    }
+
+    public void setManager(boolean manager) {
+        this.manager = manager;
+    }
+}
