@@ -202,10 +202,10 @@ def user(request):
         except:
             pass
         if client_password is not None:
-            if not check_password_format(client_password):
+            if not check_password_format(client_password): 
                 return JsonResponse({"response": "not_ok"}, status=400)
             user.password = bcrypt.hashpw(client_password.encode('utf8'), bcrypt.gensalt()).decode('utf8')
-        birthdate = datetime.strptime(client_birthdate, '%d-%m-%Y')
+        birthdate = datetime.strptime(client_birthdate, '%Y-%m-%d')
         formatted_birthdate = birthdate.strftime('%Y-%m-%d')
         user.username = client_username
         user.email = client_email
@@ -243,6 +243,8 @@ def events(request):
                 events = Events.objects.filter(manager=user_session.user,date__gte=timezone.now())
             except Events.DoesNotExist:
                 return JsonResponse({'error': 'Events not found'}, status=404)
+            if user_session.user.manager == False:
+                return JsonResponse({'error': 'Unauthorized'}, status=401)
         else:
             # Recibimos las preferencias del usuario // HOME SCREEN
             try:

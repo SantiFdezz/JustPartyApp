@@ -6,7 +6,7 @@
         <shape android:shape="rectangle">
             <size
                 android:width="300dp"
-                android:height="310dp" />
+                android:height="250dp" />
             <solid android:color="@color/purple" />
         </shape>
     </item>
@@ -16,7 +16,7 @@
         android:top="-80dp"
         android:right="100dp"
         android:left="100dp"
-        android:bottom="270dp">
+        android:bottom="215dp">
         <shape android:shape="oval">
             <solid android:color="#f8f4f4" />
         </shape>
