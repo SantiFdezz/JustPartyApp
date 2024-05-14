@@ -68,4 +68,8 @@
         <item>Clasica</item>
         <item>Dubstep</item>
     </string-array>
+    <string-array name="filter">
+        <item>Precio</item>
+        <item>Fecha</item>
+    </string-array>
 </resources>
