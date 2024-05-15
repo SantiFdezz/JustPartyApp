@@ -48,6 +48,7 @@ public class HomeFragment extends Fragment {
     private ImageView filter_button;
     private View filterLayout;
     private LinearLayout applyFilterButton;
+    private Spinner provinceSpinner, orderSpinner;
     private ProgressBar pb1;
 
     private Context mainActivityContext;
@@ -114,10 +115,39 @@ public class HomeFragment extends Fragment {
         applyFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Aquí puedes enviar la petición con los filtros seleccionados
-                // ...
+                provinceSpinner = filterLayout.findViewById(R.id.provinceSpinner);
+                orderSpinner = filterLayout.findViewById(R.id.order_spinner);
+                String province = provinceSpinner.getSelectedItem().toString();
+                String order_by = orderSpinner.getSelectedItem().toString();
+                String params = "?";
+                JsonArrayRequestWithAuthentication request = new JsonArrayRequestWithAuthentication
+                        (Request.Method.GET,
+                                Server.name + "/events"+params,
+                                null,
+                                new Response.Listener<JSONArray>() {
+                                    @Override
+                                    public void onResponse(JSONArray response) {
+                                        pb1.setVisibility(View.GONE);
+                                        for(int i=0; i<response.length(); i++) {
+                                            try {
+                                                JSONObject events = response.getJSONObject(i);
+                                                EventsData u_event = new EventsData(events);
+                                                eventsList.add(u_event);
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                }, new Response.ErrorListener() {
 
-                // Hacer el layout del filtro invisible
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                pb1.setVisibility(View.GONE); // Alternamos entre la visibilidad de la barra de progresión a nuestra conveniencia.
+                                error.printStackTrace();
+                            }
+                        }, getContext());
+                this.requestQueue.add(request);
                 filterLayout.setVisibility(View.GONE);
             }
         });
@@ -166,7 +196,7 @@ public class HomeFragment extends Fragment {
         PopupWindow filterPopup = new PopupWindow(filterView, width, height, true);
 
         // Configurar los elementos del PopupWindow
-        CheckBox checkBox = filterView.findViewById(R.id.checkBox);
+        CheckBox checkBox = filterView.findViewById(R.id.provinceSpinner);
         Spinner orderSpinner = filterView.findViewById(R.id.order_spinner);
         LinearLayout applyFilterButton = filterView.findViewById(R.id.apply_filter_button);
 

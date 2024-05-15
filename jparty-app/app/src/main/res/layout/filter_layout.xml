@@ -6,24 +6,22 @@
     android:orientation="vertical"
     android:background="@drawable/rounded_border"
     android:padding="16dp">
-    <LinearLayout
+    <TextView
+        android:id="@+id/province_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:layout_gravity="center"
+        android:text="Filtrar por"
+        android:layout_marginTop="5dp"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+    <Spinner
+        android:id="@+id/provinceSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/filter"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"/>
 
-            android:src="@drawable/key_icon" />
-
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Fiesta secreta"/>
-    </LinearLayout>
 
     <TextView
         android:id="@+id/order_by_text"
