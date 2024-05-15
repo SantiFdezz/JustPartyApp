@@ -7,7 +7,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -57,7 +56,7 @@ public class OwnViewHolder extends RecyclerView.ViewHolder {
     private List<OwnData> dataset;
 
     // Constructor del ViewHolder
-    public OwnViewHolder(@NonNull View ivi, List<OwnData> dataset, OwnAdapter adapter){
+    public OwnViewHolder(@NonNull View ivi, List<OwnData> dataset, OwnAdapter adapter) {
         super(ivi);
         // Encontrar los elementos de la vista
         event_name = ivi.findViewById(R.id.event_name);
@@ -88,7 +87,7 @@ public class OwnViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 final OwnData currentItem = dataset.get(getAdapterPosition());
                 boolean isAssisted = currentItem.getUserAssist();
-                String url = Server.name+"/user/assistevent/"+currentItem.getEvent_Id();
+                String url = Server.name + "/user/assistevent/" + currentItem.getEvent_Id();
                 int method = isAssisted ? Request.Method.DELETE : Request.Method.POST;
                 JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                         method, url, null,
@@ -119,7 +118,7 @@ public class OwnViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 final OwnData currentItem = dataset.get(getAdapterPosition());
                 boolean isLiked = currentItem.getUserLike();
-                String url = Server.name+"/user/likedevent/"+currentItem.getEvent_Id();
+                String url = Server.name + "/user/likedevent/" + currentItem.getEvent_Id();
                 int method = isLiked ? Request.Method.DELETE : Request.Method.POST;
                 JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                         method, url, null,
@@ -177,12 +176,12 @@ public class OwnViewHolder extends RecyclerView.ViewHolder {
         assist_count.setText(items.getAssistances().toString());
         if (items.getUserAssist()) {
             this.assist_icon.setImageResource(R.drawable.balloon_selected);
-        }else {
+        } else {
             this.assist_icon.setImageResource(R.drawable.balloon_unselected);
         }
         if (items.getUserLike()) {
             this.like_icon.setImageResource(R.drawable.like_selected);
-        }else {
+        } else {
             this.like_icon.setImageResource(R.drawable.like_unselected);
         }
         try {

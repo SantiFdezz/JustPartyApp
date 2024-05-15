@@ -4,14 +4,11 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.jparty.PreferencesData;
-import com.example.jparty.R;
-import com.example.jparty.fragments.Util;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.jparty.fragments.Util;
 
 import java.util.List;
 
@@ -42,11 +39,12 @@ public class PreferencesViewHolder extends RecyclerView.ViewHolder {
             }
         });
     }
+
     // Método para mostrar los datos en los elementos de la vista
     public void showData(PreferencesData items) {
         // Establecer el texto de los TextViews y la imagen del ImageView
         place_name.setText(items.getPlace_Name());
         isSelectedCheckBox.setChecked(items.getMusicSelected());
         Util.downloadBitmapToImageView(items.getImage_url(), this.imageView);
-     }
     }
+}

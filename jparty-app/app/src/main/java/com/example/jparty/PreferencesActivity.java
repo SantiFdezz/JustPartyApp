@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-//import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
@@ -59,7 +58,7 @@ public class PreferencesActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(JSONArray response) {
                                 pb1.setVisibility(View.GONE);
-                                for(int i=0; i<response.length(); i++) {
+                                for (int i = 0; i < response.length(); i++) {
                                     try {
                                         JSONObject preferences = response.getJSONObject(i);
                                         PreferencesData preference = new PreferencesData(preferences);
@@ -93,9 +92,9 @@ public class PreferencesActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         pb1.setVisibility(View.GONE);
-                                        if (MainActivity.isRunning){
+                                        if (MainActivity.isRunning) {
                                             finish();
-                                        }else {
+                                        } else {
                                             Intent intent = new Intent(PreferencesActivity.this, MainActivity.class);
                                             startActivity(intent);
                                             finish();

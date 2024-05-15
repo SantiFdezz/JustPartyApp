@@ -1,21 +1,15 @@
 package com.example.jparty;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-import com.example.jparty.fragments.AccountFragment;
-import com.example.jparty.fragments.AssistancesFragment;
-import com.example.jparty.fragments.HomeFragment;
-import com.example.jparty.fragments.LikeFragment;
-import com.example.jparty.fragments.OwnFragment;
-import com.google.android.material.navigation.NavigationView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -24,6 +18,20 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+import com.example.jparty.fragments.AccountFragment;
+import com.example.jparty.fragments.AssistancesFragment;
+import com.example.jparty.fragments.HomeFragment;
+import com.example.jparty.fragments.LikeFragment;
+import com.example.jparty.fragments.OwnFragment;
+import com.google.android.material.navigation.NavigationView;
+
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private Context context = this;
@@ -151,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(context, PreferencesActivity.class));
             return null;
         } else if (id == R.id.closesession) {
-            closeSession();
+            showLogoutConfirmationDialog();
             return null;
         } else {
             return null;
@@ -178,8 +186,54 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void closeSession() {
-        // Código para cerrar sesión
+    private void logoutUser() {
+        JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
+                Request.Method.DELETE,
+                Server.name + "/user/session",
+                new JSONObject(), // Objeto JSON vacío
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Manejar la respuesta del servidor
+                        Toast.makeText(context, "Sesión cerrada con éxito", Toast.LENGTH_SHORT).show();
+
+                        // Eliminar las SharedPreferences
+                        SharedPreferences preferences = context.getSharedPreferences("JPARTY_APP_PREFS", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.clear();
+                        editor.apply();
+
+                        // Redirigir al usuario a la pantalla de inicio de sesión
+                        Intent intent = new Intent(context, LandingActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Manejar el error
+                        Toast.makeText(context, "Error al cerrar la sesión", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                this
+        );
+        this.requestQueue.add(request);
+    }
+
+    private void showLogoutConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Cerrar sesión")
+                .setMessage("¿Estás seguro de que quieres cerrar la sesión?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Realizar la solicitud DELETE a user/session
+                        logoutUser();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     public void setManager(boolean manager) {

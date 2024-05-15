@@ -6,21 +6,28 @@
     android:orientation="vertical"
     android:background="@drawable/rounded_border"
     android:padding="16dp">
-    <TextView
-        android:id="@+id/province_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Filtrar por"
-        android:layout_marginTop="5dp"/>
 
-    <Spinner
-        android:id="@+id/provinceSpinner"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:entries="@array/filter"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"/>
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/worldicon" />
+
+        <Spinner
+            android:id="@+id/provinceSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:entries="@array/province_array"
+            android:layout_marginStart="10dp"/>
+    </LinearLayout>
 
 
     <TextView
@@ -28,16 +35,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textSize="15sp"
         android:text="Ordenar Por"
-        android:layout_marginTop="5dp"/>
-
-    <Spinner
-        android:id="@+id/order_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:entries="@array/filter"
-        android:layout_gravity="center"
         android:layout_marginTop="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <CheckBox
+            android:id="@+id/priceCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Precio" />
+
+        <CheckBox
+            android:id="@+id/dateCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fecha" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/apply_filter_button"

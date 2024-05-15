@@ -243,7 +243,7 @@
             android:textSize="11sp"
             app:layout_constraintWidth_percent="0.2"
             android:hint="01-04-2024"
-            android:inputType="date"
+            android:focusable="false"
             app:layout_constraintTop_toBottomOf="@id/eventdate_text"
             app:layout_constraintStart_toStartOf="@id/eventdate_text" />
         <EditText

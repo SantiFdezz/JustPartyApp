@@ -10,29 +10,28 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.RequestQueue;
 import com.example.jparty.DetailActivity;
 import com.example.jparty.R;
 
 import java.util.List;
 
-public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder>{
+public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
     // Lista de elementos recomendados y fragmento que contiene el RecyclerView
     private List<EventsData> dataset;
     private Fragment fragment;
     private Context context;
 
     // Constructor del adaptador
-    public EventsAdapter(List<EventsData> dataSet, Fragment fragment, Context context){
-        this.dataset=dataSet;
-        this.fragment=fragment;
-        this.context=context;
+    public EventsAdapter(List<EventsData> dataSet, Fragment fragment, Context context) {
+        this.dataset = dataSet;
+        this.fragment = fragment;
+        this.context = context;
     }
 
     // Método para crear un nuevo ViewHolder
     @NonNull
     @Override
-    public EventsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
+    public EventsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Inflar la vista de la celda del RecyclerView
         View eventsView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_cell, parent, false);
@@ -42,7 +41,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder>{
 
     // Método para vincular los datos con el ViewHolder
     @Override
-    public void onBindViewHolder(@NonNull EventsViewHolder holder, int position){
+    public void onBindViewHolder(@NonNull EventsViewHolder holder, int position) {
         // Obtener los datos para esta celda
         EventsData dataForThisCell = dataset.get(position);
         String link = dataForThisCell.getLink();
@@ -71,5 +70,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder>{
 
     // Método para obtener el número de elementos en el dataset
     @Override
-    public int getItemCount(){ return dataset.size(); }
+    public int getItemCount() {
+        return dataset.size();
+    }
 }

@@ -175,7 +175,7 @@ def event_id(request, id):
             "price": str(event.price), 
             "secretkey": event.secretkey,
             "link": event.link,
-            "date": event.date.strftime('%d-%m-%Y'),
+            "date": event.date.strftime('%Y-%m-%d'),
             "time": event.date.strftime('%H:%M'),
             "image": event.image,
             "description": event.description,

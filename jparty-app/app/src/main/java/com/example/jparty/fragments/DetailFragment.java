@@ -2,9 +2,6 @@ package com.example.jparty.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,16 +30,16 @@ import org.json.JSONObject;
 
 public class DetailFragment extends Fragment {
 
-private RequestQueue requestQueue;
-private ProgressBar pb1;
-private TextView eventName, eventLocation, organizedBy, description, assistants, price;
-private ImageView eventImage, userLiked, userAssist;
-private ImageButton userLikedBttn, backBttn;
-private LinearLayout userAssistBttn;
-private Context context;
-private String eventId;
-private boolean suserAssist, suserLiked;
-private int assistantss;
+    private RequestQueue requestQueue;
+    private ProgressBar pb1;
+    private TextView eventName, eventLocation, organizedBy, description, assistants, price;
+    private ImageView eventImage, userLiked, userAssist;
+    private ImageButton userLikedBttn, backBttn;
+    private LinearLayout userAssistBttn;
+    private Context context;
+    private String eventId;
+    private boolean suserAssist, suserLiked;
+    private int assistantss;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,13 +68,13 @@ private int assistantss;
             this.requestQueue = Volley.newRequestQueue(getContext());
             JsonArrayRequestWithAuthentication request = new JsonArrayRequestWithAuthentication
                     (Request.Method.GET,
-                            Server.name + "/event"+eventId,
+                            Server.name + "/event" + eventId,
                             null,
                             new Response.Listener<JSONArray>() {
                                 @Override
                                 public void onResponse(JSONArray response) {
                                     pb1.setVisibility(View.GONE);
-                                    for(int i=0; i<response.length(); i++) {
+                                    for (int i = 0; i < response.length(); i++) {
                                         try {
                                             JSONObject eventObject = response.getJSONObject(i);
                                             String manager = eventObject.getString("manager");
@@ -100,8 +99,8 @@ private int assistantss;
                                             eventLocation.setText(street + ", " + province);
                                             organizedBy.setText("Organizado Por: " + manager + " | " + date + "  " + time);
                                             description.setText(descriptionValue);
-                                            assistants.setText( assistantsValue + " personas Actualmente asistirán!");
-                                            price.setText(priceValue+"€");
+                                            assistants.setText(assistantsValue + " personas Actualmente asistirán!");
+                                            price.setText(priceValue + "€");
                                             try {
                                                 Util.downloadBitmapToImageView(image, eventImage);
                                             } catch (Exception e) {
@@ -116,7 +115,7 @@ private int assistantss;
                                                 public void onClick(View v) {
                                                     boolean isAssisted = getUserAssist();
                                                     Integer assistantsValue = getAssistants();
-                                                    String url = Server.name+"/user/assistevent"+eventId;
+                                                    String url = Server.name + "/user/assistevent" + eventId;
                                                     int method = isAssisted ? Request.Method.DELETE : Request.Method.POST;
                                                     JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                                                             method, url, null,
@@ -124,7 +123,7 @@ private int assistantss;
                                                                 @Override
                                                                 public void onResponse(JSONObject response) {
                                                                     setUserAssist(!isAssisted);
-                                                                    int assistantsValues = !isAssisted ? (assistantsValue + 1) :  (assistantsValue - 1);
+                                                                    int assistantsValues = !isAssisted ? (assistantsValue + 1) : (assistantsValue - 1);
                                                                     if (assistantsValues < 0) {
                                                                         assistantsValues = 0;
                                                                     }
@@ -150,7 +149,7 @@ private int assistantss;
                                                 @Override
                                                 public void onClick(View v) {
                                                     boolean isLiked = getUserLiked();
-                                                    String url = Server.name+"/user/likedevent"+eventId;
+                                                    String url = Server.name + "/user/likedevent" + eventId;
                                                     int method = isLiked ? Request.Method.DELETE : Request.Method.POST;
                                                     JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                                                             method, url, null,
@@ -199,25 +198,29 @@ private int assistantss;
         }
 
 
-
         return view;
     }
 
     public void setUserAssist(boolean suserAssist) {
         this.suserAssist = suserAssist;
     }
+
     public void setUserLiked(boolean suserLiked) {
         this.suserLiked = suserLiked;
     }
+
     public Boolean getUserAssist() {
         return suserAssist;
     }
+
     public Boolean getUserLiked() {
         return suserLiked;
     }
+
     public void setAssistants(int assistantss) {
         this.assistantss = assistantss;
     }
+
     public int getAssistants() {
         return assistantss;
     }

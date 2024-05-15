@@ -1,6 +1,5 @@
 package com.example.jparty;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,12 +10,16 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,11 +53,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = userEmail.getText().toString();
                 String password = userPassword.getText().toString();
-                if (email.isEmpty()){
+                if (email.isEmpty()) {
                     userEmail.setError("Rellene el campo de email");
-                } else if (password.isEmpty()){
+                } else if (password.isEmpty()) {
                     userPassword.setError("Rellene el campo de contraseña");
-                } else if (validateLogin(email, password)){
+                } else if (validateLogin(email, password)) {
                     pb1.setVisibility(View.VISIBLE);
                     loginUser(email, password);
                 }
@@ -70,8 +73,8 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private boolean validateLogin(String email, String password){
-        if (!email.contains("@") || email.length() < 8){
+    private boolean validateLogin(String email, String password) {
+        if (!email.contains("@") || email.length() < 8) {
             userEmail.setError("Formato inválido de email");
             return false;
         }
@@ -134,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             pb1.setVisibility(View.GONE);
                             int serverCode = error.networkResponse.statusCode;
-                            Toast.makeText(context, "Estado de respuesta "+serverCode, Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
                         }
                         error.printStackTrace();
                     }
@@ -170,7 +173,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(context, "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
                         } else {
                             int serverCode = error.networkResponse.statusCode;
-                            Toast.makeText(context, "Estado de respuesta "+serverCode, Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
                         }
                         error.printStackTrace();
                     }

@@ -15,11 +15,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,17 +30,9 @@ import org.json.JSONObject;
 import java.util.Calendar;
 
 public class EditEventActivity extends AppCompatActivity {
-    private EditText eventName;
-    private EditText eventLocation;
-    private Spinner eventProvince;
-    private Spinner eventMusicGenre;
-    private EditText eventPrice;
-    private EditText eventDate;
+    private Spinner eventProvince, eventMusicGenre;
+    private EditText eventName, eventLocation, eventDate, eventPrice, eventTime, eventLink, eventImage, eventDescription;
     private TextView access_text;
-    private EditText eventTime;
-    private EditText eventLink;
-    private EditText eventImage;
-    private EditText eventDescription;
     private ImageButton circle_button, back_arrow;
     private boolean isGetDone = false;
     private RequestQueue requestQueue;
@@ -102,20 +90,20 @@ public class EditEventActivity extends AppCompatActivity {
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 String month, day;
                                 // si el mes o el dia es menor a 10 se le añade un 0 delante ("05/03/2000")
-                                if (monthOfYear < 10){
+                                if (monthOfYear < 10) {
                                     month = "0" + (monthOfYear + 1);
                                 } else {
                                     month = String.valueOf(monthOfYear + 1);
                                 }
-                                if (dayOfMonth < 10){
+                                if (dayOfMonth < 10) {
                                     day = "0" + dayOfMonth;
                                 } else {
                                     day = String.valueOf(dayOfMonth);
                                 }
                                 Calendar selectedDate = Calendar.getInstance();
                                 selectedDate.set(year, monthOfYear, dayOfMonth);
-                                if (selectedDate.after(Calendar.getInstance())) {
-                                    eventDate.setText(year + "-" + month + "-" + day );
+                                if (selectedDate.before(Calendar.getInstance())) {
+                                    eventDate.setText(year + "-" + month + "-" + day);
                                 } else {
                                     eventDate.setText("");
                                 }
@@ -142,12 +130,12 @@ public class EditEventActivity extends AppCompatActivity {
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 String hour, min;
                                 // si la hora o el minuto es menor a 10 se le añade un 0 delante ("05:03")
-                                if (hourOfDay < 10){
+                                if (hourOfDay < 10) {
                                     hour = "0" + hourOfDay;
                                 } else {
                                     hour = String.valueOf(hourOfDay);
                                 }
-                                if (minute < 10){
+                                if (minute < 10) {
                                     min = "0" + minute;
                                 } else {
                                     min = String.valueOf(minute);
@@ -168,17 +156,19 @@ public class EditEventActivity extends AppCompatActivity {
         eventMusicGenre.setAdapter(adapter);
 
         circle_button.setOnClickListener(v -> {
+            validateEventDetails();
             // Código para enviar la solicitud de creación/edicion de evento de evento
             if (isGetDone) {
                 // Si se ha hecho el GET antes, hacer una solicitud PUT
                 createEvent(1, ("/event/" + eventId));
             } else {
                 // Si no se ha hecho el GET antes, hacer una solicitud POST
-                createEvent(2,"/events");
+                createEvent(2, "/events");
             }
 
         });
     }
+
     private void getEventDetails(int eventId) {
         String url = Server.name + "/event/" + eventId;
 
@@ -208,6 +198,7 @@ public class EditEventActivity extends AppCompatActivity {
                             eventImage.setText(eventObject.getString("image"));
                             eventDescription.setText(eventObject.getString("description"));
                             if (eventObject.getString("secretkey") != "null") {
+                                sk.setChecked(true);
                                 secretkey.setEnabled(true);
                                 secretkey.setText(eventObject.getString("secretkey"));
                             }
@@ -224,7 +215,7 @@ public class EditEventActivity extends AppCompatActivity {
                             Toast.makeText(EditEventActivity.this, "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
                         } else {
                             int serverCode = error.networkResponse.statusCode;
-                            Toast.makeText(EditEventActivity.this, "Estado de respuesta "+serverCode, Toast.LENGTH_LONG).show();
+                            Toast.makeText(EditEventActivity.this, "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
                         }
                         error.printStackTrace();
                     }
@@ -235,6 +226,7 @@ public class EditEventActivity extends AppCompatActivity {
         // Añadir la solicitud a la cola de solicitudes
         this.requestQueue.add(request);
     }
+
     private void createEvent(int method, String url) {
         String urlu = Server.name + url;
         int methodu;
@@ -243,6 +235,7 @@ public class EditEventActivity extends AppCompatActivity {
         } else {
             methodu = Request.Method.POST;
         }
+        validateEventDetails();
         // Crear el objeto JSON con los detalles del evento
         JSONObject eventDetails = new JSONObject();
         try {
@@ -288,5 +281,31 @@ public class EditEventActivity extends AppCompatActivity {
 
         // Añadir la solicitud a la cola de solicitudes
         this.requestQueue.add(request);
+    }
+    private boolean validateEventDetails() {
+        if (eventName.getText().toString().isEmpty() ||
+                eventLocation.getText().toString().isEmpty() ||
+                eventPrice.getText().toString().isEmpty() ||
+                eventDate.getText().toString().isEmpty() ||
+                eventTime.getText().toString().isEmpty() ||
+                eventLink.getText().toString().isEmpty() ||
+                eventImage.getText().toString().isEmpty() ||
+                eventDescription.getText().toString().isEmpty()) {
+            Toast.makeText(EditEventActivity.this, "Por favor, rellene todos los campos", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (sk.isChecked() && secretkey.getText().toString().isEmpty()) {
+            Toast.makeText(EditEventActivity.this, "Por favor, rellene todos los campos", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (eventProvince.getSelectedItemPosition() == 0){
+            Toast.makeText(EditEventActivity.this, "Por favor, seleccione una provincia", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (eventMusicGenre.getSelectedItemPosition() == 0){
+            Toast.makeText(EditEventActivity.this, "Por favor, seleccione una provincia", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
 }

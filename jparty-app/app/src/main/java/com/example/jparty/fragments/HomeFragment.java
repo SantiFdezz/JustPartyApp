@@ -3,23 +3,21 @@ package com.example.jparty.fragments;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -48,10 +46,10 @@ public class HomeFragment extends Fragment {
     private ImageView filter_button;
     private View filterLayout;
     private LinearLayout applyFilterButton;
-    private Spinner provinceSpinner, orderSpinner;
+    private Spinner provinceSpinner;
+    private CheckBox priceCheckBox, dateCheckBox;
     private ProgressBar pb1;
-
-    private Context mainActivityContext;
+    private String params;
 
     // Método que se llama para crear la vista del fragmento
     @Override
@@ -65,7 +63,6 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view_item);
         filter_button = view.findViewById(R.id.filter_button);
         filterLayout = view.findViewById(R.id.filter_layout);
-        applyFilterButton = view.findViewById(R.id.apply_filter_button);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         pb1.setVisibility(View.VISIBLE);
@@ -77,15 +74,32 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.requestQueue = Volley.newRequestQueue(getContext());
+        getEvents("");
+        filter_button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                showFilterDialog();
+            }
+        });
+    }
+
+    private void getEvents(String params) {
+        // Construir la URL de la solicitud
+        String url = Server.name + "/events";
+        if (!params.isEmpty()) {
+            url += params;
+        }
         JsonArrayRequestWithAuthentication request = new JsonArrayRequestWithAuthentication
                 (Request.Method.GET,
-                        Server.name + "/events",
+                        url,
                         null,
                         new Response.Listener<JSONArray>() {
                             @Override
                             public void onResponse(JSONArray response) {
                                 pb1.setVisibility(View.GONE);
-                                for(int i=0; i<response.length(); i++) {
+                                eventsList.clear();
+                                for (int i = 0; i < response.length(); i++) {
                                     try {
                                         JSONObject events = response.getJSONObject(i);
                                         EventsData u_event = new EventsData(events);
@@ -104,115 +118,90 @@ public class HomeFragment extends Fragment {
                         error.printStackTrace();
                     }
                 }, getContext());
-        this.requestQueue.add(request);
-        filter_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                filterLayout.setVisibility(View.VISIBLE);
-            }
-        });
-
-        applyFilterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                provinceSpinner = filterLayout.findViewById(R.id.provinceSpinner);
-                orderSpinner = filterLayout.findViewById(R.id.order_spinner);
-                String province = provinceSpinner.getSelectedItem().toString();
-                String order_by = orderSpinner.getSelectedItem().toString();
-                String params = "?";
-                JsonArrayRequestWithAuthentication request = new JsonArrayRequestWithAuthentication
-                        (Request.Method.GET,
-                                Server.name + "/events"+params,
-                                null,
-                                new Response.Listener<JSONArray>() {
-                                    @Override
-                                    public void onResponse(JSONArray response) {
-                                        pb1.setVisibility(View.GONE);
-                                        for(int i=0; i<response.length(); i++) {
-                                            try {
-                                                JSONObject events = response.getJSONObject(i);
-                                                EventsData u_event = new EventsData(events);
-                                                eventsList.add(u_event);
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                        adapter.notifyDataSetChanged();
-                                    }
-                                }, new Response.ErrorListener() {
-
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                pb1.setVisibility(View.GONE); // Alternamos entre la visibilidad de la barra de progresión a nuestra conveniencia.
-                                error.printStackTrace();
-                            }
-                        }, getContext());
-                this.requestQueue.add(request);
-                filterLayout.setVisibility(View.GONE);
-            }
-        });
-
-        // Establecer un TouchListener en la vista raíz
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // Verificar si el filterLayout es visible
-                if (filterLayout.getVisibility() == View.VISIBLE) {
-                    // Obtener las coordenadas del clic
-                    float x = event.getX();
-                    float y = event.getY();
-
-                    // Obtener la ubicación y las dimensiones del filterLayout
-                    int[] location = new int[2];
-                    filterLayout.getLocationOnScreen(location);
-                    int left = location[0];
-                    int top = location[1];
-                    int right = left + filterLayout.getWidth();
-                    int bottom = top + filterLayout.getHeight();
-
-                    // Verificar si el clic fue fuera del filterLayout
-                    if (x < left || x > right || y < top || y > bottom) {
-                        // Si el clic fue fuera del filterLayout, hacerlo invisible
-                        filterLayout.setVisibility(View.GONE);
-                        return true;  // Consumir el evento de toque
-                    }
-                }
-
-                // Si el filterLayout no es visible o el clic fue dentro del filterLayout, no consumir el evento de toque
-                return false;
-            }
-        });
+        requestQueue.add(request);
     }
+
     private void showFilterDialog() {
         // Inflar el layout del filtro
         LayoutInflater inflater = getLayoutInflater();
         View filterView = inflater.inflate(R.layout.filter_layout, null);
 
-        // Calcular el ancho y alto para el PopupWindow
-        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.5);
-        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.3);
+        // Configurar los elementos del filtro
+        provinceSpinner = filterView.findViewById(R.id.provinceSpinner);
+        priceCheckBox = filterView.findViewById(R.id.priceCheckBox);
+        dateCheckBox = filterView.findViewById(R.id.dateCheckBox);
+        applyFilterButton = filterView.findViewById(R.id.apply_filter_button);
 
-        // Crear el PopupWindow
-        PopupWindow filterPopup = new PopupWindow(filterView, width, height, true);
+        String selectedProvince = provinceSpinner.getSelectedItem().toString();
+        boolean isPriceChecked = priceCheckBox.isChecked();
+        boolean isDateChecked = dateCheckBox.isChecked();
+        // Crear el AlertDialog
+        AlertDialog filterDialog = new AlertDialog.Builder(getContext())
+                .setView(filterView)
+                .create();
+        priceCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // Si priceCheckBox está marcado, deshabilitar dateCheckBox
+                if (isChecked) {
+                    dateCheckBox.setEnabled(false);
+                } else {
+                    dateCheckBox.setEnabled(true);
+                }
+            }
+        });
 
-        // Configurar los elementos del PopupWindow
-        CheckBox checkBox = filterView.findViewById(R.id.provinceSpinner);
-        Spinner orderSpinner = filterView.findViewById(R.id.order_spinner);
-        LinearLayout applyFilterButton = filterView.findViewById(R.id.apply_filter_button);
-
+        dateCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // Si dateCheckBox está marcado, deshabilitar priceCheckBox
+                if (isChecked) {
+                    priceCheckBox.setEnabled(false);
+                } else {
+                    priceCheckBox.setEnabled(true);
+                }
+            }
+        });
         // Configurar el botón de aplicar filtro
         applyFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Aquí puedes enviar la petición con los filtros seleccionados
-                // ...
+                // Construir los parámetros de la URL
+                StringBuilder params = new StringBuilder("?");
+                String selectedProvince = provinceSpinner.getSelectedItem().toString();
+                boolean isPriceChecked = priceCheckBox.isChecked();
+                boolean isDateChecked = dateCheckBox.isChecked();
 
-                // Cerrar el PopupWindow
-                filterPopup.dismiss();
+                if (!selectedProvince.equals("0") && !selectedProvince.equals("Seleccione provincia")) {
+                    params.append("province=").append(selectedProvince);
+                }
+
+                if (isPriceChecked) {
+                    if (params.length() > 1) {
+                        params.append("&");
+                    }
+                    params.append("order_by=price");
+                }
+
+                if (isDateChecked) {
+                    if (params.length() > 1) {
+                        params.append("&");
+                    }
+                    params.append("order_by=date");
+                }
+
+                // Si no se seleccionó ningún filtro, establecer params como null
+                if (params.length() == 1) {
+                    params = new StringBuilder();
+                }
+
+                // Llamar a getEvents con los parámetros
+                getEvents(params.toString());
+                filterDialog.dismiss();
             }
         });
 
-        // Mostrar el PopupWindow justo encima del botón de filtro
-        filterPopup.showAsDropDown(filter_button, 0, -height);
+        // Mostrar el AlertDialog
+        filterDialog.show();
     }
 }

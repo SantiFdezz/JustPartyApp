@@ -3,16 +3,14 @@ package com.example.jparty.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
-
 import android.view.View;
 import android.widget.ImageButton;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
@@ -20,7 +18,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-
 import com.example.jparty.JsonObjectRequestWithAuthentication;
 import com.example.jparty.R;
 import com.example.jparty.Server;
@@ -53,7 +50,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
     private List<EventsData> dataset;
 
     // Constructor del ViewHolder
-    public EventsViewHolder(@NonNull View ivi, List<EventsData> dataset, EventsAdapter adapter){
+    public EventsViewHolder(@NonNull View ivi, List<EventsData> dataset, EventsAdapter adapter) {
         super(ivi);
         // Encontrar los elementos de la vista
         event_name = ivi.findViewById(R.id.event_name);
@@ -78,7 +75,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 final EventsData currentItem = dataset.get(getAdapterPosition());
                 boolean isAssisted = currentItem.getUserAssist();
-                String url = Server.name+"/user/assistevent/"+currentItem.getEvent_Id();
+                String url = Server.name + "/user/assistevent/" + currentItem.getEvent_Id();
                 int method = isAssisted ? Request.Method.DELETE : Request.Method.POST;
                 JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                         method, url, null,
@@ -108,7 +105,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 final EventsData currentItem = dataset.get(getAdapterPosition());
                 boolean isLiked = currentItem.getUserLike();
-                String url = Server.name+"/user/likedevent/"+currentItem.getEvent_Id();
+                String url = Server.name + "/user/likedevent/" + currentItem.getEvent_Id();
                 int method = isLiked ? Request.Method.DELETE : Request.Method.POST;
                 JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                         method, url, null,
@@ -158,12 +155,12 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
         assist_count.setText(items.getAssistances().toString());
         if (items.getUserAssist()) {
             this.assist_icon.setImageResource(R.drawable.balloon_selected);
-        }else {
+        } else {
             this.assist_icon.setImageResource(R.drawable.balloon_unselected);
         }
         if (items.getUserLike()) {
             this.like_icon.setImageResource(R.drawable.like_selected);
-        }else {
+        } else {
             this.like_icon.setImageResource(R.drawable.like_unselected);
         }
         try {

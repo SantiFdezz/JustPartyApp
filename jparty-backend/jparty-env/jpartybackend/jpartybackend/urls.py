@@ -16,5 +16,3 @@ urlpatterns = [
     path('user/likedevent/<int:id>', event_endpoints.userLikedEvent_id),
 ]
 
-
-
