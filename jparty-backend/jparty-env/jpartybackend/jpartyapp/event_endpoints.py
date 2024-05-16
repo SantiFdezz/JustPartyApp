@@ -1,220 +1,11 @@
 from django.http import JsonResponse
-import secrets
-import bcrypt
 from django.utils import timezone
 from django.core.exceptions import PermissionDenied
 from django.views.decorators.csrf import csrf_exempt
-from .models import User,UserSession, UserPreferences, UserLikes, UserAssist, MusicGenre, Events
+from .models import User, UserAssist, UserLikes, Events, UserPreferences, MusicGenre
 import json
 from datetime import datetime
-
-# Metodo de autenticación del sessionToken de usuario
-def authenticate_user(request):
-    session_token = request.headers.get('SessionToken', None)
-    if session_token is None:
-        raise PermissionDenied('Unauthorized')
-    try:
-        user_session = UserSession.objects.get(token=session_token)
-    except UserSession.DoesNotExist:
-        raise PermissionDenied('Unauthorized')
-    return user_session
-
-def authenticate_manager(request):
-    session_token = request.headers.get('SessionToken', None)
-    if session_token is None:
-        raise PermissionDenied('Unauthorized')
-    try:
-        user_session = UserSession.objects.get(token=session_token)
-        if not user_session.user.manager:
-            raise PermissionDenied('Unauthorized')
-    except UserSession.DoesNotExist:
-        raise PermissionDenied('Unauthorized')
-    return user_session
-# Comprobaciones de formato
-def check_email_format(email):
-    if email is None or '@' not in email:
-        return False
-    return True
-
-def check_password_format(password):
-    if len(password) < 8:
-        return False
-    return True
-
-def check_image_format(image):
-    if image is not None and ('http://' not in image and 'https://' not in image) and (
-            '.jpg' not in image and '.png' not in image and '.webp' not in image):
-        return False
-    return True
-
-def check_link_format(link):
-    if link is not None and ('http://' not in link and 'https://' not in link) and (
-            '.com' not in link and '.es' not in link and '.org' not in link):
-        return False
-    return True
-
-##TESTEADO
-@csrf_exempt
-def sessions(request):
-    if request.method == 'POST': 
-        try:
-            data = json.loads(request.body)
-            client_email = data['email']
-            client_password = data['password']
-        except KeyError:
-            return JsonResponse({"response": "not_ok"}, status=400)
-        try:
-            user = User.objects.get(email=client_email)
-        except User.DoesNotExist:
-            return JsonResponse({"response": "Email no existente"}, status=404)
-        if bcrypt.checkpw(client_password.encode('utf8'), user.password.encode('utf8')):
-            # json_password y user.encrypted_password coinciden
-            if 'SessionToken' in request.headers and request.headers['SessionToken'] is not None:
-                try:
-                    user_session = authenticate_user(request)
-                    return JsonResponse({"response": "ok", "SessionToken": user_session.token}, status=200)
-                except PermissionDenied:
-                    return JsonResponse({"response": "Unauthorized"}, status=401)
-            else:
-                random_token = secrets.token_hex(10)
-                session = UserSession(user=user, token=random_token)
-                session.save()
-                return JsonResponse({"response": "ok", "SessionToken": random_token}, status=201)
-        else:
-            # No coinciden
-            return JsonResponse({"response": "Unauthorized"}, status=401)
-    elif request.method == 'DELETE': 
-        try:
-            user_session = authenticate_user(request)
-        except PermissionDenied:
-            return JsonResponse({'response': 'Unauthorized'}, status=401)
-        user_session.delete()
-        return JsonResponse({"response": "Session Closed"}, status=200)
-    else:
-        return JsonResponse({"response": "Method Not Allowed"}, status=405)
-
-@csrf_exempt
-def userManager(request):
-    if request.method == 'PUT':
-        try:
-            user_session = authenticate_user(request)
-        except PermissionDenied:
-            return JsonResponse({'error': 'Unauthorized'}, status=401)
-        try:
-            user = User.objects.get(id=user_session.user.id)
-        except User.DoesNotExist:
-            return JsonResponse({'error': 'User not found'}, status=404)
-        if user.manager == True:
-            user.manager = False
-        else:
-            user.manager = True
-        user.save()
-        return JsonResponse({'response': 'ok'}, status=200)
-    else:
-        return JsonResponse({'message': 'Method not allowed'}, status=405)
-    
-def userUsername(request):
-    if request.method == 'GET':
-        try:
-            user_session = authenticate_user(request)
-        except PermissionDenied:
-            return JsonResponse({'error': 'Unauthorized'}, status=401)
-        try:
-            user = User.objects.get(id=user_session.user.id)
-        except User.DoesNotExist:
-            return JsonResponse({'error': 'User not found'}, status=404)
-        return JsonResponse({'username': user.username}, status=200)
-    else:
-        return JsonResponse({'message': 'Method not allowed'}, status=405)
-# TESTEADO
-@csrf_exempt
-def user(request):
-    # Registrar un usuario 
-    if request.method == 'POST':  
-        try:
-            data = json.loads(request.body)
-            client_username = data['username']
-            client_email = data['email']
-            client_province = data['province']
-            client_password = data['password']
-            client_birthdate = data['birthdate']
-        except KeyError:
-            return JsonResponse({"response": "not_ok"}, status=400)
-        if not check_email_format(client_email):
-            return JsonResponse({"response": "not_ok"}, status=400)
-        if not check_password_format(client_password):
-            return JsonResponse({"response": "not_ok"}, status=400)
-        try:
-            User.objects.get(email=client_email)
-            return JsonResponse({"response": "already_exist"}, status=409)
-        except:
-            pass
-        salted_and_hashed_pass = bcrypt.hashpw(client_password.encode('utf8'), bcrypt.gensalt()).decode('utf8')
-        new_user = User(username=client_username, email=client_email, password=salted_and_hashed_pass, province=client_province,
-                        birthdate=client_birthdate, manager=False)
-        new_user.save()
-        # Crear una sesión inicial
-        random_token = secrets.token_hex(10)
-        session = UserSession(user=new_user, token=random_token)
-        session.save()
-        return JsonResponse({"response": "ok", "SessionToken": random_token}, status=201)
-    # Conseguir un usuario
-    elif request.method == 'GET':
-        try:
-            user_session = authenticate_user(request)
-            user_data = User.objects.get(id=user_session.user.id)
-            json_response = user_data.to_json()
-            return JsonResponse(json_response, safe=False, status=200)
-        except PermissionDenied:
-            return JsonResponse({'error': 'Unauthorized'}, status=401)
-    elif request.method == 'DELETE':
-        try:
-            user_session = authenticate_user(request)
-        except PermissionDenied:
-            return JsonResponse({'error': 'Unauthorized'}, status=401)
-        try:
-            user = User.objects.get(id=user_session.user.id)
-            user.delete()
-            return JsonResponse({'response': 'ok'}, status=200)
-        except User.DoesNotExist:
-            return JsonResponse({'response': 'not_ok'}, status=404)
-    elif request.method == 'PUT':
-        try:
-            user_session = authenticate_user(request)
-        except PermissionDenied:
-            return JsonResponse({'error': 'Unauthorized'}, status=401)
-        user = User.objects.get(id=user_session.user.id)
-        try:
-            data = json.loads(request.body)
-            client_username = data['username']
-            client_email = data['email']
-            if not check_email_format(client_email):
-                return JsonResponse({"response": "not_ok"}, status=400)
-            client_province = data['province']
-            client_birthdate = data['birthdate']
-            client_password = data['password']
-        except KeyError:
-            return JsonResponse({"response": "not_ok"}, status=400)
-        try:
-            User.objects.get(email=client_email)
-            if user.email != client_email:
-                return JsonResponse({"response": "already_exist"}, status=409)
-        except:
-            pass
-        if client_password is not None:
-            if not check_password_format(client_password): 
-                return JsonResponse({"response": "not_ok"}, status=400)
-            user.password = bcrypt.hashpw(client_password.encode('utf8'), bcrypt.gensalt()).decode('utf8')
-        birthdate = datetime.strptime(client_birthdate, '%Y-%m-%d')
-        formatted_birthdate = birthdate.strftime('%Y-%m-%d')
-        user.username = client_username
-        user.email = client_email
-        user.province = client_province
-        user.birthdate = formatted_birthdate
-        user.save()
-        return JsonResponse({'message': 'User updated'}, status=200)
-    else:
-        return JsonResponse({"response": "Method Not Allowed"}, status=405)
+from .common import authenticate_user, authenticate_manager, check_link_format, check_image_format
 
 
 @csrf_exempt
@@ -280,6 +71,7 @@ def events(request):
         for event in events:
             #if  (sort_by is not None and'secretkey' in sort_by and event.secretkey is not None) or (sort_by is not None 'secretkey' not in sort_by):
             assistants = UserAssist.objects.filter(event=event).count()
+            manager = User.objects.get(id=event.manager.id)
             try:
                 userLiked = UserLikes.objects.get(user=user_session.user, event=event)
                 userLiked = True
@@ -293,6 +85,7 @@ def events(request):
             music_genre = MusicGenre.objects.get(id=event.music_genre.id)
             json_response.append({
                 "id": event.id,
+                "manager": manager.email,
                 "title": event.title,
                 "province": event.province,
                 "music_genre": music_genre.name,
@@ -382,7 +175,7 @@ def event_id(request, id):
             "price": str(event.price), 
             "secretkey": event.secretkey,
             "link": event.link,
-            "date": event.date.strftime('%d-%m-%Y'),
+            "date": event.date.strftime('%Y-%m-%d'),
             "time": event.date.strftime('%H:%M'),
             "image": event.image,
             "description": event.description,
@@ -401,7 +194,7 @@ def event_id(request, id):
             event = Events.objects.get(id=id)
         except Events.DoesNotExist:
             return JsonResponse({'error': 'Event not found'}, status=404)
-         # Comprobamos si el usuario es el administrador del evento
+        # Comprobamos si el usuario es el administrador del evento
         if event.manager.id != user_session.user.id:
             return JsonResponse({'error': 'Unauthorized'}, status=401)
         
@@ -447,7 +240,7 @@ def event_id(request, id):
             event = Events.objects.get(id=id)
         except Events.DoesNotExist:
             return JsonResponse({'error': 'Event not found'}, status=404)
-         # Comprobamos si el usuario es el administrador del evento
+        # Comprobamos si el usuario es el administrador del evento
         if event.manager.id != user_session.user.id:
             return JsonResponse({'error': 'Unauthorized'}, status=401)
         event.delete()
@@ -600,43 +393,3 @@ def userLikedEvent_id(request, id):
         return JsonResponse({'message': 'Event unliked'}, status=200)
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=405)
-
-@csrf_exempt    
-def userPreferences(request):
-    #TESTEADO
-    if request.method == 'GET':
-        try:
-            #AUTENTICAMOS AL USUARIO
-            user_session = authenticate_user(request)
-        except PermissionDenied:
-            return JsonResponse({'error': 'Unauthorized'}, status=401)
-        #COGEMOS LOS GENEROS Y PASAMOS A LISTA LOS SELECCIONADOS POR ID
-        musicGenre = MusicGenre.objects.all()
-        preferences = UserPreferences.objects.filter(user=user_session.user).values_list('music_genre__id', flat=True)
-        json_response = []
-        for music in musicGenre:
-            json_response.append({
-                "id": music.id,
-                "name": music.name,
-                "image": music.image,
-                "selected": music.id in preferences,
-            })
-            
-        return JsonResponse(json_response, safe=False, status=200)
-    elif request.method == 'PUT':
-        try:
-            #AUTENTICAMOS AL USUARIO
-            user_session = authenticate_user(request)
-        except PermissionDenied:
-            return JsonResponse({'error': 'Unauthorized'}, status=401)
-        data = json.loads(request.body)
-        selected_ids = data.get('selected', [])
-        UserPreferences.objects.filter(user=user_session.user).delete()
-        for genre_id in selected_ids:
-            genre = MusicGenre.objects.get(id=genre_id)
-            UserPreferences.objects.create(user=user_session.user, music_genre=genre)
-        return JsonResponse({'message': 'User preferences updated'}, status=200)
-    else:
-        return JsonResponse({'message': 'Method not allowed'}, status=405)
-
-

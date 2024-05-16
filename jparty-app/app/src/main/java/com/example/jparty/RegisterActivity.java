@@ -45,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
     private final Context context = this;
     private ImageButton loginPage;
     private ProgressBar pb1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,18 +72,18 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 String month, day;
                                 // si el mes o el dia es menor a 10 se le añade un 0 delante ("05/03/2000")
-                                if (monthOfYear < 10){
+                                if (monthOfYear < 10) {
                                     month = "0" + (monthOfYear + 1);
                                 } else {
                                     month = String.valueOf(monthOfYear + 1);
                                 }
-                                if (dayOfMonth < 10){
+                                if (dayOfMonth < 10) {
                                     day = "0" + dayOfMonth;
                                 } else {
                                     day = String.valueOf(dayOfMonth);
                                 }
                                 if (year < 2024) {
-                                    birthdateEditText.setText(year + "-" + month + "-" + day );
+                                    birthdateEditText.setText(year + "-" + month + "-" + day);
                                 } else {
                                     birthdateEditText.setText("");
                                 }
@@ -114,7 +115,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = emailEditText.getText().toString();
                 String birthdate = birthdateEditText.getText().toString();
                 String province = provinceSpinner.getSelectedItem().toString();
-                if (validateRegister(username,password,password2, email, birthdate)){
+                if (validateRegister(username, password, password2, email, birthdate)) {
                     pb1.setVisibility(View.VISIBLE); // Alternamos entre la visibilidad de la barra de progresión a nuestra conveniencia.
                     sendRegisterRequest();
                 }
@@ -130,22 +131,23 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
     }
+
     // Método para validar el formulario de registro
-    private boolean validateRegister(String username, String password,String password2, String email, String birthdate){
-        if (username.isEmpty() || password.isEmpty() || password2.isEmpty() || email.isEmpty()){
+    private boolean validateRegister(String username, String password, String password2, String email, String birthdate) {
+        if (username.isEmpty() || password.isEmpty() || password2.isEmpty() || email.isEmpty()) {
             Toast.makeText(this, "Debes rellenar todos los campos!", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (username.isEmpty()){
+        if (username.isEmpty()) {
             nameEditText.setError("El campo de nombre de usuario está vacío");
             return false;
         }
-        if (!password.equals(password2)){
+        if (!password.equals(password2)) {
             passwordEditText.setError("Las contraseñas deben coincidir");
             password2EditText.setError("Las contraseñas deben coincidir");
             return false;
         }
-        if (!email.contains("@") || email.length() < 8){
+        if (!email.contains("@") || email.length() < 8) {
             emailEditText.setError("Formato inválido de email");
             return false;
         }
@@ -154,7 +156,7 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         }
         if (provinceSpinner.getSelectedItemPosition() == 0) {
-            ((TextView)provinceSpinner.getSelectedView()).setError("Debes seleccionar una provincia");
+            ((TextView) provinceSpinner.getSelectedView()).setError("Debes seleccionar una provincia");
             return false;
         }
         return true;
@@ -205,8 +207,9 @@ public class RegisterActivity extends AppCompatActivity {
         //añade la peticion hecha a la cola de peticiones.
         this.requestQueue.add(request);
     }
+
     // Método para iniciar sesión del usuario
-    private void loginUser(String email, String password, String username){
+    private void loginUser(String email, String password, String username) {
         // Creación del cuerpo de la solicitud
         JSONObject requestBody = new JSONObject();
         try {
@@ -260,7 +263,7 @@ public class RegisterActivity extends AppCompatActivity {
                         } else {
                             pb1.setVisibility(View.GONE); // Alternamos entre la visibilidad de la barra de progresión a nuestra conveniencia.
                             int serverCode = error.networkResponse.statusCode;
-                            Toast.makeText(context, "Estado de respuesta "+serverCode, Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
                         }
                         error.printStackTrace();
                     }

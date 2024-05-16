@@ -12,10 +12,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesViewHolder>{
+public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesViewHolder> {
     // Lista de elementos recomendados y fragmento que contiene el RecyclerView
     private List<PreferencesData> dataset;
     private Activity activity;
@@ -23,9 +22,9 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesViewHold
 
 
     // Constructor del adaptador
-    public PreferencesAdapter(List<PreferencesData> dataSet, Activity activity, RecyclerView recyclerView){
-        this.dataset=dataSet;
-        this.activity=activity;
+    public PreferencesAdapter(List<PreferencesData> dataSet, Activity activity, RecyclerView recyclerView) {
+        this.dataset = dataSet;
+        this.activity = activity;
         this.recyclerView = recyclerView;
     }
 
@@ -51,10 +50,11 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesViewHold
         PreferencesData currentItem = dataset.get(position);
         currentItem.setMusicSelected(isChecked);
     }
+
     // Método para crear un nuevo ViewHolder
     @NonNull
     @Override
-    public PreferencesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
+    public PreferencesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Inflar la vista de la celda del RecyclerView
         View preferencesView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_cell_music, parent, false);
@@ -64,7 +64,7 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesViewHold
 
     // Método para vincular los datos con el ViewHolder
     @Override
-    public void onBindViewHolder(@NonNull PreferencesViewHolder holder, int position){
+    public void onBindViewHolder(@NonNull PreferencesViewHolder holder, int position) {
         // Obtener los datos para esta celda
         PreferencesData dataForThisCell = dataset.get(position);
         // Mostrar los datos en el ViewHolder
@@ -73,5 +73,7 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesViewHold
 
     // Método para obtener el número de elementos en el dataset
     @Override
-    public int getItemCount(){ return dataset.size(); }
+    public int getItemCount() {
+        return dataset.size();
+    }
 }

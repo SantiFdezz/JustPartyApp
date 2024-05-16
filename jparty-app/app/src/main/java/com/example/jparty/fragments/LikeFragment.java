@@ -2,17 +2,16 @@ package com.example.jparty.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -39,7 +38,6 @@ public class LikeFragment extends Fragment {
     private List<EventsData> eventsList;
     private RequestQueue requestQueue;
     private ProgressBar pb1;
-
 
 
     // Método que se llama para crear la vista del fragmento
@@ -71,7 +69,7 @@ public class LikeFragment extends Fragment {
                             @Override
                             public void onResponse(JSONArray response) {
                                 pb1.setVisibility(View.GONE);
-                                for(int i=0; i<response.length(); i++) {
+                                for (int i = 0; i < response.length(); i++) {
                                     try {
                                         JSONObject events = response.getJSONObject(i);
                                         EventsData u_event = new EventsData(events);

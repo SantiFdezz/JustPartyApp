@@ -3,9 +3,6 @@ package com.example.jparty.fragments;
 import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -83,18 +82,18 @@ public class AccountFragment extends Fragment {
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 String month, day;
                                 // si el mes o el dia es menor a 10 se le añade un 0 delante ("05/03/2000")
-                                if (monthOfYear < 10){
+                                if (monthOfYear < 10) {
                                     month = "0" + (monthOfYear + 1);
                                 } else {
                                     month = String.valueOf(monthOfYear + 1);
                                 }
-                                if (dayOfMonth < 10){
+                                if (dayOfMonth < 10) {
                                     day = "0" + dayOfMonth;
                                 } else {
                                     day = String.valueOf(dayOfMonth);
                                 }
                                 if (year < 2024) {
-                                    birthdateinputEditText.setText(year + "-" + month + "-" + day );
+                                    birthdateinputEditText.setText(year + "-" + month + "-" + day);
                                 } else {
                                     birthdateinputEditText.setText("");
                                 }
@@ -127,7 +126,8 @@ public class AccountFragment extends Fragment {
             }
         });
     }
-    public void setUser(){
+
+    public void setUser() {
         JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                 Request.Method.GET,
                 Server.name + "/user",
@@ -174,6 +174,7 @@ public class AccountFragment extends Fragment {
         );
         requestQueue.add(request); // Asegúrate de tener una instancia de RequestQueue disponible.
     }
+
     public void updateManager() {
         Boolean manager = manager_checkbox.isChecked();
         JSONObject json = new JSONObject();
@@ -211,7 +212,8 @@ public class AccountFragment extends Fragment {
         );
         requestQueue.add(request);
     }
-    public void updateUser(){
+
+    public void updateUser() {
         String username = userinputEditText.getText().toString();
         String email = emailinputEditText.getText().toString();
         String birthdate = birthdateinputEditText.getText().toString();
@@ -232,6 +234,10 @@ public class AccountFragment extends Fragment {
         }
         if (!password.isEmpty() && !password.equals(password2)) {
             passwordrepeatedinput.setError("Las contraseñas no coinciden");
+            return;
+        }
+        if (provinceSpinner.getSelectedItemPosition() == 0) {
+            Toast.makeText(getContext(), "La provincia es obligatoria", Toast.LENGTH_SHORT).show();
             return;
         }
         JSONObject json = new JSONObject();

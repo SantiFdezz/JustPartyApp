@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="province_array">
-        <item>Seleccione Provincia</item>
+        <item>Seleccione provincia</item>
         <item>A Coruña</item>
         <item>Álava</item>
         <item>Alicante</item>
@@ -53,7 +53,7 @@
         <item>Zaragoza</item>
     </string-array>
     <string-array name="music_array">
-        <item>Seleccione un genero de musica</item>
+        <item>Seleccione un género</item>
         <item>Jazz</item>
         <item>Blues</item>
         <item>Country</item>

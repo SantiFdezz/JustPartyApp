@@ -25,7 +25,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHolder>{
+public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHolder> {
     // Lista de elementos recomendados y fragmento que contiene el RecyclerView
     private List<AssistancesData> dataset;
     private Fragment fragment;
@@ -33,16 +33,16 @@ public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHold
     private RequestQueue requestQueue;
 
     // Constructor del adaptador
-    public AssistancesAdapter(List<AssistancesData> dataSet, Fragment fragment, Context context){
-        this.dataset=dataSet;
-        this.fragment=fragment;
-        this.context=context;
+    public AssistancesAdapter(List<AssistancesData> dataSet, Fragment fragment, Context context) {
+        this.dataset = dataSet;
+        this.fragment = fragment;
+        this.context = context;
     }
 
     // Método para crear un nuevo ViewHolder
     @NonNull
     @Override
-    public AssistancesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
+    public AssistancesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Inflar la vista de la celda del RecyclerView
         View eventsView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_assistanceevents, parent, false);
@@ -51,7 +51,7 @@ public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AssistancesViewHolder holder, int position){
+    public void onBindViewHolder(@NonNull AssistancesViewHolder holder, int position) {
         requestQueue = Volley.newRequestQueue(context);
         // Obtener los datos para esta celda
         AssistancesData dataForThisCell = dataset.get(position);
@@ -80,7 +80,7 @@ public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHold
             @Override
             public void onClick(View v) {
                 boolean isLiked = dataForThisCell.getUserLiked();
-                String url = Server.name+"/user/likedevent/"+dataForThisCell.getEventId();
+                String url = Server.name + "/user/likedevent/" + dataForThisCell.getEventId();
                 int method = isLiked ? Request.Method.DELETE : Request.Method.POST;
                 JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                         method, url, null,
@@ -117,7 +117,7 @@ public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHold
         holder.unassist_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = Server.name+"/user/assistevent/"+dataForThisCell.getEventId();
+                String url = Server.name + "/user/assistevent/" + dataForThisCell.getEventId();
                 JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                         Request.Method.DELETE, url, null,
                         new Response.Listener<JSONObject>() {
@@ -144,5 +144,7 @@ public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHold
     }
 
     @Override
-    public int getItemCount(){ return dataset.size(); }
+    public int getItemCount() {
+        return dataset.size();
+    }
 }

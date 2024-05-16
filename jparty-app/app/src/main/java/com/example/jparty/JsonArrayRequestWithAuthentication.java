@@ -13,14 +13,16 @@ import org.json.JSONArray;
 
 import java.util.HashMap;
 import java.util.Map;
+
 public class JsonArrayRequestWithAuthentication extends JsonArrayRequest {
 
     // Añade el token a header en la petición
 
     private Context context;
+
     public JsonArrayRequestWithAuthentication(int method, String url, @Nullable JSONArray jsonRequest, Response.Listener<JSONArray> listener, @Nullable Response.ErrorListener errorListener, Context context) {
         super(method, url, jsonRequest, listener, errorListener);
-        this.context=context;
+        this.context = context;
     }
 
     @Override

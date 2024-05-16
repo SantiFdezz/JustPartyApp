@@ -23,20 +23,52 @@ public class AssistancesData {
     private Boolean userLiked;
 
     // Métodos getter para cada variable
-    public String getTitle() { return title; }
-    public String getStreet() { return street; }
-    public String getPrice() { return price; }
-    public int getAssistants() { return assistants; }
-    public String getDate() { return date; }
-    public String getHour() { return hour; }
-    public String getSecretKey() { return secretkey; }
-    public String getLink() { return link; }
-    public int getEventId() { return eventId; }
-    public void setUserLiked(boolean userLiked) { this.userLiked= userLiked; }
-    public boolean getUserLiked() { return userLiked; }
+    public String getTitle() {
+        return title;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public int getAssistants() {
+        return assistants;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getHour() {
+        return hour;
+    }
+
+    public String getSecretKey() {
+        return secretkey;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public int getEventId() {
+        return eventId;
+    }
+
+    public void setUserLiked(boolean userLiked) {
+        this.userLiked = userLiked;
+    }
+
+    public boolean getUserLiked() {
+        return userLiked;
+    }
 
     // Constructor que toma los datos como parámetros
-    public AssistancesData(int eventId, String title, String link, String street, String price, int assistants, String hour ,String date, String secretkey, boolean userLiked){
+    public AssistancesData(int eventId, String title, String link, String street, String price, int assistants, String hour, String date, String secretkey, boolean userLiked) {
         this.title = title;
         this.eventId = eventId;
         this.street = street;
@@ -50,8 +82,8 @@ public class AssistancesData {
     }
 
     // Constructor que toma un objeto JSON y extrae los datos
-    public AssistancesData(JSONObject json){
-        try{
+    public AssistancesData(JSONObject json) {
+        try {
             this.eventId = json.getInt("id");
             this.title = json.getString("title");
             this.street = json.getString("street");
@@ -66,6 +98,8 @@ public class AssistancesData {
             this.date = new SimpleDateFormat("dd/MM/yyyy", Locale.US).format(fullDate);
             this.secretkey = json.getString("secretkey");
             this.userLiked = json.getBoolean("userLiked");
-        }catch (JSONException | ParseException e){ e.printStackTrace(); }
+        } catch (JSONException | ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

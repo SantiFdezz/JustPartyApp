@@ -125,7 +125,7 @@ paths:
           $ref: '#/components/responses/ServerError'
     put:
       tags:
-       - User
+      - User
       summary: Update user's data
       security:
       - bearerAuth: []
@@ -207,7 +207,7 @@ paths:
         500:
           $ref: '#/components/responses/ServerError'
   
-  /user/assistevents/{id}:
+  /user/assistevent/{id}:
     post:
       tags:
         - User
@@ -297,7 +297,7 @@ paths:
         500:
           $ref: '#/components/responses/ServerError'
 
-  /user/likedevents/{id}:
+  /user/likedevent/{id}:
     post:
       tags:
         - User
@@ -442,7 +442,7 @@ paths:
         500:
           $ref: '#/components/responses/ServerError'
     
-  /events/{id}:
+  /event/{id}:
     get:
       tags:
         - Events
@@ -661,7 +661,8 @@ components:
         application/json:
           schema:
             example:
-              response: ok - SessionToken="token"
+              response: ok 
+              SessionToken: token
   schemas:
   # Respuestas y body de las peticiones
     LoginBody:
@@ -772,6 +773,9 @@ components:
     Event:
       type: object
       properties:
+        id:
+          type: integer
+          example: 1
         manager:
           type: string
           example: "Grupo X"
@@ -834,8 +838,6 @@ components:
     AssistEvent:
       type: object
       properties:
-        id:
-          type: integer
         title: 
           type: string
         street: 
@@ -846,9 +848,6 @@ components:
         assistants:
           type: integer
           default: 0
-        link:
-          type: string
-          format: url
         date: 
           type: string
           example: "24-03-2001 00:00"

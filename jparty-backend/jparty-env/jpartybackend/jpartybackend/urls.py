@@ -1,21 +1,18 @@
 from django.contrib import admin
 from django.urls import path
-from jpartyapp import endpoints
+from jpartyapp import event_endpoints, user_endpoints
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('user/session', endpoints.sessions), 
-    path('user', endpoints.user), 
-    path('user/manager', endpoints.userManager),
-    path('user/username', endpoints.userUsername),
-    path('user/preferences', endpoints.userPreferences),
-    path('events', endpoints.events),
-    path('event/<int:id>', endpoints.event_id),
-    path('user/assistevents', endpoints.userAssistEvents),
-    path('user/assistevent/<int:id>', endpoints.userAssistEvent_id),
-    path('user/likedevents', endpoints.userLikedEvents),
-    path('user/likedevent/<int:id>', endpoints.userLikedEvent_id),
+    path('user/session', user_endpoints.sessions), 
+    path('user', user_endpoints.user), 
+    path('user/manager', user_endpoints.userManager),
+    path('user/preferences', user_endpoints.userPreferences),
+    path('events', event_endpoints.events),
+    path('event/<int:id>', event_endpoints.event_id),
+    path('user/assistevents', event_endpoints.userAssistEvents),
+    path('user/assistevent/<int:id>', event_endpoints.userAssistEvent_id),
+    path('user/likedevents', event_endpoints.userLikedEvents),
+    path('user/likedevent/<int:id>', event_endpoints.userLikedEvent_id),
 ]
-
-
 

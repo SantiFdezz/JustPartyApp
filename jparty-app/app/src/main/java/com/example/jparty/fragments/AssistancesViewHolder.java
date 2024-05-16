@@ -50,17 +50,17 @@ public class AssistancesViewHolder extends RecyclerView.ViewHolder {
         location.setText(item.getStreet());
         date.setText(item.getDate());
         hour.setText(item.getHour());
-       if (item.getPrice().equals("0.0")) {
+        if (item.getPrice().equals("0.0")) {
             price.setText("Gratis");
-        }else {
-           double priceAsDouble = Double.parseDouble(item.getPrice());
-           int priceWithoutDecimals = (int) priceAsDouble;
-           price.setText(priceWithoutDecimals + "€");
-       }
-        sk.setText("Clave secreta: "+item.getSecretKey());
+        } else {
+            double priceAsDouble = Double.parseDouble(item.getPrice());
+            int priceWithoutDecimals = (int) priceAsDouble;
+            price.setText(priceWithoutDecimals + "€");
+        }
+        sk.setText("Clave secreta: " + item.getSecretKey());
         if (item.getUserLiked()) {
             this.like_icon.setImageResource(R.drawable.like_selected);
-        }else {
+        } else {
             this.like_icon.setImageResource(R.drawable.like_unselected);
         }
         // unassist_button, unassist_icon, info_button, info_icon, like_button, like_icon, link_button

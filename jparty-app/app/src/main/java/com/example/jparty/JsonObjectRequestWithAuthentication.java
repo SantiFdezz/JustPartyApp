@@ -14,12 +14,13 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JsonObjectRequestWithAuthentication  extends JsonObjectRequest {
+public class JsonObjectRequestWithAuthentication extends JsonObjectRequest {
     // Añade el token a headers en la petición
     private Context context;
+
     public JsonObjectRequestWithAuthentication(int method, String url, @Nullable JSONObject jsonRequest, Response.Listener<JSONObject> listener, @Nullable Response.ErrorListener errorListener, Context context) {
         super(method, url, jsonRequest, listener, errorListener);
-        this.context=context;
+        this.context = context;
     }
 
     @Override
