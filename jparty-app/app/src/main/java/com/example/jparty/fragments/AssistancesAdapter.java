@@ -1,6 +1,8 @@
 package com.example.jparty.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -117,25 +119,8 @@ public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHold
         holder.unassist_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = Server.name + "/user/assistevent/" + dataForThisCell.getEventId();
-                JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
-                        Request.Method.DELETE, url, null,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                dataset.remove(dataForThisCell);
-                                notifyItemRemoved(holder.getAdapterPosition());
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Manejar el error
-                            }
-                        },
-                        holder.itemView.getContext()
-                );
-                requestQueue.add(request);
+
+                showUnassistConfirmationDialog(dataForThisCell, holder.getAdapterPosition());
             }
         });
         String pageNumberText = (holder.getAdapterPosition() + 1) + "/" + getItemCount();
@@ -146,5 +131,40 @@ public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHold
     @Override
     public int getItemCount() {
         return dataset.size();
+    }
+    private void showUnassistConfirmationDialog(AssistancesData dataForThisCell, int position) {
+        new AlertDialog.Builder(context)
+                .setTitle("Cerrar sesión")
+                .setMessage("¿Estás seguro de que quieres cerrar la sesión?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Realizar la solicitud DELETE a user/session
+                        unAssist(dataForThisCell, position);
+                    }
+                })
+                .setNegativeButton("No", null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+    private void unAssist(AssistancesData dataForThisCell, int position){
+        String url = Server.name + "/user/assistevent/" + dataForThisCell.getEventId();
+        JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
+                Request.Method.DELETE, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        dataset.remove(dataForThisCell);
+                        notifyItemRemoved(position);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Manejar el error
+                    }
+                },
+                context
+        );
+        requestQueue.add(request);
     }
 }

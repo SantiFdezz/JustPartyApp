@@ -74,6 +74,12 @@ public class PreferencesActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         pb1.setVisibility(View.GONE);
+                        if (error.networkResponse == null) {
+                            Toast.makeText(PreferencesActivity.this, "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
+                        } else {
+                            int serverCode = error.networkResponse.statusCode;
+                            Toast.makeText(PreferencesActivity.this, "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
+                        }
                         error.printStackTrace();
                     }
                 }, this);

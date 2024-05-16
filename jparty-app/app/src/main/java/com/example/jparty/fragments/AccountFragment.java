@@ -1,6 +1,10 @@
 package com.example.jparty.fragments;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.example.jparty.JsonObjectRequestWithAuthentication;
+import com.example.jparty.LandingActivity;
 import com.example.jparty.MainActivity;
 import com.example.jparty.R;
 import com.example.jparty.Server;
@@ -121,8 +126,7 @@ public class AccountFragment extends Fragment {
         circle_button_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "No se puede eliminar la cuenta", Toast.LENGTH_SHORT).show();
-                //deleteUser();
+                showDeleteAccountDialog();
             }
         });
     }
@@ -283,5 +287,62 @@ public class AccountFragment extends Fragment {
                 getContext() // Asegúrate de pasar el contexto correcto aquí.
         );
         requestQueue.add(request);
+    }
+    private void showDeleteAccountDialog() {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Eliminar Cuenta")
+                .setMessage("¿Estás seguro de que quieres eliminar tu cuenta de manera permanente?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Lógica para eliminar la cuenta
+                        deleteAccount();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    private void deleteAccount() {
+        // Implementa la lógica para eliminar la cuenta aquí
+        JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
+                Request.Method.DELETE,
+                Server.name + "/user",
+                new JSONObject(), // Objeto JSON vacío
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Manejar la respuesta del servidor
+                        Toast.makeText(getContext(), "Cuenta eliminada con éxito", Toast.LENGTH_SHORT).show();
+
+                        // Eliminar las SharedPreferences
+                        SharedPreferences preferences = getContext().getSharedPreferences("JPARTY_APP_PREFS", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.clear();
+                        editor.apply();
+
+                        // Redirigir al usuario a la pantalla de inicio de sesión
+                        Intent intent = new Intent(getContext(), LandingActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Manejar el error
+                        if (error.networkResponse == null) {
+                            Toast.makeText(getContext(), "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
+                        } else {
+                            int serverCode = error.networkResponse.statusCode;
+                            Toast.makeText(getContext(), "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
+                        }
+                        error.printStackTrace();
+                    }
+                },
+                AccountFragment.this.getContext()
+        );
+        this.requestQueue.add(request);
     }
 }

@@ -38,6 +38,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText birthdateEditText;
     private boolean touched = false;
     private Spinner provinceSpinner;
+
+
     private ImageButton registerButton;
     // Cola de solicitudes de Volley
     private RequestQueue requestQueue;

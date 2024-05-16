@@ -1,10 +1,13 @@
 package com.example.jparty.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -70,39 +73,15 @@ public class OwnAdapter extends RecyclerView.Adapter<OwnViewHolder> {
             @Override
             public void onClick(View v) {
                 final int position = holder.getAdapterPosition();
-                String url = Server.name + "/event/" + eventId;
-                JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
-                        Request.Method.DELETE,
-                        url,
-                        null,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                dataset.remove(position);
-                                notifyItemRemoved(position);
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Manejo de errores de la solicitud
-                                error.printStackTrace();
-                            }
-                        },
-                        holder.itemView.getContext()
-                );
-                // Añadir la solicitud a la cola de solicitudes
-                requestQueue.add(request);
+                showDeleteEventDialog(position, eventId, holder);
             }
         });
+
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final int position = holder.getAdapterPosition();
-                String url = Server.name + "/event/" + eventId;
-                Intent intent = new Intent(holder.itemView.getContext(), EditEventActivity.class);
-                intent.putExtra("event_id", dataForThisCell.getEvent_Id());
-                holder.itemView.getContext().startActivity(intent);
+                editEvent(position, holder, eventId);
             }
         });
 
@@ -122,6 +101,67 @@ public class OwnAdapter extends RecyclerView.Adapter<OwnViewHolder> {
     public int getItemCount() {
         return dataset.size();
     }
+    private void showDeleteEventDialog(final int position, final int eventId, final RecyclerView.ViewHolder holder) {
+        new AlertDialog.Builder(holder.itemView.getContext())
+                .setTitle("Eliminar Evento")
+                .setMessage("¿Estás seguro de que quieres eliminar este evento?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteEvent(position, holder, eventId);
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+    private void showEditEventDialog(final int position, final int eventId, final RecyclerView.ViewHolder holder) {
+        new AlertDialog.Builder(holder.itemView.getContext())
+                .setTitle("Editar Evento")
+                .setMessage("¿Estás seguro de que quieres editar este evento?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        editEvent(position, holder, eventId);
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+    private void deleteEvent(final int position, final RecyclerView.ViewHolder holder, final int eventId) {
+        String url = Server.name + "/event/" + eventId;
+        JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
+                Request.Method.DELETE,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        dataset.remove(position);
+                        notifyItemRemoved(position);
+                        // Mostrar un Toast confirmando la eliminación del evento
+                        Toast.makeText(holder.itemView.getContext(), "Evento eliminado", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Manejo de errores de la solicitud
+                        error.printStackTrace();
+                        // Mostrar un Toast en caso de error
+                        Toast.makeText(holder.itemView.getContext(), "Error al eliminar evento", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                holder.itemView.getContext()
+        );
+        // Añadir la solicitud a la cola de solicitudes
+        requestQueue.add(request);
+    }
 
+    private void editEvent(final int position, final RecyclerView.ViewHolder holder, final int eventId) {
+        String url = Server.name + "/event/" + eventId;
+        Intent intent = new Intent(holder.itemView.getContext(), EditEventActivity.class);
+        intent.putExtra("event_id", eventId);
+        holder.itemView.getContext().startActivity(intent);
+    }
 
 }

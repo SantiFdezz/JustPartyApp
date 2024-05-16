@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.example.jparty.EditEventActivity;
 import com.example.jparty.JsonArrayRequestWithAuthentication;
 import com.example.jparty.R;
 import com.example.jparty.Server;
@@ -114,7 +116,13 @@ public class HomeFragment extends Fragment {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        pb1.setVisibility(View.GONE); // Alternamos entre la visibilidad de la barra de progresión a nuestra conveniencia.
+                        pb1.setVisibility(View.GONE); // Alternamos entre la visibilidad de la barra de progresión a nuestra conveniencia
+                        if (error.networkResponse == null) {
+                            Toast.makeText(getContext(), "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
+                        } else {
+                            int serverCode = error.networkResponse.statusCode;
+                            Toast.makeText(getContext(), "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
+                        }
                         error.printStackTrace();
                     }
                 }, getContext());

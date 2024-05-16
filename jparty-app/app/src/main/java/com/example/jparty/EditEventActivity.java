@@ -273,7 +273,13 @@ public class EditEventActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // Manejo de errores de la solicitud
+                        if (error.networkResponse == null) {
+                            Toast.makeText(EditEventActivity.this, "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
+                        } else {
+                            int serverCode = error.networkResponse.statusCode;
+                            Toast.makeText(EditEventActivity.this, "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
+                        }
+                        error.printStackTrace();
                     }
                 },
                 this

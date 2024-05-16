@@ -213,7 +213,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // Manejar el error
-                        Toast.makeText(context, "Error al cerrar la sesión", Toast.LENGTH_SHORT).show();
+                        if (error.networkResponse == null) {
+                            Toast.makeText(MainActivity.this, "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
+                        } else {
+                            int serverCode = error.networkResponse.statusCode;
+                            Toast.makeText(MainActivity.this, "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
+                        }
+                        error.printStackTrace();
                     }
                 },
                 this
