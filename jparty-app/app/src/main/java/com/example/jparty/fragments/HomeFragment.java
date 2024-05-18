@@ -42,11 +42,9 @@ public class HomeFragment extends Fragment {
     // Variables para la lista de recomendaciones, el adaptador y la cola de solicitudes
     private RecyclerView recyclerView;
     private EventsAdapter adapter;
-    private Context context;
     private List<EventsData> eventsList;
     private RequestQueue requestQueue;
     private ImageView filter_button;
-    private View filterLayout;
     private LinearLayout applyFilterButton;
     private Spinner provinceSpinner;
     private CheckBox priceCheckBox, dateCheckBox;
@@ -61,10 +59,9 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recycler_main, container, false);
         eventsList = new ArrayList<>();
         pb1 = view.findViewById(R.id.loadingScreen);
-        adapter = new EventsAdapter(eventsList, this, getActivity());
+        adapter = new EventsAdapter(eventsList, this);
         recyclerView = view.findViewById(R.id.recycler_view_item);
         filter_button = view.findViewById(R.id.filter_button);
-        filterLayout = view.findViewById(R.id.filter_layout);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         pb1.setVisibility(View.VISIBLE);
@@ -139,10 +136,6 @@ public class HomeFragment extends Fragment {
         priceCheckBox = filterView.findViewById(R.id.priceCheckBox);
         dateCheckBox = filterView.findViewById(R.id.dateCheckBox);
         applyFilterButton = filterView.findViewById(R.id.apply_filter_button);
-
-        String selectedProvince = provinceSpinner.getSelectedItem().toString();
-        boolean isPriceChecked = priceCheckBox.isChecked();
-        boolean isDateChecked = dateCheckBox.isChecked();
         // Crear el AlertDialog
         AlertDialog filterDialog = new AlertDialog.Builder(getContext())
                 .setView(filterView)

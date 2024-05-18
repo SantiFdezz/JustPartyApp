@@ -36,7 +36,7 @@ public class OwnViewHolder extends RecyclerView.ViewHolder {
     private TextView description;
     private TextView music_name;
     private TextView date;
-    private TextView assist_count;
+    public TextView assist_count;
     public LinearLayout key_button;
     public TextView key_text;
     public ImageButton deleteButton;
@@ -48,10 +48,10 @@ public class OwnViewHolder extends RecyclerView.ViewHolder {
     public ConstraintLayout recycler_view;
     private ImageView link_icon;
     private ImageView image_view;
-    private ImageView assist_icon;
-    private ImageView like_icon;
-    private ImageButton assist_button;
-    private ImageButton like_button;
+    public ImageView assist_icon;
+    public ImageView like_icon;
+    public ImageButton assist_button;
+    public ImageButton like_button;
     private RequestQueue requestQueue;
     private List<OwnData> dataset;
 
@@ -81,78 +81,6 @@ public class OwnViewHolder extends RecyclerView.ViewHolder {
 
         this.requestQueue = Volley.newRequestQueue(itemView.getContext());
         this.dataset = dataset;
-
-        assist_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final OwnData currentItem = dataset.get(getAdapterPosition());
-                boolean isAssisted = currentItem.getUserAssist();
-                String url = Server.name + "/user/assistevent/" + currentItem.getEvent_Id();
-                int method = isAssisted ? Request.Method.DELETE : Request.Method.POST;
-                JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
-                        method, url, null,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                currentItem.setUserAssist(!isAssisted);
-                                currentItem.setAssistances(!isAssisted ? (currentItem.getAssistances() + 1) : (currentItem.getAssistances() - 1));
-                                assist_icon.setImageResource(isAssisted ? R.drawable.balloon_selected : R.drawable.balloon_unselected);
-                                assist_count.setText(String.valueOf(currentItem.getAssistances()));
-                                adapter.notifyItemChanged(getAdapterPosition()); // Notificar al adaptador para que actualice la vista
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Manejar el error
-                            }
-                        },
-                        itemView.getContext()
-                );
-                requestQueue.add(request);
-            }
-        });
-
-        like_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final OwnData currentItem = dataset.get(getAdapterPosition());
-                boolean isLiked = currentItem.getUserLike();
-                String url = Server.name + "/user/likedevent/" + currentItem.getEvent_Id();
-                int method = isLiked ? Request.Method.DELETE : Request.Method.POST;
-                JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
-                        method, url, null,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                currentItem.setUserLike(!isLiked);
-                                like_icon.setImageResource(isLiked ? R.drawable.like_selected : R.drawable.like_unselected);
-                                adapter.notifyItemChanged(getAdapterPosition()); // Notificar al adaptador para que actualice la vista
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Manejar el error
-                            }
-                        },
-                        itemView.getContext()
-                );
-                requestQueue.add(request);
-            }
-        });
-
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Aquí va el código que se ejecutará cuando se haga clic en el botón de editar
-                final OwnData currentItem = dataset.get(getAdapterPosition());
-                Intent intent = new Intent(itemView.getContext(), EditEventActivity.class);
-                intent.putExtra("event_id", currentItem.getEvent_Id());
-                itemView.getContext().startActivity(intent);
-            }
-        });
-
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,7 +115,7 @@ public class OwnViewHolder extends RecyclerView.ViewHolder {
         try {
             Util.downloadBitmapToImageView(items.getImage_url(), this.image_view);
         } catch (Exception e) {
-            this.image_view.setImageResource(R.drawable.ic_launcher_background); // Reemplaza 'default_image' con tu imagen predeterminada
+            this.image_view.setImageResource(R.drawable.musicstock_icon); // Reemplaza 'default_image' con tu imagen predeterminada
         }
 
     }

@@ -57,7 +57,12 @@ public class AssistancesViewHolder extends RecyclerView.ViewHolder {
             int priceWithoutDecimals = (int) priceAsDouble;
             price.setText(priceWithoutDecimals + "€");
         }
-        sk.setText("Clave secreta: " + item.getSecretKey());
+        if (item.getSecretKey().equals("null")) {
+            sk.setVisibility(View.GONE);
+        } else {
+            sk.setVisibility(View.VISIBLE);
+            sk.setText("Clave secreta: " + item.getSecretKey());
+        }
         if (item.getUserLiked()) {
             this.like_icon.setImageResource(R.drawable.like_selected);
         } else {

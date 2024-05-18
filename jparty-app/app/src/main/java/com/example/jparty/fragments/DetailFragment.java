@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -36,7 +37,6 @@ public class DetailFragment extends Fragment {
     private ImageView eventImage, userLiked, userAssist;
     private ImageButton userLikedBttn, backBttn;
     private LinearLayout userAssistBttn;
-    private Context context;
     private String eventId;
     private boolean suserAssist, suserLiked;
     private int assistantss;
@@ -60,11 +60,9 @@ public class DetailFragment extends Fragment {
         backBttn = view.findViewById(R.id.back_button);
         pb1 = view.findViewById(R.id.loadingScreen);
         Bundle bundle = getArguments();
-        String eventId = bundle.getString("event_id");
-        this.eventId = eventId;
+        this.eventId = bundle.getString("event_id");
 
         if (bundle != null) {
-            //requestQueue = Volley.newRequestQueue(context);
             this.requestQueue = Volley.newRequestQueue(getContext());
             JsonArrayRequestWithAuthentication request = new JsonArrayRequestWithAuthentication
                     (Request.Method.GET,
@@ -137,7 +135,14 @@ public class DetailFragment extends Fragment {
                                                             new Response.ErrorListener() {
                                                                 @Override
                                                                 public void onErrorResponse(VolleyError error) {
-                                                                    // Manejar el error
+                                                                    pb1.setVisibility(View.GONE);
+                                                                    if (error.networkResponse == null) {
+                                                                        Toast.makeText(getContext(), "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
+                                                                    } else {
+                                                                        int serverCode = error.networkResponse.statusCode;
+                                                                        Toast.makeText(getContext(), "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
+                                                                    }
+                                                                    error.printStackTrace();
                                                                 }
                                                             },
                                                             getContext()
@@ -166,7 +171,14 @@ public class DetailFragment extends Fragment {
                                                             new Response.ErrorListener() {
                                                                 @Override
                                                                 public void onErrorResponse(VolleyError error) {
-                                                                    // Manejar el error
+                                                                    pb1.setVisibility(View.GONE);
+                                                                    if (error.networkResponse == null) {
+                                                                        Toast.makeText(getContext(), "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
+                                                                    } else {
+                                                                        int serverCode = error.networkResponse.statusCode;
+                                                                        Toast.makeText(getContext(), "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
+                                                                    }
+                                                                    error.printStackTrace();
                                                                 }
                                                             },
                                                             getContext()
@@ -191,6 +203,13 @@ public class DetailFragment extends Fragment {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             pb1.setVisibility(View.GONE); // Alternamos entre la visibilidad de la barra de progresión a nuestra conveniencia.
+                            pb1.setVisibility(View.GONE);
+                            if (error.networkResponse == null) {
+                                Toast.makeText(getContext(), "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
+                            } else {
+                                int serverCode = error.networkResponse.statusCode;
+                                Toast.makeText(getContext(), "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
+                            }
                             error.printStackTrace();
                         }
                     }, getContext());

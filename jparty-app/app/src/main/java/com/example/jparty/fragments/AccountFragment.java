@@ -189,13 +189,14 @@ public class AccountFragment extends Fragment {
             e.printStackTrace();
         }
         JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
-                Request.Method.PUT,
+                Request.Method.PATCH,
                 Server.name + "/user/manager",
                 json,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            Toast.makeText(getContext(), "User Manager actualizado con éxito", Toast.LENGTH_LONG).show();
                             SharedPreferences preferences = getContext().getSharedPreferences("JPARTY_APP_PREFS", getContext().MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putBoolean("VALID_MANAGER", manager);
@@ -209,6 +210,12 @@ public class AccountFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        if (error.networkResponse == null) {
+                            Toast.makeText(getContext(), "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
+                        } else {
+                            int serverCode = error.networkResponse.statusCode;
+                            Toast.makeText(getContext(), "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
+                        }
                         error.printStackTrace();
                     }
                 },
@@ -255,13 +262,14 @@ public class AccountFragment extends Fragment {
             e.printStackTrace();
         }
         JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
-                Request.Method.PUT,
+                Request.Method.PATCH,
                 Server.name + "/user",
                 json,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            Toast.makeText(getContext(), "Datos modificados con éxito", Toast.LENGTH_LONG).show();
                             SharedPreferences preferences = getContext().getSharedPreferences("JPARTY_APP_PREFS", getContext().MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putString("VALID_USERNAME", username);
@@ -281,6 +289,12 @@ public class AccountFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        if (error.networkResponse == null) {
+                            Toast.makeText(getContext(), "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
+                        } else {
+                            int serverCode = error.networkResponse.statusCode;
+                            Toast.makeText(getContext(), "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
+                        }
                         error.printStackTrace();
                     }
                 },
@@ -288,6 +302,7 @@ public class AccountFragment extends Fragment {
         );
         requestQueue.add(request);
     }
+
     private void showDeleteAccountDialog() {
         new AlertDialog.Builder(getContext())
                 .setTitle("Eliminar Cuenta")

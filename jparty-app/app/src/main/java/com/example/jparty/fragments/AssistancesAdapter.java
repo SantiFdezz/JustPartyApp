@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -30,15 +31,12 @@ import java.util.List;
 public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHolder> {
     // Lista de elementos recomendados y fragmento que contiene el RecyclerView
     private List<AssistancesData> dataset;
-    private Fragment fragment;
     private Context context;
     private RequestQueue requestQueue;
 
     // Constructor del adaptador
-    public AssistancesAdapter(List<AssistancesData> dataSet, Fragment fragment, Context context) {
+    public AssistancesAdapter(List<AssistancesData> dataSet) {
         this.dataset = dataSet;
-        this.fragment = fragment;
-        this.context = context;
     }
 
     // Método para crear un nuevo ViewHolder
@@ -48,24 +46,25 @@ public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHold
         // Inflar la vista de la celda del RecyclerView
         View eventsView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_assistanceevents, parent, false);
+        this.context = parent.getContext();
         // Crear y retornar un nuevo ViewHolder
         return new AssistancesViewHolder(eventsView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AssistancesViewHolder holder, int position) {
-        requestQueue = Volley.newRequestQueue(context);
+        requestQueue = Volley.newRequestQueue(holder.itemView.getContext());
         // Obtener los datos para esta celda
         AssistancesData dataForThisCell = dataset.get(position);
         String link = dataForThisCell.getLink();
         String secretkey = dataForThisCell.getSecretKey();
         // Mostrar los datos en el ViewHolder o no
-        if (secretkey != "null") {
-            holder.sk.setVisibility(View.VISIBLE);
-        } else {
+        if (secretkey.equals("null")) {
             holder.sk.setVisibility(View.GONE);
+        } else {
+            holder.sk.setVisibility(View.VISIBLE);
         }
-        if (link != "null") {
+        if (link.equals("null")) {
             holder.link_button.setVisibility(View.VISIBLE);
         } else {
             holder.link_button.setVisibility(View.GONE);
@@ -73,9 +72,9 @@ public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHold
         holder.info_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, DetailActivity.class);
+                Intent intent = new Intent(holder.itemView.getContext(), DetailActivity.class);
                 intent.putExtra("event_id", dataForThisCell.getEventId());
-                context.startActivity(intent);
+                holder.itemView.getContext().startActivity(intent);
             }
         });
         holder.like_button.setOnClickListener(new View.OnClickListener() {
@@ -97,8 +96,13 @@ public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHold
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                // Manejar el error
-                            }
+                                if (error.networkResponse == null) {
+                                    Toast.makeText(holder.itemView.getContext(), "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
+                                } else {
+                                    int serverCode = error.networkResponse.statusCode;
+                                    Toast.makeText(holder.itemView.getContext(), "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
+                                }
+                                error.printStackTrace();                            }
                         },
                         holder.itemView.getContext()
                 );
@@ -120,7 +124,7 @@ public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHold
             @Override
             public void onClick(View v) {
 
-                showUnassistConfirmationDialog(dataForThisCell, holder.getAdapterPosition());
+                showUnassistConfirmationDialog(dataForThisCell, holder.getAdapterPosition(), holder);
             }
         });
         String pageNumberText = (holder.getAdapterPosition() + 1) + "/" + getItemCount();
@@ -132,7 +136,7 @@ public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHold
     public int getItemCount() {
         return dataset.size();
     }
-    private void showUnassistConfirmationDialog(AssistancesData dataForThisCell, int position) {
+    private void showUnassistConfirmationDialog(AssistancesData dataForThisCell, int position, AssistancesViewHolder holder) {
         new AlertDialog.Builder(context)
                 .setTitle("Cerrar sesión")
                 .setMessage("¿Estás seguro de que quieres cerrar la sesión?")
@@ -160,7 +164,13 @@ public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHold
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // Manejar el error
+                        if (error.networkResponse == null) {
+                            Toast.makeText(context, "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
+                        } else {
+                            int serverCode = error.networkResponse.statusCode;
+                            Toast.makeText(context, "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
+                        }
+                        error.printStackTrace();
                     }
                 },
                 context

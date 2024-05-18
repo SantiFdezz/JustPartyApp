@@ -169,6 +169,7 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        pb1.setVisibility(View.GONE);
                         if (error.networkResponse == null) {
                             Toast.makeText(context, "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
                         } else {

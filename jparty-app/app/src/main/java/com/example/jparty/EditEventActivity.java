@@ -102,7 +102,7 @@ public class EditEventActivity extends AppCompatActivity {
                                 }
                                 Calendar selectedDate = Calendar.getInstance();
                                 selectedDate.set(year, monthOfYear, dayOfMonth);
-                                if (selectedDate.before(Calendar.getInstance())) {
+                                if (selectedDate.after(Calendar.getInstance())) {
                                     eventDate.setText(year + "-" + month + "-" + day);
                                 } else {
                                     eventDate.setText("");
@@ -114,7 +114,6 @@ public class EditEventActivity extends AppCompatActivity {
             }
         });
         back_arrow.setOnClickListener(v -> {
-            setResult(Activity.RESULT_OK); // Esto envía el resultado de vuelta al fragmento
             finish();
         });
         eventTime.setOnClickListener(new View.OnClickListener() {
@@ -169,6 +168,7 @@ public class EditEventActivity extends AppCompatActivity {
         });
     }
 
+
     private void getEventDetails(int eventId) {
         String url = Server.name + "/event/" + eventId;
 
@@ -197,7 +197,7 @@ public class EditEventActivity extends AppCompatActivity {
                             eventLink.setText(eventObject.getString("link"));
                             eventImage.setText(eventObject.getString("image"));
                             eventDescription.setText(eventObject.getString("description"));
-                            if (eventObject.getString("secretkey") != "null") {
+                            if (!eventObject.getString("secretkey").equals("null")) {
                                 sk.setChecked(true);
                                 secretkey.setEnabled(true);
                                 secretkey.setText(eventObject.getString("secretkey"));
@@ -231,7 +231,7 @@ public class EditEventActivity extends AppCompatActivity {
         String urlu = Server.name + url;
         int methodu;
         if (method == 1) {
-            methodu = Request.Method.PUT;
+            methodu = Request.Method.PATCH;
         } else {
             methodu = Request.Method.POST;
         }
@@ -249,14 +249,14 @@ public class EditEventActivity extends AppCompatActivity {
             eventDetails.put("link", eventLink.getText().toString());
             eventDetails.put("image", eventImage.getText().toString());
             eventDetails.put("description", eventDescription.getText().toString());
-            if (sk.isChecked()) {
+            if (sk.isChecked() && !secretkey.getText().toString().isEmpty()) {
                 eventDetails.put("secretkey", secretkey.getText().toString());
+            }else{
+                eventDetails.put("secretkey", "null");
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(eventDetails.toString() + " " + methodu + " " + urlu);
-
         JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                 methodu,
                 urlu,
@@ -265,8 +265,11 @@ public class EditEventActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         // Manejo de la respuesta exitosa
-                        Toast.makeText(EditEventActivity.this, "Evento creado/Editado con éxito", Toast.LENGTH_LONG).show();
-                        setResult(Activity.RESULT_OK); // Esto envía el resultado de vuelta al fragmento
+                        if (method == 1) {
+                            Toast.makeText(EditEventActivity.this, "Evento editado con éxito", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(EditEventActivity.this, "Evento creado con éxito", Toast.LENGTH_LONG).show();
+                        }
                         finish();
                     }
                 },
@@ -309,7 +312,7 @@ public class EditEventActivity extends AppCompatActivity {
             return false;
         }
         if (eventMusicGenre.getSelectedItemPosition() == 0){
-            Toast.makeText(EditEventActivity.this, "Por favor, seleccione una provincia", Toast.LENGTH_LONG).show();
+            Toast.makeText(EditEventActivity.this, "Por favor, seleccione un genero de musica", Toast.LENGTH_LONG).show();
             return false;
         }
         return true;

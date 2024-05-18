@@ -31,14 +31,12 @@ import java.util.List;
 public class OwnAdapter extends RecyclerView.Adapter<OwnViewHolder> {
     // Lista de elementos recomendados y fragmento que contiene el RecyclerView
     private List<OwnData> dataset;
-    private Fragment fragment;
     private Context context;
     private RequestQueue requestQueue;
 
     // Constructor del adaptador
-    public OwnAdapter(List<OwnData> dataSet, Fragment fragment, Context context) {
+    public OwnAdapter(List<OwnData> dataSet, Context context) {
         this.dataset = dataSet;
-        this.fragment = fragment;
         this.context = context;
     }
 
@@ -58,15 +56,15 @@ public class OwnAdapter extends RecyclerView.Adapter<OwnViewHolder> {
     public void onBindViewHolder(@NonNull OwnViewHolder holder, int position) {
         // Obtener los datos para esta celda
         OwnData dataForThisCell = dataset.get(position);
-        String link = dataForThisCell.getLink();
         String secretkey = dataForThisCell.getSecretKey();
         requestQueue = Volley.newRequestQueue(context);
         int eventId = dataForThisCell.getEvent_Id().intValue();
         // Mostrar los datos en el ViewHolder o no
-        if (secretkey != "null") {
-            holder.key_button.setVisibility(View.VISIBLE);
-        } else {
+        System.out.println("Secret key: " + secretkey);
+        if (secretkey.equals("null")) {
             holder.key_button.setVisibility(View.GONE);
+        } else {
+            holder.key_button.setVisibility(View.VISIBLE);
             holder.key_text.setText(secretkey);
         }
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -80,8 +78,7 @@ public class OwnAdapter extends RecyclerView.Adapter<OwnViewHolder> {
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int position = holder.getAdapterPosition();
-                editEvent(position, holder, eventId);
+                showEditEventDialog(eventId, holder);
             }
         });
 
@@ -91,6 +88,72 @@ public class OwnAdapter extends RecyclerView.Adapter<OwnViewHolder> {
                 Intent intent = new Intent(context, DetailActivity.class);
                 intent.putExtra("event_id", dataForThisCell.getEvent_Id().intValue());
                 context.startActivity(intent);
+            }
+        });
+        holder.assist_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isAssisted = dataForThisCell.getUserAssist();
+                String url = Server.name + "/user/assistevent/" + dataForThisCell.getEvent_Id();
+                int method = isAssisted ? Request.Method.DELETE : Request.Method.POST;
+                JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
+                        method, url, null,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                dataForThisCell.setUserAssist(!isAssisted);
+                                dataForThisCell.setAssistances(!isAssisted ? (dataForThisCell.getAssistances() + 1) : (dataForThisCell.getAssistances() - 1));
+                                holder.assist_icon.setImageResource(isAssisted ? R.drawable.balloon_selected : R.drawable.balloon_unselected);
+                                holder.assist_count.setText(String.valueOf(dataForThisCell.getAssistances()));
+                                notifyItemChanged(holder.getAdapterPosition()); // Notificar al adaptador para que actualice la vista
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                if (error.networkResponse == null) {
+                                    Toast.makeText(context, "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
+                                } else {
+                                    int serverCode = error.networkResponse.statusCode;
+                                    Toast.makeText(context, "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
+                                }
+                                error.printStackTrace();                            }
+                        },
+                        context
+                );
+                requestQueue.add(request);
+            }
+        });
+        holder.like_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isLiked = dataForThisCell.getUserLike();
+                String url = Server.name + "/user/likedevent/" + dataForThisCell.getEvent_Id();
+                int method = isLiked ? Request.Method.DELETE : Request.Method.POST;
+                JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
+                        method, url, null,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                dataForThisCell.setUserLike(!isLiked);
+                                holder.like_icon.setImageResource(isLiked ? R.drawable.like_selected : R.drawable.like_unselected);
+                                notifyItemChanged(holder.getAdapterPosition()); // Notificar al adaptador para que actualice la vista
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                if (error.networkResponse == null) {
+                                    Toast.makeText(context, "La conexión no se ha establecido", Toast.LENGTH_LONG).show();
+                                } else {
+                                    int serverCode = error.networkResponse.statusCode;
+                                    Toast.makeText(context, "Estado de respuesta " + serverCode, Toast.LENGTH_LONG).show();
+                                }
+                                error.printStackTrace();                            }
+                        },
+                        context
+                );
+                 requestQueue.add(request);
             }
         });
         holder.showData(dataForThisCell);
@@ -114,14 +177,17 @@ public class OwnAdapter extends RecyclerView.Adapter<OwnViewHolder> {
                 .setNegativeButton("No", null)
                 .show();
     }
-    private void showEditEventDialog(final int position, final int eventId, final RecyclerView.ViewHolder holder) {
+    private void showEditEventDialog(final int eventId, final RecyclerView.ViewHolder holder) {
         new AlertDialog.Builder(holder.itemView.getContext())
                 .setTitle("Editar Evento")
                 .setMessage("¿Estás seguro de que quieres editar este evento?")
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        editEvent(position, holder, eventId);
+                        Intent intent = new Intent(holder.itemView.getContext(), EditEventActivity.class);
+                        intent.putExtra("event_id", eventId);
+                        holder.itemView.getContext().startActivity(intent);
+                        notifyDataSetChanged();
                     }
                 })
                 .setNegativeButton("No", null)
@@ -157,11 +223,5 @@ public class OwnAdapter extends RecyclerView.Adapter<OwnViewHolder> {
         requestQueue.add(request);
     }
 
-    private void editEvent(final int position, final RecyclerView.ViewHolder holder, final int eventId) {
-        String url = Server.name + "/event/" + eventId;
-        Intent intent = new Intent(holder.itemView.getContext(), EditEventActivity.class);
-        intent.putExtra("event_id", eventId);
-        holder.itemView.getContext().startActivity(intent);
-    }
 
 }

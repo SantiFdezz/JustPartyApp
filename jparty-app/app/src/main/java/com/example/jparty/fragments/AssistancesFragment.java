@@ -34,7 +34,6 @@ public class AssistancesFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private AssistancesAdapter adapter;
-    private Context context;
     private List<AssistancesData> eventsList;
     private RequestQueue requestQueue;
     private ProgressBar pb1;
@@ -48,7 +47,7 @@ public class AssistancesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recycler_assistances, container, false);
         eventsList = new ArrayList<>();
         pb1 = view.findViewById(R.id.loadingScreen);
-        adapter = new AssistancesAdapter(eventsList, this, getActivity());
+        adapter = new AssistancesAdapter(eventsList);
         recyclerView = view.findViewById(R.id.recycler_view_item);
         recyclerView.setAdapter(adapter);
         // Activamos el snapHelper para que el recyclerView se desplace de uno en uno

@@ -16,7 +16,6 @@ public class DetailActivity extends AppCompatActivity {
         DetailFragment fragment = new DetailFragment();
         Intent intent = getIntent();
         int itemId = intent.getIntExtra("event_id", -1);
-        System.out.println(itemId);
         Bundle bundle = new Bundle();
         String event_id = "/" + itemId;
         bundle.putString("event_id", event_id);

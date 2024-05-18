@@ -2,10 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-    <!-- El siguiente xml configura el menú del menú desplegable de la app, con el que podremos movernos
-     entre fragments y activities. Está dividido entre etiquetas "item" y "menu" para designar
-     elementos del menu y conjuntos de estos respectivamente.-->
-    <item android:title="">
+    <item android:title="Buscar:">
         <menu>
             <item
                 android:id="@+id/homescreen"
@@ -34,19 +31,23 @@
             </group>
         </menu>
     </item>
+    <item android:title="Ajustes de usuario">
+        <menu>
+            <item
+                android:id="@+id/accountsettings"
+                android:icon="@drawable/user_icon"
+                android:title="Ajustes de cuenta" />
 
-    <item
-        android:id="@+id/accountsettings"
-        android:icon="@drawable/user_icon"
-        android:title="Ajustes de cuenta" />
+            <item
+                android:id="@+id/preferences"
+                android:icon="@drawable/like_selected"
+                android:title="Preferencias" />
 
-    <item
-        android:id="@+id/preferences"
-        android:icon="@drawable/like_selected"
-        android:title="Preferencias" />
+            <item
+                android:id="@+id/closesession"
+                android:icon="@drawable/out_icon"
+                android:title="Cerrar sesión" />
+        </menu>
+    </item>
 
-    <item
-        android:id="@+id/closesession"
-        android:icon="@drawable/out_icon"
-        android:title="Cerrar sesión" />
 </menu>

@@ -3,7 +3,7 @@ import secrets
 import bcrypt
 from django.core.exceptions import PermissionDenied
 from django.views.decorators.csrf import csrf_exempt
-from .models import User,UserSession, MusicGenre, UserPreferences
+from .models import User,UserSession, MusicGenre, UserPreferences, Events, UserAssist, UserLikes
 import json
 from datetime import datetime
 from .common import authenticate_user, check_email_format, check_password_format
@@ -51,7 +51,7 @@ def sessions(request):
 
 @csrf_exempt
 def userManager(request):
-    if request.method == 'PUT':
+    if request.method == 'PATCH':
         try:
             user_session = authenticate_user(request)
         except PermissionDenied:
@@ -116,43 +116,47 @@ def user(request):
             return JsonResponse({'error': 'Unauthorized'}, status=401)
         try:
             user = User.objects.get(id=user_session.user.id)
+            events = Events.objects.filter(user=user)
+            for event in events:
+                UserLikes.objects.filter(user=user).delete()
+                UserAssist.objects.filter(user=user).delete()
+                event.delete()
             user.delete()
             return JsonResponse({'response': 'ok'}, status=200)
         except User.DoesNotExist:
             return JsonResponse({'response': 'not_ok'}, status=404)
-    elif request.method == 'PUT':
+    elif request.method == 'PATCH':
         try:
             user_session = authenticate_user(request)
         except PermissionDenied:
             return JsonResponse({'error': 'Unauthorized'}, status=401)
         user = User.objects.get(id=user_session.user.id)
-        try:
-            data = json.loads(request.body)
-            client_username = data['username']
-            client_email = data['email']
-            if not check_email_format(client_email):
-                return JsonResponse({"response": "not_ok"}, status=400)
-            client_province = data['province']
-            client_birthdate = data['birthdate']
-            client_password = data['password']
-        except KeyError:
+        data = json.loads(request.body)
+        client_username = data.get('username', user.username)
+        client_email = data.get('email', user.email)
+        client_province = data.get('province', user.province)
+        client_birthdate = data.get('birthdate', user.birthdate)
+        client_password = data.get('password')
+
+        if client_email and not check_email_format(client_email):
             return JsonResponse({"response": "not_ok"}, status=400)
+
         try:
-            User.objects.get(email=client_email)
-            if user.email != client_email:
+            existing_user = User.objects.get(email=client_email)
+            if existing_user and user.email != client_email:
                 return JsonResponse({"response": "already_exist"}, status=409)
-        except:
+        except User.DoesNotExist:
             pass
-        if client_password is not None:
+
+        if client_password:
             if not check_password_format(client_password): 
                 return JsonResponse({"response": "not_ok"}, status=400)
             user.password = bcrypt.hashpw(client_password.encode('utf8'), bcrypt.gensalt()).decode('utf8')
-        birthdate = datetime.strptime(client_birthdate, '%Y-%m-%d')
-        formatted_birthdate = birthdate.strftime('%Y-%m-%d')
+
         user.username = client_username
         user.email = client_email
         user.province = client_province
-        user.birthdate = formatted_birthdate
+        user.birthdate = client_birthdate
         user.save()
         return JsonResponse({'message': 'User updated'}, status=200)
     else:

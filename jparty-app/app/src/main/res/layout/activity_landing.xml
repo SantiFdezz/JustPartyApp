@@ -17,8 +17,8 @@
     <ImageView
         android:id="@+id/logo"
         android:layout_width="300dp"
-        android:layout_height="120dp"
-        android:src="@drawable/logojparty_white"
+        android:layout_height="180dp"
+        android:src="@drawable/logojparty"
         android:layout_marginBottom="90dp"
         app:layout_constraintEnd_toEndOf="@+id/circle_logo"
         app:layout_constraintStart_toStartOf="@+id/circle_logo"
@@ -28,14 +28,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/justparty"
-        android:layout_marginTop="30dp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:textSize="30sp"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="@+id/circle_logo"
         app:layout_constraintStart_toStartOf="@+id/circle_logo"
-        app:layout_constraintTop_toTopOf="@+id/logo"
-        app:layout_constraintBottom_toBottomOf="@+id/circle_logo"/>
+        app:layout_constraintTop_toBottomOf="@+id/logo"/>
 
     <ImageButton
         android:id="@+id/circle_button"

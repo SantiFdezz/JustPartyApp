@@ -17,15 +17,12 @@ import java.util.List;
 public class PreferencesAdapter extends RecyclerView.Adapter<PreferencesViewHolder> {
     // Lista de elementos recomendados y fragmento que contiene el RecyclerView
     private List<PreferencesData> dataset;
-    private Activity activity;
-    private RecyclerView recyclerView;
+
 
 
     // Constructor del adaptador
-    public PreferencesAdapter(List<PreferencesData> dataSet, Activity activity, RecyclerView recyclerView) {
+    public PreferencesAdapter(List<PreferencesData> dataSet) {
         this.dataset = dataSet;
-        this.activity = activity;
-        this.recyclerView = recyclerView;
     }
 
     // Método para obtener los IDs de los checkbox seleccionados

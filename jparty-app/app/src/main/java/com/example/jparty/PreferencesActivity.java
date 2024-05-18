@@ -39,14 +39,12 @@ public class PreferencesActivity extends AppCompatActivity {
 
         preferencesList = new ArrayList<>();
         recyclerView = findViewById(R.id.recycler_view_item);
-        adapter = new PreferencesAdapter(preferencesList, this, recyclerView);
+        adapter = new PreferencesAdapter(preferencesList);
 
         pb1 = findViewById(R.id.loadingScreen);
         checkbutton = findViewById(R.id.check_button);
         recyclerView.setAdapter(adapter);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-
         pb1.setVisibility(View.VISIBLE);
 
         this.requestQueue = Volley.newRequestQueue(this);

@@ -36,21 +36,20 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
     private TextView description;
     private TextView music_name;
     private TextView date;
-    private TextView assist_count;
+    public TextView assist_count;
     public LinearLayout key_button;
     public LinearLayout link_button;
     public ConstraintLayout recycler_view;
-    private ImageView link_icon;
+    public ImageView link_icon;
     private ImageView image_view;
-    private ImageView assist_icon;
-    private ImageView like_icon;
-    private ImageButton assist_button;
-    private ImageButton like_button;
-    private RequestQueue requestQueue;
-    private List<EventsData> dataset;
+    public ImageView assist_icon;
+    public ImageView like_icon;
+    public ImageButton assist_button;
+    public ImageButton like_button;
+    public RequestQueue requestQueue;
 
     // Constructor del ViewHolder
-    public EventsViewHolder(@NonNull View ivi, List<EventsData> dataset, EventsAdapter adapter) {
+    public EventsViewHolder(@NonNull View ivi) {
         super(ivi);
         // Encontrar los elementos de la vista
         event_name = ivi.findViewById(R.id.event_name);
@@ -68,81 +67,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
         like_button = ivi.findViewById(R.id.like_button);
         recycler_view = ivi.findViewById(R.id.recycler_view);
         this.requestQueue = Volley.newRequestQueue(itemView.getContext());
-        this.dataset = dataset;
 
-        assist_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final EventsData currentItem = dataset.get(getAdapterPosition());
-                boolean isAssisted = currentItem.getUserAssist();
-                String url = Server.name + "/user/assistevent/" + currentItem.getEvent_Id();
-                int method = isAssisted ? Request.Method.DELETE : Request.Method.POST;
-                JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
-                        method, url, null,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                currentItem.setUserAssist(!isAssisted);
-                                currentItem.setAssistances(!isAssisted ? (currentItem.getAssistances() + 1) : (currentItem.getAssistances() - 1));
-                                assist_icon.setImageResource(isAssisted ? R.drawable.balloon_selected : R.drawable.balloon_unselected);
-                                assist_count.setText(String.valueOf(currentItem.getAssistances()));
-                                adapter.notifyItemChanged(getAdapterPosition()); // Notificar al adaptador para que actualice la vista
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Manejar el error
-                            }
-                        },
-                        itemView.getContext()
-                );
-                requestQueue.add(request);
-            }
-        });
-        like_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final EventsData currentItem = dataset.get(getAdapterPosition());
-                boolean isLiked = currentItem.getUserLike();
-                String url = Server.name + "/user/likedevent/" + currentItem.getEvent_Id();
-                int method = isLiked ? Request.Method.DELETE : Request.Method.POST;
-                JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
-                        method, url, null,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                currentItem.setUserLike(!isLiked);
-                                like_icon.setImageResource(isLiked ? R.drawable.like_selected : R.drawable.like_unselected);
-                                adapter.notifyItemChanged(getAdapterPosition()); // Notificar al adaptador para que actualice la vista
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Manejar el error
-                            }
-                        },
-                        itemView.getContext()
-                );
-                requestQueue.add(request);
-            }
-        });
-
-        View.OnClickListener clickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final EventsData currentItem = dataset.get(getAdapterPosition());
-                String url = currentItem.getLink();
-                if (url != null && !url.isEmpty()) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    itemView.getContext().startActivity(browserIntent);
-                }
-            }
-        };
-
-        link_button.setOnClickListener(clickListener);
-        link_icon.setOnClickListener(clickListener);
     }
 
     // Método para mostrar los datos en los elementos de la vista
@@ -166,7 +91,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
         try {
             Util.downloadBitmapToImageView(items.getImage_url(), this.image_view);
         } catch (Exception e) {
-            this.image_view.setImageResource(R.drawable.ic_launcher_background); // Reemplaza 'default_image' con tu imagen predeterminada
+            this.image_view.setImageResource(R.drawable.musicstock_icon); // Reemplaza 'default_image' con tu imagen predeterminada
         }
 
     }
