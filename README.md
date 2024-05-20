@@ -11,6 +11,8 @@
 
 * [Estado del proyecto](#Estado-del-proyecto)
 
+* [Como correr el servidor Django-backend](#Redireccion_correr_backend)
+
 * [Características de la aplicación y demostración](#Características-de-la-aplicación-y-demostración)
 
 * [Acceso al proyecto](#acceso-proyecto)
@@ -19,7 +21,7 @@
 
 * [Personas Contribuyentes](#personas-contribuyentes)
 
-* [Personas-Desarrolladores del Proyecto](#personas-desarrolladores)
+* [Desarrollador del Proyecto](#desarrollador)
 
 * [Conclusión](#conclusión)
 
@@ -49,17 +51,19 @@ La motivación para su desarrollo surge de la necesidad de una aplicación que s
 
 ## ⏱ Estado del proyecto
 
-<h4 align="center">:construction: Proyecto en construcción :construction:</h4>
+<h4 align="center">:construction: Proyecto Finalizado :construction:</h4>
+
+# Como correr los tests en Karate
 
 ## 🎮 Requerimientos minimos
 Android 7.0 API 24 "Nougat"
 
 ## Características de la aplicación y demostración
 
-* `Funcionalidad 1`: Añadir fiestas locales.
-* `Funcionalidad 2`: Ver fiestas locales.
-* `Funcionalidad 2a`: Filtrado entre fiestas locales con preferencias del usuario.
-* `Funcionalidad 3`: Creación de fiestas "Secretas" con código proporcionado desde la App.
+* `Funcionalidades de manager`: Añadir fiestas y eventos, asi como personalizaros y editarlos en cualquier momento.
+* `Funcionalidades de usuario`: Ver fiestas y eventos con datos relevantos a la hora de asistir, también pueden marcar sus favoritos y sus eventos al os que asisten.
+* `Funcionalidades extra`: Filtrado entre fiestas locales entre toda españa, ordenado por precio o por fecha con preferencias del usuario.
+* `Funcionalidad SecretKey`: Creación de fiestas "Secretas" con código proporcionado desde la App, se puede añadir cuanto el manage decuda ponerlo y se actualiza para poder visualizarlo correctamente en la pantalla de eventos a los que asistes.
 
 
 ## 🤖 Tecnologías utilizadas
@@ -80,10 +84,5 @@ Control de Versiones
 ## Cambios en un futuro
  - Busqueda de eventos por posicion actual con GPS.
 
-## Personas-Desarrolladores del Proyecto
+## Desarrollador del Proyecto
 [<img src="https://avatars.githubusercontent.com/u/145338461?v=4" width=115><br><sub>Santiago Fernández Seoane</sub>](https://github.com/SantiFdezz)
-
-## Conclusión
-  
-
-

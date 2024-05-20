@@ -83,7 +83,7 @@ public class OwnFragment extends Fragment {
     public void loadEventData() {
         JsonArrayRequestWithAuthentication request = new JsonArrayRequestWithAuthentication
                 (Request.Method.GET,
-                        Server.name + "/events?mine=true",
+                        "/events?mine=true",
                         null,
                         new Response.Listener<JSONArray>() {
                             @Override

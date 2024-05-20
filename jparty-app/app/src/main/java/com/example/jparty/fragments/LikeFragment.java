@@ -63,7 +63,7 @@ public class LikeFragment extends Fragment {
         this.requestQueue = Volley.newRequestQueue(getContext());
         JsonArrayRequestWithAuthentication request = new JsonArrayRequestWithAuthentication
                 (Request.Method.GET,
-                        Server.name + "/user/likedevents",
+                        "/user/likedevents",
                         null,
                         new Response.Listener<JSONArray>() {
                             @Override

@@ -84,14 +84,13 @@ public class HomeFragment extends Fragment {
     }
 
     private void getEvents(String params) {
-        // Construir la URL de la solicitud
-        String url = Server.name + "/events";
+        String path = "/events";
         if (!params.isEmpty()) {
-            url += params;
+            path += params;
         }
         JsonArrayRequestWithAuthentication request = new JsonArrayRequestWithAuthentication
                 (Request.Method.GET,
-                        url,
+                        path,
                         null,
                         new Response.Listener<JSONArray>() {
                             @Override

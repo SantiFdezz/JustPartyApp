@@ -1,0 +1,19 @@
+{
+  "name": "api_testing_karate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [],
+  "author": "Fdezz1t0",
+  "license": "ISC",
+  "devDependencies": {
+    "@jbangdev/jbang": "^0.2.0",
+    "@karatelabs/karate": "^0.3.1"
+  }
+}

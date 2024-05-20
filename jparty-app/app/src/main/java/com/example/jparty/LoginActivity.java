@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST,
-                Server.name + "/user/session",
+                "/user/session",
                 requestBody,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -149,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
     private void getUser(final UserCallback callback) {
         JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                 Request.Method.GET,
-                Server.name + "/user",
+                "/user",
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override

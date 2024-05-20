@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
     private void logoutUser() {
         JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                 Request.Method.DELETE,
-                Server.name + "/user/session",
+                "/user/session",
                 new JSONObject(), // Objeto JSON vacío
                 new Response.Listener<JSONObject>() {
                     @Override

@@ -134,7 +134,7 @@ public class AccountFragment extends Fragment {
     public void setUser() {
         JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                 Request.Method.GET,
-                Server.name + "/user",
+                "/user",
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -190,7 +190,7 @@ public class AccountFragment extends Fragment {
         }
         JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                 Request.Method.PATCH,
-                Server.name + "/user/manager",
+                "/user",
                 json,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -263,7 +263,7 @@ public class AccountFragment extends Fragment {
         }
         JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                 Request.Method.PATCH,
-                Server.name + "/user",
+                "/user",
                 json,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -323,7 +323,7 @@ public class AccountFragment extends Fragment {
         // Implementa la lógica para eliminar la cuenta aquí
         JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                 Request.Method.DELETE,
-                Server.name + "/user",
+                "/user",
                 new JSONObject(), // Objeto JSON vacío
                 new Response.Listener<JSONObject>() {
                     @Override

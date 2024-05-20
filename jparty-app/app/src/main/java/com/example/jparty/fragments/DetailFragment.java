@@ -64,10 +64,8 @@ public class DetailFragment extends Fragment {
 
         if (bundle != null) {
             this.requestQueue = Volley.newRequestQueue(getContext());
-            JsonArrayRequestWithAuthentication request = new JsonArrayRequestWithAuthentication
-                    (Request.Method.GET,
-                            Server.name + "/event" + eventId,
-                            null,
+            JsonArrayRequestWithAuthentication request = new JsonArrayRequestWithAuthentication(
+                            Request.Method.GET,"/event" + eventId,null,
                             new Response.Listener<JSONArray>() {
                                 @Override
                                 public void onResponse(JSONArray response) {
@@ -154,10 +152,10 @@ public class DetailFragment extends Fragment {
                                                 @Override
                                                 public void onClick(View v) {
                                                     boolean isLiked = getUserLiked();
-                                                    String url = Server.name + "/user/likedevent" + eventId;
+
                                                     int method = isLiked ? Request.Method.DELETE : Request.Method.POST;
                                                     JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
-                                                            method, url, null,
+                                                            method, "/user/likedevent" + eventId, null,
                                                             new Response.Listener<JSONObject>() {
                                                                 @Override
                                                                 public void onResponse(JSONObject response) {

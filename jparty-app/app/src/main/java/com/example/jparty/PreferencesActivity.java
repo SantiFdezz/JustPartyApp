@@ -50,7 +50,7 @@ public class PreferencesActivity extends AppCompatActivity {
         this.requestQueue = Volley.newRequestQueue(this);
         JsonArrayRequestWithAuthentication request = new JsonArrayRequestWithAuthentication
                 (Request.Method.GET,
-                        Server.name + "/user/preferences",
+                        "/user/preferences",
                         null,
                         new Response.Listener<JSONArray>() {
                             @Override
@@ -90,7 +90,7 @@ public class PreferencesActivity extends AppCompatActivity {
                 JSONObject checkedIds = adapter.getCheckedIds();
                 JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication
                         (Request.Method.PUT,
-                                Server.name + "/user/preferences",
+                                "/user/preferences",
                                 checkedIds,
                                 new Response.Listener<JSONObject>() {
                                     @Override

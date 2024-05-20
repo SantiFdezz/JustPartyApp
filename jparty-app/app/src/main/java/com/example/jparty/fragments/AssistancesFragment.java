@@ -65,7 +65,7 @@ public class AssistancesFragment extends Fragment {
         this.requestQueue = Volley.newRequestQueue(getContext());
         JsonArrayRequestWithAuthentication request = new JsonArrayRequestWithAuthentication
                 (Request.Method.GET,
-                        Server.name + "/user/assistevents",
+                        "/user/assistevents",
                         null,
                         new Response.Listener<JSONArray>() {
                             @Override

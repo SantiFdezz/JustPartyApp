@@ -82,10 +82,9 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
             public void onClick(View v) {
                 final EventsData currentItem = dataset.get(holder.getAdapterPosition());
                 boolean isAssisted = currentItem.getUserAssist();
-                String url = Server.name + "/user/assistevent/" + currentItem.getEvent_Id();
                 int method = isAssisted ? Request.Method.DELETE : Request.Method.POST;
                 JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
-                        method, url, null,
+                        method, "/user/assistevent/" + currentItem.getEvent_Id(), null,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -117,10 +116,9 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
             public void onClick(View v) {
                 final EventsData currentItem = dataset.get(holder.getAdapterPosition());
                 boolean isLiked = currentItem.getUserLike();
-                String url = Server.name + "/user/likedevent/" + currentItem.getEvent_Id();
                 int method = isLiked ? Request.Method.DELETE : Request.Method.POST;
                 JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
-                        method, url, null,
+                        method, "/user/likedevent/" + currentItem.getEvent_Id(), null,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {

@@ -22,7 +22,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.jparty.DetailActivity;
 import com.example.jparty.JsonObjectRequestWithAuthentication;
 import com.example.jparty.R;
-import com.example.jparty.Server;
 
 import org.json.JSONObject;
 
@@ -81,10 +80,9 @@ public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHold
             @Override
             public void onClick(View v) {
                 boolean isLiked = dataForThisCell.getUserLiked();
-                String url = Server.name + "/user/likedevent/" + dataForThisCell.getEventId();
                 int method = isLiked ? Request.Method.DELETE : Request.Method.POST;
                 JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
-                        method, url, null,
+                        method, "/user/likedevent/" + dataForThisCell.getEventId(), null,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -151,9 +149,8 @@ public class AssistancesAdapter extends RecyclerView.Adapter<AssistancesViewHold
                 .show();
     }
     private void unAssist(AssistancesData dataForThisCell, int position){
-        String url = Server.name + "/user/assistevent/" + dataForThisCell.getEventId();
         JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
-                Request.Method.DELETE, url, null,
+                Request.Method.DELETE, "/user/assistevent/" + dataForThisCell.getEventId(), null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

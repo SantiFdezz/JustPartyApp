@@ -60,7 +60,6 @@ public class OwnAdapter extends RecyclerView.Adapter<OwnViewHolder> {
         requestQueue = Volley.newRequestQueue(context);
         int eventId = dataForThisCell.getEvent_Id().intValue();
         // Mostrar los datos en el ViewHolder o no
-        System.out.println("Secret key: " + secretkey);
         if (secretkey.equals("null")) {
             holder.key_button.setVisibility(View.GONE);
         } else {
@@ -94,10 +93,9 @@ public class OwnAdapter extends RecyclerView.Adapter<OwnViewHolder> {
             @Override
             public void onClick(View v) {
                 boolean isAssisted = dataForThisCell.getUserAssist();
-                String url = Server.name + "/user/assistevent/" + dataForThisCell.getEvent_Id();
                 int method = isAssisted ? Request.Method.DELETE : Request.Method.POST;
                 JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
-                        method, url, null,
+                        method, "/user/assistevent/" + dataForThisCell.getEvent_Id(), null,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -128,10 +126,9 @@ public class OwnAdapter extends RecyclerView.Adapter<OwnViewHolder> {
             @Override
             public void onClick(View v) {
                 boolean isLiked = dataForThisCell.getUserLike();
-                String url = Server.name + "/user/likedevent/" + dataForThisCell.getEvent_Id();
                 int method = isLiked ? Request.Method.DELETE : Request.Method.POST;
                 JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
-                        method, url, null,
+                        method, "/user/likedevent/" + dataForThisCell.getEvent_Id(), null,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -194,10 +191,9 @@ public class OwnAdapter extends RecyclerView.Adapter<OwnViewHolder> {
                 .show();
     }
     private void deleteEvent(final int position, final RecyclerView.ViewHolder holder, final int eventId) {
-        String url = Server.name + "/event/" + eventId;
         JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                 Request.Method.DELETE,
-                url,
+                "/event/" + eventId,
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override

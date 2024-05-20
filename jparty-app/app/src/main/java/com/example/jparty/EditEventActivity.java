@@ -170,11 +170,10 @@ public class EditEventActivity extends AppCompatActivity {
 
 
     private void getEventDetails(int eventId) {
-        String url = Server.name + "/event/" + eventId;
 
         JsonArrayRequestWithAuthentication request = new JsonArrayRequestWithAuthentication(
                 Request.Method.GET,
-                url,
+                "/event/" + eventId,
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -228,7 +227,6 @@ public class EditEventActivity extends AppCompatActivity {
     }
 
     private void createEvent(int method, String url) {
-        String urlu = Server.name + url;
         int methodu;
         if (method == 1) {
             methodu = Request.Method.PATCH;
@@ -259,7 +257,7 @@ public class EditEventActivity extends AppCompatActivity {
         }
         JsonObjectRequestWithAuthentication request = new JsonObjectRequestWithAuthentication(
                 methodu,
-                urlu,
+                url,
                 eventDetails,
                 new Response.Listener<JSONObject>() {
                     @Override
