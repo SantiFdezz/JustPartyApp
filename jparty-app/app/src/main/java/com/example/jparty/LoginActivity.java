@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST,
-                "/user/session",
+                Server.name+"/user/session",
                 requestBody,
                 new Response.Listener<JSONObject>() {
                     @Override

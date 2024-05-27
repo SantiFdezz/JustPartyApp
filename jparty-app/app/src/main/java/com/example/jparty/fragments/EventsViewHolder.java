@@ -88,12 +88,7 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
         } else {
             this.like_icon.setImageResource(R.drawable.like_unselected);
         }
-        try {
-            Util.downloadBitmapToImageView(items.getImage_url(), this.image_view);
-        } catch (Exception e) {
-            this.image_view.setImageResource(R.drawable.musicstock_icon); // Reemplaza 'default_image' con tu imagen predeterminada
-        }
-
+        Util.downloadBitmapToImageView(items.getImage_url(), this.image_view);
     }
 
     public String truncateDescription(String description) {

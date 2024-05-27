@@ -182,7 +182,7 @@ public class RegisterActivity extends AppCompatActivity {
         //Esto inicializa la peticion
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST,
-                "/user",
+                Server.name+"/user",
                 requestBody,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -223,7 +223,7 @@ public class RegisterActivity extends AppCompatActivity {
         // Creación de la solicitud
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST,
-                "/user/session",
+                Server.name+"/user/session",
                 requestBody,
                 new Response.Listener<JSONObject>() {
                     @Override
