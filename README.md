@@ -1,4 +1,4 @@
-## JPARTY 🎈
+## JPARTY
 <p align="center">
   <img src="https://raw.githubusercontent.com/SantiFdezz/JustPartyApp/main/doc/Banner.png">
   <img src="https://img.shields.io/badge/PFC_DAM-2024-purple">
@@ -12,16 +12,16 @@
 
 ## Índice
 
-* [JPARTY 🎈](#jparty-)
-* [Descripción del proyecto](#descripción-del-proyecto)
-* [Estado del proyecto](#estado-del-proyecto-)
-* [Requerimientos mínimos](#requerimientos-mínimos-)
-* [Características de la aplicación y demostración](#características-de-la-aplicación-y-demostración)
-* [Tecnologías utilizadas](#tecnologías-utilizadas-)
-* [Como correr el servidor Django-backend](django-backend/README.md)
-* [Como correr los test de Karate](tests/README.md)
-* [Cambios a futuro](#cambios-a-futuro)
-* [Desarrollador del Proyecto](#desarrollador-del-proyecto)
+* [JPARTY 🎈](#jparty)
+* [Descripción del proyecto‼️](#descripción-del-proyecto)
+* [Estado del proyecto ⏱](#estado-del-proyecto)
+* [Requerimientos mínimos 🎮](#requerimientos-mínimos)
+* [Características de la aplicación y demostración 📹](#características-de-la-aplicación-y-demostración)
+* [Tecnologías utilizadas  🤖](#tecnologías-utilizadas)
+* [Como correr el servidor Django-backend  🤖](jparty-backend/README.md)
+* [Como correr los test de Karate  🤖](tests/README.md)
+* [Cambios a futuro⏭️](#cambios-a-futuro)
+* [Desarrollador del Proyecto👨‍💻](#desarrollador-del-proyecto)
  
 ## Descripción del proyecto
 JustParty es una aplicación Android que ofrece una solución integral y ahorra tiempo para cualquier persona interesada en descubrir y/o participar en eventos de ocio y entretenimiento en su área cercana, ya sean residentes habituales o visitantes temporales. La aplicación está diseñada para una audiencia diversa, que incluye amantes de la música, entusiastas de la vida nocturna y aquellos que buscan experiencias sociales y culturales en su entorno.
@@ -29,11 +29,11 @@ JustParty es una aplicación Android que ofrece una solución integral y ahorra 
 La motivación para su desarrollo surge de la necesidad de una aplicación que satisfaga las diversas necesidades de los usuarios en este ámbito y les haga ahorrar tiempo en su día. Desde aquellos que buscan información detallada sobre conciertos, actuaciones, hasta aquellos interesados en eventos locales más informales, fiestas de pueblo etc...
 
 
-## Estado del proyecto ⏱
+## Estado del proyecto 
 
 <h4 align="center">:construction: Proyecto Finalizado :construction:</h4>
 
-## Requerimientos mínimos 🎮
+## Requerimientos mínimos 
 
 Android 7.0 API 24 "Nougat"
 
@@ -50,7 +50,7 @@ Android 7.0 API 24 "Nougat"
 * VIDEO PROMOCIONAL DE LA APLICACIÓN:
   ![LINK](https://www.powtoon.com/s/gq2bY7AQqW1/1/m/s)
 
-## Tecnologías utilizadas 🤖
+## Tecnologías utilizadas
 
 Lenguajes de programación
 
