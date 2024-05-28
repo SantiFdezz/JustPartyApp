@@ -11,7 +11,9 @@
 
 * [Estado del proyecto](#Estado-del-proyecto)
 
-* [Como correr el servidor Django-backend](#Redireccion_correr_backend)
+* [Como correr el servidor Django-backend](django-backend/README.md)
+
+* [Como correr el Karate Testing](tests/README.md)
 
 * [Características de la aplicación y demostración](#Características-de-la-aplicación-y-demostración)
 
@@ -29,7 +31,7 @@
 ## JPARTY
 <h1 align="center">🎈JustParty</h1>
 <p align="center">
-  <img src="https://raw.githubusercontent.com/SantiFdezz/JustPartyApp/main/doc/logo/logojparty_white_512.png">
+  <img src="https://raw.githubusercontent.com/SantiFdezz/JustPartyApp/main/doc/Banner.png">
 </p>
 
  ## Insignias
