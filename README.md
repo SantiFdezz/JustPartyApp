@@ -48,8 +48,7 @@ Android 7.0 API 24 "Nougat"
 * `Funcionalidad SecretKey`: Creación de fiestas "Secretas" con código proporcionado desde la App, se puede añadir cuanto el manage decuda ponerlo y se actualiza para poder visualizarlo correctamente en la pantalla de eventos a los que asistes.
 
 * VIDEO PROMOCIONAL DE LA APLICACIÓN:
-  
-       - https://www.powtoon.com/s/gq2bY7AQqW1/1/m/s
+  ![LINK](https://www.powtoon.com/s/gq2bY7AQqW1/1/m/s)
 
 ## Tecnologías utilizadas 🤖
 
