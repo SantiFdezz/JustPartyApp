@@ -3,9 +3,9 @@
   <img src="https://raw.githubusercontent.com/SantiFdezz/JustPartyApp/main/doc/Banner.png">
   <img src="https://img.shields.io/badge/PFC_DAM-2024-purple">
   <img src="https://img.shields.io/badge/STATUS-%20FINALIZADO-green">
-  <img src="https://img.shields.io/badge/Python-3.12.3-674EA7?logo=python&logoColor=white&style=plastic">
-  <img src="https://img.shields.io/badge/Django-4.2.6-674EA7?logo=django&logoColor=white&style=plastic">
-  <img src="https://img.shields.io/badge/Java-20.0.2-674EA7?logo=java&logoColor=white&style=plastic">
+  <img src="https://img.shields.io/badge/Python-v.3.12.3-674EA7?logo=python&logoColor=white&style=plastic">
+  <img src="https://img.shields.io/badge/Django-v.4.2.6-674EA7?logo=django&logoColor=white&style=plastic">
+  <img src="https://img.shields.io/badge/Java-v.20.0.2-674EA7?logo=java&logoColor=white&style=plastic">
   <img src="https://img.shields.io/github/stars/SantiFdezz/JustPartyApp?style=social">
 </p>
 
