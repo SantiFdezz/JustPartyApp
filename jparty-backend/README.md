@@ -2,17 +2,16 @@
 
  - python 3.12.2
  - pip 
- - pyenv
 
 # Como iniciar el servidor
 
  - Ir a la carpeta raíz del proyecto
  
- - Creamos el pyenv para instalar las dependencias. 
+ - Creamos el python Virtual enviroment para instalar las dependencias. 
 
-    - pyenv virtualenv 3.12.2 jparty-venv
+    - python -m venv jparty_venv
 
-    - pyenv activate jparty-venv
+    - .\jparty-env\Scripts\activate
 
     - pip install -r requirements.txt
 
