@@ -155,10 +155,10 @@ def userPreferences(request):
         except PermissionDenied:
             return JsonResponse({'error': 'Unauthorized'}, status=401)
         #COGEMOS LOS GENEROS Y PASAMOS A LISTA LOS SELECCIONADOS POR ID
-        musicGenre = MusicGenre.objects.all()
+        music_genre = MusicGenre.objects.all()
         preferences = UserPreferences.objects.filter(user=user_session.user).values_list('music_genre__id', flat=True)
         json_response = []
-        for music in musicGenre:
+        for music in music_genre:
             json_response.append({
                 "id": music.id,
                 "name": music.name,

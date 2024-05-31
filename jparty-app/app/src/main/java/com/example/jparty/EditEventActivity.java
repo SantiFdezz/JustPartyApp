@@ -32,7 +32,7 @@ import java.util.Calendar;
 public class EditEventActivity extends AppCompatActivity {
     private Spinner eventProvince, eventMusicGenre;
     private EditText eventName, eventLocation, eventDate, eventPrice, eventTime, eventLink, eventImage, eventDescription;
-    private TextView access_text;
+    private TextView accessText;
     private ImageButton circle_button, back_arrow;
     private boolean isGetDone = false;
     private RequestQueue requestQueue;
@@ -45,7 +45,7 @@ public class EditEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestQueue = Volley.newRequestQueue(this);
         setContentView(R.layout.activity_addevent);
-        access_text = findViewById(R.id.access_text);
+        accessText = findViewById(R.id.access_text);
         eventName = findViewById(R.id.event);
         eventLocation = findViewById(R.id.location);
         eventProvince = findViewById(R.id.province);
@@ -66,7 +66,7 @@ public class EditEventActivity extends AppCompatActivity {
         if (eventId != -1) {
             getEventDetails(eventId);
             isGetDone = true;
-            access_text.setText("Editar evento");
+            accessText.setText("Editar evento");
         } else {
             isGetDone = false;
         }

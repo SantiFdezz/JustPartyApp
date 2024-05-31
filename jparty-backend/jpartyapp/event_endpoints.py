@@ -73,15 +73,15 @@ def events(request):
             assistants = UserAssist.objects.filter(event=event).count()
             manager = User.objects.get(id=event.manager.id)
             try:
-                userLiked = UserLikes.objects.get(user=user_session.user, event=event)
-                userLiked = True
+                user_liked = UserLikes.objects.get(user=user_session.user, event=event)
+                user_liked = True
             except UserLikes.DoesNotExist:
-                userLiked = False
+                user_liked = False
             try:
-                userAssist = UserAssist.objects.get(user=user_session.user, event=event)
-                userAssist = True
+                user_assist = UserAssist.objects.get(user=user_session.user, event=event)
+                user_assist = True
             except UserAssist.DoesNotExist:
-                userAssist = False            
+                user_assist = False            
             music_genre = MusicGenre.objects.get(id=event.music_genre.id)
             json_response.append({
                 "id": event.id,
@@ -94,8 +94,8 @@ def events(request):
                 "date": event.date.strftime('%d-%m-%Y'),
                 "image": event.image,
                 "description": event.description,
-                "userLiked": userLiked,
-                "userAssist": userAssist,
+                "userLiked": user_liked,
+                "userAssist": user_assist,
                 "assistants": assistants
             })
         return JsonResponse(json_response, safe=False, status=200)
@@ -154,15 +154,15 @@ def event_id(request, id):
             return JsonResponse({'error': 'Event not found'}, status=404)
         assistants = UserAssist.objects.filter(event=event).count()
         try:
-            userLiked = UserLikes.objects.get(user=user_session.user, event=event)
-            userLiked = True
+            user_liked = UserLikes.objects.get(user=user_session.user, event=event)
+            user_liked = True
         except UserLikes.DoesNotExist:
-            userLiked = False
+            user_liked = False
         try:
-            userAssist = UserAssist.objects.get(user=user_session.user, event=event)
-            userAssist = True
+            user_assist = UserAssist.objects.get(user=user_session.user, event=event)
+            user_assist = True
         except UserAssist.DoesNotExist:
-            userAssist = False
+            user_assist = False
         music_genre = MusicGenre.objects.get(id=event.music_genre.id)
         json_response = []
         json_response.append({
@@ -178,8 +178,8 @@ def event_id(request, id):
             "time": event.date.strftime('%H:%M'),
             "image": event.image,
             "description": event.description,
-            "userLiked": userLiked,
-            "userAssist": userAssist,
+            "userLiked": user_liked,
+            "userAssist": user_assist,
             "assistants": assistants
             })
         return JsonResponse(json_response, safe=False, status=200)
@@ -273,10 +273,10 @@ def userAssistEvents(request):
             event = Events.objects.get(id=assist.event.id, date__gte=timezone.now())
             assistants = UserAssist.objects.filter(event=event).count()
             try:
-                userLiked = UserLikes.objects.get(user=user_session.user, event=event)
-                userLiked = True
+                user_liked = UserLikes.objects.get(user=user_session.user, event=event)
+                user_liked = True
             except UserLikes.DoesNotExist:
-                userLiked = False 
+                user_liked = False 
             json_response.append({
                 "id": event.id,
                 "manager": event.manager.email, 
@@ -287,7 +287,7 @@ def userAssistEvents(request):
                 "date": event.date.strftime('%d-%m-%Y %H:%M'),
                 "link": event.link,
                 "secretkey": event.secretkey,
-                "userLiked": userLiked,
+                "userLiked": user_liked,
             })
         return JsonResponse(json_response, safe=False, status=200)     
     else:
@@ -341,15 +341,15 @@ def userLikedEvents(request):
             event = Events.objects.get(id=eventliked.event.id, date__gte=timezone.now())
             assistants = UserAssist.objects.filter(event=event).count()
             try:
-                userLiked = UserLikes.objects.get(user=user_session.user, event=event)
-                userLiked = True
+                user_liked = UserLikes.objects.get(user=user_session.user, event=event)
+                user_liked = True
             except UserLikes.DoesNotExist:
-                userLiked = False
+                user_liked = False
             try:
-                userAssist = UserAssist.objects.get(user=user_session.user, event=event)
-                userAssist = True
+                user_assist = UserAssist.objects.get(user=user_session.user, event=event)
+                user_assist = True
             except UserAssist.DoesNotExist:
-                userAssist = False
+                user_assist = False
             music_genre = MusicGenre.objects.get(id=event.music_genre.id)
             json_response.append({
                 "id": event.id,
@@ -362,8 +362,8 @@ def userLikedEvents(request):
                 "date": event.date.strftime('%d-%m-%Y'),
                 "image": event.image,
                 "description": event.description,
-                "userLiked": userLiked,
-                "userAssist": userAssist,
+                "userLiked": user_liked,
+                "userAssist": user_assist,
                 "assistants": assistants
             })
         return JsonResponse(json_response, safe=False, status=200)        
