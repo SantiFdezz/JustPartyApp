@@ -35,7 +35,9 @@ La motivación para su desarrollo surge de la necesidad de una aplicación que s
 
 ## Requerimientos mínimos 
 
-Android 7.0 API 24 "Nougat"
+Telefono Android: Pixel 5 API 34 
+
+S.O: Superior a Android 9.0 "Pie"
 
 ## Características de la aplicación y demostración
 
